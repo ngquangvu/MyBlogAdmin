@@ -1,0 +1,15 @@
+{
+  "extends": "@tsconfig/vite-react/tsconfig.json",
+  "compilerOptions": {
+    "strict": true,
+    "jsx": "react-jsx",
+    "baseUrl": "./",
+    "paths": {
+      "@/*": ["./src/*"]
+    },
+    "types": ["vitest/globals"],
+    "skipLibCheck": true
+  },
+  "include": ["src", "vitest.setup.ts"],
+  "exclude": ["node_modules"]
+}
