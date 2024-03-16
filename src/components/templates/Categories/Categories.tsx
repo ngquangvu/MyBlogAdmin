@@ -19,7 +19,8 @@ import {
 import {
   useMutateCategoryCreate,
   useMutateCategoryUpdate,
-  useMutateCategoryDelete
+  useMutateCategoryDelete,
+  useMutateCategoryRestore
 } from '@/components/hooks/useMutateCategory'
 import { useQueryCategories } from '@/components/hooks/useQueryCategory'
 import { CategoryMutate, Category } from '@/types/category'
@@ -32,6 +33,7 @@ export const Categories = () => {
   const { mutateAsync: addCategoryMutateAsync } = useMutateCategoryCreate()
   const { mutateAsync: updateCategoryMutateAsync } = useMutateCategoryUpdate()
   const { mutateAsync: deleteCategoryMutateAsync } = useMutateCategoryDelete()
+  const { mutateAsync: restoreCategoryMutateAsync } = useMutateCategoryRestore()
   const { categories } = useQueryCategories(categoriesQuery)
   const [page, setPage] = useRecoilState(categoriesPageState)
 
@@ -125,9 +127,9 @@ export const Categories = () => {
   const [restoreId, setRestoreId] = useState(0)
 
   const handleMutateRestore = () => {
-    // restoreCategoryMutateAsync(restoreId).then(() => {
-    //   setIsRestoreModalOpen(false)
-    // })
+    restoreCategoryMutateAsync(restoreId).then(() => {
+      setIsRestoreModalOpen(false)
+    })
   }
 
   const handleOpenRestoreModal = (id: number) => {

@@ -78,3 +78,25 @@ export const useMutateTagDelete = (): UseMutationResult<
     }
   })
 }
+
+const restoreTag = async (id?: number): Promise<ResponseDataType & { data: Tag | null }> => {
+  const { data } = await axiosInstance.patch<ResponseDataType & { data: Tag | null }>(`/admin/tags/restore/${id}`)
+  return data
+}
+
+export const useMutateTagRestore = (): UseMutationResult<
+  ResponseDataType & { data: Tag | null },
+  AxiosError,
+  number | undefined,
+  undefined
+> => {
+  const admin = getAdminFromLocalStorage()
+
+  const queryClient = useQueryClient()
+  return useMutation(restoreTag, {
+    onSuccess() {
+      queryClient.refetchQueries([admin, tagsQueryKey])
+    }
+  })
+}
+

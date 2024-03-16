@@ -78,3 +78,24 @@ export const useMutateCategoryDelete = (): UseMutationResult<
     }
   })
 }
+
+const restoreCategory = async (id?: number): Promise<ResponseDataType & { data: Category | null }> => {
+  const { data } = await axiosInstance.patch<ResponseDataType & { data: Category | null }>(`/admin/categories/restore/${id}`)
+  return data
+}
+
+export const useMutateCategoryRestore = (): UseMutationResult<
+  ResponseDataType & { data: Category | null },
+  AxiosError,
+  number | undefined,
+  undefined
+> => {
+  const admin = getAdminFromLocalStorage()
+
+  const queryClient = useQueryClient()
+  return useMutation(restoreCategory, {
+    onSuccess() {
+      queryClient.refetchQueries([admin, categoriesQueryKey])
+    }
+  })
+}

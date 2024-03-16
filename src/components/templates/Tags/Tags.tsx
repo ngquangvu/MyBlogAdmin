@@ -1,7 +1,7 @@
 import { Suspense, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-import { TrashIcon } from '@heroicons/react/24/outline'
+import { ArrowPathIcon, TrashIcon } from '@heroicons/react/24/outline'
 import { useRecoilState, useRecoilValue } from 'recoil'
 
 import { Loading } from '@/components/atoms/Loading/Loading'
@@ -12,10 +12,11 @@ import { Pagination } from '@/components/organisms/Pagination'
 import { useQueryTags } from '@/components/hooks/useQueryTag'
 import { tagsPageState, tagsSearchQueryState, tagsSearchState } from '@/states'
 import { TagCreateInput, TagDetailInput } from '@/schema/tag'
-import { useMutateTagCreate, useMutateTagDelete, useMutateTagUpdate } from '@/components/hooks/useMutateTag'
+import { useMutateTagCreate, useMutateTagDelete, useMutateTagRestore, useMutateTagUpdate } from '@/components/hooks/useMutateTag'
 import { Tag, TagMutate } from '@/types/tag'
 import CreateTagModal from '@/components/molecules/Tag/CreateTagModal/CreateTagModal'
 import EditTagModal from '@/components/molecules/Tag/EditTagModal/EditTagModal'
+import { RestoreModal } from '@/components/molecules/RestoreModal'
 
 export const Tags = () => {
   const tagsQuery = useRecoilValue(tagsSearchQueryState)
@@ -23,6 +24,7 @@ export const Tags = () => {
   const { mutateAsync: addTagMutateAsync } = useMutateTagCreate()
   const { mutateAsync: updateTagMutateAsync } = useMutateTagUpdate()
   const { mutateAsync: deleteTagMutateAsync } = useMutateTagDelete()
+  const { mutateAsync: restoreTagMutateAsync } = useMutateTagRestore()
   const { tags } = useQueryTags(tagsQuery)
   const [page, setPage] = useRecoilState(tagsPageState)
 
@@ -109,6 +111,29 @@ export const Tags = () => {
 
   const handleCancelDeleteModal = () => {
     setIsDeleteModalOpen(false)
+  }
+
+  // ========= Restore =========
+  const [isRestoreModalOpen, setIsRestoreModalOpen] = useState(false)
+  const [restoreId, setRestoreId] = useState(0)
+
+  const handleMutateRestore = () => {
+    restoreTagMutateAsync(restoreId).then(() => {
+      setIsRestoreModalOpen(false)
+    })
+  }
+
+  const handleOpenRestoreModal = (id: number) => {
+    setRestoreId(id)
+    setIsRestoreModalOpen(true)
+  }
+
+  const handleConfirmRestoreModal = () => {
+    setIsRestoreModalOpen(false)
+  }
+
+  const handleCancelRestoreModal = () => {
+    setIsRestoreModalOpen(false)
   }
 
   return (
@@ -218,14 +243,25 @@ export const Tags = () => {
                             </button>
                           </td>
                           <td className="relative whitespace-nowrap py-4 pl-8 pr-8 text-center text-sm font-medium sm:pr-0">
-                            <button
-                              onClick={async () => {
-                                handleOpenDeleteModal(tag_detail.id)
-                              }}
-                              className="w-5 h-5 text-red-700 hover:opacity-80"
-                            >
-                              <TrashIcon className="w-5 h-5" />
-                            </button>
+                            {tag_detail.deletedAt ? (
+                              <button
+                                onClick={async () => {
+                                  handleOpenRestoreModal(tag_detail.id)
+                                }}
+                                className="w-5 h-5 text-blue-700 hover:opacity-80"
+                              >
+                                <ArrowPathIcon className="w-5 h-5" />
+                              </button>
+                            ) : (
+                              <button
+                                onClick={async () => {
+                                  handleOpenDeleteModal(tag_detail.id)
+                                }}
+                                className="w-5 h-5 text-red-700 hover:opacity-80"
+                              >
+                                <TrashIcon className="w-5 h-5" />
+                              </button>
+                            )}
                           </td>
                         </tr>
                       ))}
@@ -258,6 +294,15 @@ export const Tags = () => {
                       onConfirm={handleConfirmDeleteModal}
                       onCancel={handleCancelDeleteModal}
                   />
+                  )}
+                  {isRestoreModalOpen && (
+                    <RestoreModal
+                      title="Restore Tag"
+                      body="Are you sure you want to restore this tag?"
+                      actionRestore={handleMutateRestore}
+                      onConfirm={handleConfirmRestoreModal}
+                      onCancel={handleCancelRestoreModal}
+                    />
                   )}
                 </div>
               </div>
