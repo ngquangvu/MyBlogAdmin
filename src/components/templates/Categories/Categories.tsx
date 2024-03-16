@@ -1,7 +1,7 @@
 import { Suspense, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-import { TrashIcon } from '@heroicons/react/24/outline'
+import { TrashIcon, ArrowPathIcon } from '@heroicons/react/24/outline'
 import { useRecoilState, useRecoilValue } from 'recoil'
 
 import { Loading } from '@/components/atoms/Loading/Loading'
@@ -11,11 +11,20 @@ import { SearchBox } from '@/components/molecules/SearchBox'
 import { Pagination } from '@/components/organisms/Pagination'
 import CreateTagModal from '@/components/molecules/Tag/CreateTagModal/CreateTagModal'
 import EditTagModal from '@/components/molecules/Tag/EditTagModal/EditTagModal'
-import { categoriesSearchQueryState, categoriesSearchState, categoriesPageState } from '@/states/categoriesSearchQueryState'
-import { useMutateCategoryCreate, useMutateCategoryUpdate, useMutateCategoryDelete } from '@/components/hooks/useMutateCategory'
+import {
+  categoriesSearchQueryState,
+  categoriesSearchState,
+  categoriesPageState
+} from '@/states/categoriesSearchQueryState'
+import {
+  useMutateCategoryCreate,
+  useMutateCategoryUpdate,
+  useMutateCategoryDelete
+} from '@/components/hooks/useMutateCategory'
 import { useQueryCategories } from '@/components/hooks/useQueryCategory'
 import { CategoryMutate, Category } from '@/types/category'
 import { CategoryCreateInput, CategoryDetailInput } from '@/schema/category'
+import { RestoreModal } from '@/components/molecules/RestoreModal'
 
 export const Categories = () => {
   const categoriesQuery = useRecoilValue(categoriesSearchQueryState)
@@ -111,6 +120,29 @@ export const Categories = () => {
     setIsDeleteModalOpen(false)
   }
 
+  // ========= Restore =========
+  const [isRestoreModalOpen, setIsRestoreModalOpen] = useState(false)
+  const [restoreId, setRestoreId] = useState(0)
+
+  const handleMutateRestore = () => {
+    // restoreCategoryMutateAsync(restoreId).then(() => {
+    //   setIsRestoreModalOpen(false)
+    // })
+  }
+
+  const handleOpenRestoreModal = (id: number) => {
+    setRestoreId(id)
+    setIsRestoreModalOpen(true)
+  }
+
+  const handleConfirmRestoreModal = () => {
+    setIsRestoreModalOpen(false)
+  }
+
+  const handleCancelRestoreModal = () => {
+    setIsRestoreModalOpen(false)
+  }
+
   return (
     <main>
       <div className="flex justify-between items-center pr-4 sm:pr-6 lg:pr-8 mb-4">
@@ -186,29 +218,19 @@ export const Categories = () => {
                           <td className="py-4 pl-4 pr-3 text-sm font-semibold text-gray-900 sm:pl-0">
                             {cate_detail.id}
                           </td>
-                          <td className="px-3 py-4 text-sm text-gray-500">
-                            {cate_detail.parentId}
-                          </td>
-                          <td className="px-3 py-4 text-sm text-gray-500">
-                            {cate_detail.title}
-                          </td>
-                          <td className="px-3 py-4 text-sm text-gray-500">
-                            {cate_detail.metaTitle}
-                          </td>
-                          <td className="px-3 py-4 text-sm text-gray-500">
-                            {cate_detail.slug}
-                          </td>
-                          <td className="px-3 py-4 text-sm text-gray-500">
-                            {cate_detail.image}
-                          </td>
-                          <td className="px-3 py-4 text-sm text-gray-500">
-                            {cate_detail.content}
-                          </td>
+                          <td className="px-3 py-4 text-sm text-gray-500">{cate_detail.parentId}</td>
+                          <td className="px-3 py-4 text-sm text-gray-500">{cate_detail.title}</td>
+                          <td className="px-3 py-4 text-sm text-gray-500">{cate_detail.metaTitle}</td>
+                          <td className="px-3 py-4 text-sm text-gray-500">{cate_detail.slug}</td>
+                          <td className="px-3 py-4 text-sm text-gray-500">{cate_detail.image}</td>
+                          <td className="px-3 py-4 text-sm text-gray-500">{cate_detail.content}</td>
                           <td className="px-3 py-4 text-sm text-gray-500">
                             <CategoryCounter
                               category="Post"
                               counter={111}
-                              onClick={() => navigate({ pathname: `${import.meta.env.VITE_ADMIN_ROUTE}/posts/${cate_detail.id}` })}
+                              onClick={() =>
+                                navigate({ pathname: `${import.meta.env.VITE_ADMIN_ROUTE}/posts/${cate_detail.id}` })
+                              }
                             />
                           </td>
                           <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-center text-sm font-medium sm:pr-0">
@@ -224,14 +246,25 @@ export const Categories = () => {
                             </button>
                           </td>
                           <td className="relative whitespace-nowrap py-4 pl-8 pr-8 text-center text-sm font-medium sm:pr-0">
-                            <button
-                              onClick={async () => {
-                                handleOpenDeleteModal(cate_detail.id)
-                              }}
-                              className="w-5 h-5 text-red-700 hover:opacity-80"
-                            >
-                              <TrashIcon className="w-5 h-5" />
-                            </button>
+                            {cate_detail.deletedAt ? (
+                              <button
+                                onClick={async () => {
+                                  handleOpenRestoreModal(cate_detail.id)
+                                }}
+                                className="w-5 h-5 text-blue-700 hover:opacity-80"
+                              >
+                                <ArrowPathIcon className="w-5 h-5" />
+                              </button>
+                            ) : (
+                              <button
+                                onClick={async () => {
+                                  handleOpenDeleteModal(cate_detail.id)
+                                }}
+                                className="w-5 h-5 text-red-700 hover:opacity-80"
+                              >
+                                <TrashIcon className="w-5 h-5" />
+                              </button>
+                            )}
                           </td>
                         </tr>
                       ))}
@@ -263,7 +296,16 @@ export const Categories = () => {
                       actionDelete={handleMutateDelete}
                       onConfirm={handleConfirmDeleteModal}
                       onCancel={handleCancelDeleteModal}
-                  />
+                    />
+                  )}
+                  {isRestoreModalOpen && (
+                    <RestoreModal
+                      title="Restore Category"
+                      body="Are you sure you want to restore this category?"
+                      actionRestore={handleMutateRestore}
+                      onConfirm={handleConfirmRestoreModal}
+                      onCancel={handleCancelRestoreModal}
+                    />
                   )}
                 </div>
               </div>
