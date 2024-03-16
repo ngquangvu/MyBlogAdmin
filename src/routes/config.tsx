@@ -5,6 +5,7 @@ import { AuthLayout } from '@/components/layouts/AuthLayout'
 import { UnAuthLayout } from '@/components/layouts/UnAuthLayout'
 import { Login } from '@/pages/Login'
 import { Users } from '@/pages/Users'
+import { Tags } from '@/pages/Tags'
 
 export const RouterConfig: React.FC = () => {
   const adminRoute = import.meta.env.VITE_ADMIN_ROUTE
@@ -15,6 +16,7 @@ export const RouterConfig: React.FC = () => {
           <Route path={adminRoute} element={<AuthLayout />}>
             <Route index element={<Home />} />
             <Route path="users" element={<Users />} />
+            <Route path="tags" element={<Tags />} />
           </Route>
 
           <Route path={adminRoute} element={<UnAuthLayout />}>

@@ -3,26 +3,27 @@ import { Fragment, useRef } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
+import { TagCreateInput, TagCreateInputSchema } from '@/schema/tag'
+import { defaultValuesTagCreate } from '@/schema/tag'
 
-import { UserCreateInputSchema, type UserCreateInput, defaultValuesUserCreate } from '@/schema/user'
 
 type Props = {
   errorMess: string
   onCancel: () => void
 
-  initialValues?: Partial<UserCreateInput>
-  onValid: (values: UserCreateInput) => Promise<void>
+  initialValues?: Partial<TagCreateInput>
+  onValid: (values: TagCreateInput) => Promise<void>
 }
 
-export default function CreateUserModal({ errorMess, onCancel, initialValues, onValid }: Props) {
+export default function CreateTagModal({ errorMess, onCancel, initialValues, onValid }: Props) {
   const cancelButtonRef = useRef(null)
   const {
     register,
     handleSubmit,
     formState: { errors }
   } = useForm({
-    defaultValues: { ...defaultValuesUserCreate, ...initialValues },
-    resolver: zodResolver(UserCreateInputSchema)
+    defaultValues: { ...defaultValuesTagCreate, ...initialValues },
+    resolver: zodResolver(TagCreateInputSchema)
   })
 
   return (
@@ -55,76 +56,71 @@ export default function CreateUserModal({ errorMess, onCancel, initialValues, on
                 <div className="w-full sm:flex sm:items-start">
                   <div className="w-full mt-3 text-center sm:mt-0 sm:text-left">
                     <Dialog.Title as="h1" className="my-3 text-base font-semibold leading-6 text-gray-900">
-                      Create User
+                      Create Tag
                     </Dialog.Title>
 
                     <span className="text-red-500">{errorMess}</span>
 
                     <div className="mt-5">
                       <div className="mb-4">
-                        <label className="block text-gray-800 leading-6 text-sm font-semibold mb-2" htmlFor="email">
-                          Mail
+                        <label className="block text-gray-800 leading-6 text-sm font-semibold mb-2" htmlFor="firstName">
+                        Title
                         </label>
                         <input
-                          {...register('email')}
+                          {...register('title')}
                           className="appearance-none border rounded w-full py-2 px-3 leading-6 mb-1"
-                          id="email"
-                          type="email"
+                          id="title"
+                          type="text"
                         />
-                        {errors.email && <span className="text-red-500 text-sm">{errors.email.message}</span>}
+                        {errors.title && <span className="text-red-500 text-sm">{errors.title.message}</span>}
                       </div>
                       <div className="mb-4">
                         <label className="block text-gray-800 leading-6 text-sm font-semibold mb-2" htmlFor="firstName">
-                        First name
+                        Meta title
                         </label>
                         <input
-                          {...register('firstName')}
+                          {...register('metaTitle')}
                           className="appearance-none border rounded w-full py-2 px-3 leading-6 mb-1"
-                          id="firstName"
-                          type="firstName"
+                          id="metaTitle"
+                          type="text"
                         />
-                        {errors.firstName && <span className="text-red-500 text-sm">{errors.firstName.message}</span>}
+                        {errors.metaTitle && <span className="text-red-500 text-sm">{errors.metaTitle.message}</span>}
                       </div>
                       <div className="mb-4">
-                        <label className="block text-gray-800 leading-6 text-sm font-semibold mb-2" htmlFor="lastName">
-                        Last name
+                        <label className="block text-gray-800 leading-6 text-sm font-semibold mb-2" htmlFor="firstName">
+                        Slug
                         </label>
                         <input
-                          {...register('lastName')}
+                          {...register('slug')}
                           className="appearance-none border rounded w-full py-2 px-3 leading-6 mb-1"
-                          id="lastName"
-                          type="lastName"
+                          id="slug"
+                          type="text"
                         />
-                        {errors.lastName && <span className="text-red-500 text-sm">{errors.lastName.message}</span>}
+                        {errors.slug && <span className="text-red-500 text-sm">{errors.slug.message}</span>}
                       </div>
                       <div className="mb-4">
-                        <label className="block text-gray-800 leading-6 text-sm font-semibold mb-2" htmlFor="password">
-                          Password
+                        <label className="block text-gray-800 leading-6 text-sm font-semibold mb-2" htmlFor="firstName">
+                        Image
                         </label>
                         <input
-                          {...register('password')}
+                          {...register('image')}
                           className="appearance-none border rounded w-full py-2 px-3 leading-6 mb-1"
-                          id="password"
-                          type="password"
+                          id="image"
+                          type="text"
                         />
-                        {errors.password && <span className="text-red-500 text-sm">{errors.password.message}</span>}
+                        {errors.image && <span className="text-red-500 text-sm">{errors.image.message}</span>}
                       </div>
                       <div className="mb-4">
-                        <label
-                          className="block text-gray-800 leading-6 text-sm font-semibold mb-2"
-                          htmlFor="confirmPassword"
-                        >
-                          Password (confirm)
+                        <label className="block text-gray-800 leading-6 text-sm font-semibold mb-2" htmlFor="firstName">
+                        Content
                         </label>
                         <input
-                          {...register('confirmPassword')}
+                          {...register('content')}
                           className="appearance-none border rounded w-full py-2 px-3 leading-6 mb-1"
-                          id="confirmPassword"
-                          type="password"
+                          id="content"
+                          type="text"
                         />
-                        {errors.confirmPassword && (
-                          <span className="text-red-500 text-sm">{errors.confirmPassword.message}</span>
-                        )}
+                        {errors.content && <span className="text-red-500 text-sm">{errors.content.message}</span>}
                       </div>
                     </div>
                   </div>
