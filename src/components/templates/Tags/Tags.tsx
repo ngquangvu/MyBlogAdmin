@@ -289,7 +289,7 @@ export const Tags = () => {
                   {isDeleteModalOpen && (
                     <DeleteModal
                       title="Delete Tag"
-                      body="Are you sure you want to delete this tag? This action cannot be undone."
+                      body="Are you sure you want to delete this tag?"
                       actionDelete={handleMutateDelete}
                       onConfirm={handleConfirmDeleteModal}
                       onCancel={handleCancelDeleteModal}

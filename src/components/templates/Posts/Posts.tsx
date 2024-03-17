@@ -1,7 +1,7 @@
 import { Suspense, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-import { TrashIcon, ArrowPathIcon } from '@heroicons/react/24/outline'
+import { ArrowPathIcon, TrashIcon } from '@heroicons/react/24/outline'
 import { useRecoilState, useRecoilValue } from 'recoil'
 
 import { Loading } from '@/components/atoms/Loading/Loading'
@@ -9,33 +9,23 @@ import { CategoryCounter } from '@/components/molecules/CategoryCounter'
 import { DeleteModal } from '@/components/molecules/DeleteModal'
 import { SearchBox } from '@/components/molecules/SearchBox'
 import { Pagination } from '@/components/organisms/Pagination'
-import CreateTagModal from '@/components/molecules/Tag/CreateTagModal/CreateTagModal'
-import EditTagModal from '@/components/molecules/Tag/EditTagModal/EditTagModal'
-import {
-  categoriesSearchQueryState,
-  categoriesSearchState,
-  categoriesPageState
-} from '@/states/categoriesSearchQueryState'
-import {
-  useMutateCategoryCreate,
-  useMutateCategoryUpdate,
-  useMutateCategoryDelete,
-  useMutateCategoryRestore
-} from '@/components/hooks/useMutateCategory'
-import { useQueryCategories } from '@/components/hooks/useQueryCategory'
-import { CategoryMutate, Category } from '@/types/category'
-import { CategoryCreateInput, CategoryDetailInput } from '@/schema/category'
+import { useQueryTags } from '@/components/hooks/useQueryTag'
+import { useMutatePostCreate, useMutatePostUpdate, useMutatePostDelete, useMutatePostRestore } from '@/components/hooks/useMutatePost'
 import { RestoreModal } from '@/components/molecules/RestoreModal'
+import { PostCreateInput, PostDetailInput } from '@/schema/post'
+import { Post, PostMutate } from '@/types/post'
+import { useQueryPosts } from '@/components/hooks/useQueryPost'
+import { postsSearchQueryState, postsSearchState, postsPageState } from '@/states/postsSearchQueryState'
 
-export const Categories = () => {
-  const categoriesQuery = useRecoilValue(categoriesSearchQueryState)
-  const [searchState, setCategoriesSearch] = useRecoilState(categoriesSearchState)
-  const { mutateAsync: addCategoryMutateAsync } = useMutateCategoryCreate()
-  const { mutateAsync: updateCategoryMutateAsync } = useMutateCategoryUpdate()
-  const { mutateAsync: deleteCategoryMutateAsync } = useMutateCategoryDelete()
-  const { mutateAsync: restoreCategoryMutateAsync } = useMutateCategoryRestore()
-  const { categories } = useQueryCategories(categoriesQuery)
-  const [page, setPage] = useRecoilState(categoriesPageState)
+export const Posts = () => {
+  const postsQuery = useRecoilValue(postsSearchQueryState)
+  const [searchState, setPostsSearch] = useRecoilState(postsSearchState)
+  const { mutateAsync: addPostMutateAsync } = useMutatePostCreate()
+  const { mutateAsync: updatePostMutateAsync } = useMutatePostUpdate()
+  const { mutateAsync: deletePostMutateAsync } = useMutatePostDelete()
+  const { mutateAsync: restorePostMutateAsync } = useMutatePostRestore()
+  const { posts } = useQueryPosts(postsQuery)
+  const [page, setPage] = useRecoilState(postsPageState)
 
   const navigate = useNavigate()
 
@@ -47,15 +37,15 @@ export const Categories = () => {
     e.preventDefault()
     setIsSearching(searchText !== '')
 
-    setCategoriesSearch(searchText)
+    setPostsSearch(searchText)
   }
 
   // ========= Create =========
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false)
   const [errorMessageCreateModalOpen, setErrorMessageCreateModalOpen] = useState('')
 
-  const handleMutateAdd = (cateInput: CategoryCreateInput) => {
-    addCategoryMutateAsync(cateInput)
+  const handleMutateAdd = (postInput: PostCreateInput) => {
+    addPostMutateAsync(postInput)
       .then(() => {
         setIsCreateModalOpen(false)
       })
@@ -75,12 +65,12 @@ export const Categories = () => {
 
   // ========= Edit =========
   const [isEditModalOpen, setIsEditModalOpen] = useState(false)
-  const [editId, setEditId] = useState<number>()
+  const [editId, setEditId] = useState<string>()
   const [errorMessageEditModalOpen, setErrorMessageEditModalOpen] = useState('')
-  const [editUser, setEditUser] = useState<CategoryDetailInput>()
+  const [editUser, setEditUser] = useState<PostDetailInput>()
 
-  const handleMutateEdit = (cateInput: CategoryMutate) => {
-    updateCategoryMutateAsync(cateInput)
+  const handleMutateEdit = (postInput: PostMutate) => {
+    updatePostMutateAsync(postInput)
       .then(() => {
         setIsEditModalOpen(false)
       })
@@ -89,8 +79,8 @@ export const Categories = () => {
       })
   }
 
-  const handleOpenEditModal = (cateInput: CategoryDetailInput) => {
-    setEditUser(cateInput)
+  const handleOpenEditModal = (postInput: PostDetailInput) => {
+    setEditUser(postInput)
     setErrorMessageEditModalOpen('')
     setIsEditModalOpen(true)
   }
@@ -101,15 +91,15 @@ export const Categories = () => {
 
   // ========= Delete =========
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
-  const [deleteId, setDeleteId] = useState(0)
+  const [deleteId, setDeleteId] = useState<string>('')
 
   const handleMutateDelete = () => {
-    deleteCategoryMutateAsync(deleteId).then(() => {
+    deletePostMutateAsync(deleteId).then(() => {
       setIsDeleteModalOpen(false)
     })
   }
 
-  const handleOpenDeleteModal = (id: number) => {
+  const handleOpenDeleteModal = (id: string) => {
     setDeleteId(id)
     setIsDeleteModalOpen(true)
   }
@@ -124,15 +114,15 @@ export const Categories = () => {
 
   // ========= Restore =========
   const [isRestoreModalOpen, setIsRestoreModalOpen] = useState(false)
-  const [restoreId, setRestoreId] = useState(0)
+  const [restoreId, setRestoreId] = useState<string>('')
 
   const handleMutateRestore = () => {
-    restoreCategoryMutateAsync(restoreId).then(() => {
+    restorePostMutateAsync(restoreId).then(() => {
       setIsRestoreModalOpen(false)
     })
   }
 
-  const handleOpenRestoreModal = (id: number) => {
+  const handleOpenRestoreModal = (id: string) => {
     setRestoreId(id)
     setIsRestoreModalOpen(true)
   }
@@ -149,7 +139,7 @@ export const Categories = () => {
     <main>
       <div className="flex justify-between items-center pr-4 sm:pr-6 lg:pr-8 mb-4">
         <h2 className="text-3xl font-bold tracking-tight text-gray-900">
-          {isSearching ? 'Search category ' + searchState : 'All category '} ({categories?.data?.totalCount})
+          {isSearching ? 'Search post ' + searchState : 'All post '} ({posts?.data?.totalCount})
         </h2>
         <div className="flex h-10">
           <SearchBox
@@ -189,9 +179,9 @@ export const Categories = () => {
                           #
                         </th>
                         <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
-                          Parent #
+                          Author
                         </th>
-                        <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+                        <th scope="col" className="min-w-[150px] px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
                           Title
                         </th>
                         <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
@@ -200,14 +190,17 @@ export const Categories = () => {
                         <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
                           Slug
                         </th>
-                        <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
-                          Image
+                        <th scope="col" className="min-w-[150px] px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+                          Summary
                         </th>
-                        <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+                        <th scope="col" className="min-w-[250px] px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
                           Content
                         </th>
                         <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
-                          Post
+                          Thumbnail
+                        </th>
+                        <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+                          Public
                         </th>
                         <th scope="col" className="relative py-3.5 pl-3 pr-4 sm:pr-0">
                           <span className="sr-only">Edit</span>
@@ -215,43 +208,52 @@ export const Categories = () => {
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-200">
-                      {categories?.data?.data.map((cate_detail: Category) => (
-                        <tr key={cate_detail.id}>
+                      {posts?.data?.data.map((post_detail: Post) => (
+                        <tr key={post_detail.id}>
                           <td className="py-4 pl-4 pr-3 text-sm font-semibold text-gray-900 sm:pl-0">
-                            {cate_detail.id}
+                            {post_detail.id}
                           </td>
-                          <td className="px-3 py-4 text-sm text-gray-500">{cate_detail.parentId}</td>
-                          <td className="px-3 py-4 text-sm text-gray-500">{cate_detail.title}</td>
-                          <td className="px-3 py-4 text-sm text-gray-500">{cate_detail.metaTitle}</td>
-                          <td className="px-3 py-4 text-sm text-gray-500">{cate_detail.slug}</td>
-                          <td className="px-3 py-4 text-sm text-gray-500">{cate_detail.image}</td>
-                          <td className="px-3 py-4 text-sm text-gray-500">{cate_detail.content}</td>
                           <td className="px-3 py-4 text-sm text-gray-500">
-                            <CategoryCounter
-                              category="Post"
-                              counter={111}
-                              onClick={() =>
-                                navigate({ pathname: `${import.meta.env.VITE_ADMIN_ROUTE}/posts/${cate_detail.id}` })
-                              }
-                            />
+                            {post_detail.authorId}
+                          </td>
+                          <td className="px-3 py-4 text-sm text-gray-500">
+                            {post_detail.title}
+                          </td>
+                          <td className="px-3 py-4 text-sm text-gray-500">
+                            {post_detail.metaTitle}
+                          </td>
+                          <td className="px-3 py-4 text-sm text-gray-500">
+                            {post_detail.slug}
+                          </td>
+                          <td className="px-3 py-4 text-sm text-gray-500">
+                            {post_detail.summary}
+                          </td>
+                          <td className="px-3 py-4 text-sm text-gray-500">
+                            {post_detail.content}
+                          </td>
+                          <td className="px-3 py-4 text-sm text-gray-500">
+                           <img className='w-40 h-auto' src={post_detail.thumbnail} alt="" />
+                          </td>
+                          <td className="text-center px-3 py-4 text-sm text-gray-500">
+                            {post_detail.published ? '⚪︎' : ""}
                           </td>
                           <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-center text-sm font-medium sm:pr-0">
                             <button
                               type="button"
                               onClick={() => {
-                                setEditId(cate_detail.id)
-                                handleOpenEditModal(cate_detail)
+                                setEditId(post_detail.id)
+                                handleOpenEditModal(post_detail)
                               }}
                               className="text-gray-600 hover:opacity-80"
                             >
-                              Edit<span className="sr-only">, {cate_detail.id}</span>
+                              Edit<span className="sr-only">, {post_detail.id}</span>
                             </button>
                           </td>
                           <td className="relative whitespace-nowrap py-4 pl-8 pr-8 text-center text-sm font-medium sm:pr-0">
-                            {cate_detail.deletedAt ? (
+                            {post_detail.deletedAt ? (
                               <button
                                 onClick={async () => {
-                                  handleOpenRestoreModal(cate_detail.id)
+                                  handleOpenRestoreModal(post_detail.id)
                                 }}
                                 className="w-5 h-5 text-blue-700 hover:opacity-80"
                               >
@@ -260,7 +262,7 @@ export const Categories = () => {
                             ) : (
                               <button
                                 onClick={async () => {
-                                  handleOpenDeleteModal(cate_detail.id)
+                                  handleOpenDeleteModal(post_detail.id)
                                 }}
                                 className="w-5 h-5 text-red-700 hover:opacity-80"
                               >
@@ -272,8 +274,8 @@ export const Categories = () => {
                       ))}
                     </tbody>
                   </table>
-                  {isCreateModalOpen && (
-                    <CreateTagModal
+                  {/* {isCreateModalOpen && (
+                    <CreatePostModal
                       errorMess={errorMessageCreateModalOpen}
                       onValid={async (values) => {
                         handleMutateAdd(values)
@@ -290,20 +292,20 @@ export const Categories = () => {
                       }}
                       onCancel={handleCancelEditModal}
                     />
-                  )}
+                  )} */}
                   {isDeleteModalOpen && (
                     <DeleteModal
-                      title="Delete Category"
-                      body="Are you sure you want to delete this category?"
+                      title="Delete Post"
+                      body="Are you sure you want to delete this post?"
                       actionDelete={handleMutateDelete}
                       onConfirm={handleConfirmDeleteModal}
                       onCancel={handleCancelDeleteModal}
-                    />
+                  />
                   )}
                   {isRestoreModalOpen && (
                     <RestoreModal
-                      title="Restore Category"
-                      body="Are you sure you want to restore this category?"
+                      title="Restore Post"
+                      body="Are you sure you want to restore this post?"
                       actionRestore={handleMutateRestore}
                       onConfirm={handleConfirmRestoreModal}
                       onCancel={handleCancelRestoreModal}
@@ -311,12 +313,12 @@ export const Categories = () => {
                   )}
                 </div>
               </div>
-              {categories?.data?.totalCount && categories?.data?.totalCount > 0 ? (
+              {posts?.data?.totalCount && posts?.data?.totalCount > 0 ? (
                 <div className="flex justify-end mt-5">
                   <Pagination
                     page={page}
                     setPage={setPage}
-                    totalCount={categories?.data?.totalCount}
+                    totalCount={posts?.data?.totalCount}
                     limit={import.meta.env.VITE_PAGINATION_LIMIT}
                   />
                 </div>

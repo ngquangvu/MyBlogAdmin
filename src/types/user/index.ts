@@ -1,6 +1,4 @@
-export type Post = {
-  id: string
-}
+import { Post } from "../post"
 
 export type User = {
   id: number

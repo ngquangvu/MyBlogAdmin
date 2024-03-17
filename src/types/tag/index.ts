@@ -1,10 +1,10 @@
 export type Tag = {
-  id: number;
-  title: string;
-  metaTitle: string;
-  slug: string;
-  image: string;
-  content: string;
+  id: number
+  title: string
+  metaTitle: string
+  slug: string
+  image: string
+  content: string
   createdAt: string
   updatedAt: string
   deletedAt: string | null
@@ -22,12 +22,12 @@ export type TagsResponseDataType = {
 }
 
 export type TagMutate = {
-  id?: number;
-  title?: string;
-  metaTitle?: string;
-  slug?: string;
-  image?: string;
-  content?: string;
+  id?: number
+  title?: string
+  metaTitle?: string
+  slug?: string
+  image?: string
+  content?: string
 }
 
 export const tagsQueryKey = 'tags'
