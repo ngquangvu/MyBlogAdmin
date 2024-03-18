@@ -3,26 +3,26 @@ import { Fragment, useRef } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
-import { CategoryDetailInput, CategoryDetailInputSchema, defaultValuesCategoryDetail } from '@/schema/Category'
+import { PostDetailInput, defaultValuesPostDetail, PostDetailInputSchema } from '@/schema/post'
 
 
 type Props = {
   errorMess: string
   onCancel: () => void
 
-  initialValues?: Partial<CategoryDetailInput>
-  onValid: (values: CategoryDetailInput) => Promise<void>
+  initialValues?: Partial<PostDetailInput>
+  onValid: (values: PostDetailInput) => Promise<void>
 }
 
-export default function EditCategoryModal({ errorMess, onCancel, initialValues, onValid }: Props) {
+export default function EditPostModal({ errorMess, onCancel, initialValues, onValid }: Props) {
   const cancelButtonRef = useRef(null)
   const {
     register,
     handleSubmit,
     formState: { errors }
   } = useForm({
-    defaultValues: { ...defaultValuesCategoryDetail, ...initialValues },
-    resolver: zodResolver(CategoryDetailInputSchema)
+    defaultValues: { ...defaultValuesPostDetail, ...initialValues },
+    resolver: zodResolver(PostDetailInputSchema)
   })
 
   return (
@@ -55,7 +55,7 @@ export default function EditCategoryModal({ errorMess, onCancel, initialValues, 
                 <div className="w-full sm:flex sm:items-start">
                   <div className="w-full mt-3 text-center sm:mt-0 sm:text-left">
                     <Dialog.Title as="h1" className="my-3 text-xl font-semibold leading-6 text-gray-900">
-                      Edit Category
+                      Edit post
                     </Dialog.Title>
 
                     <span className="text-red-500">{errorMess}</span>

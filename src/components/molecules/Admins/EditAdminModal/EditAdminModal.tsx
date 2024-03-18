@@ -55,7 +55,7 @@ export default function EditAdminModal({ errorMess, onCancel, initialValues, onV
               <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6">
                 <div className="w-full sm:flex sm:items-start">
                   <div className="w-full mt-3 text-center sm:mt-0 sm:text-left">
-                    <Dialog.Title as="h1" className="my-3 text-base font-semibold leading-6 text-gray-900">
+                    <Dialog.Title as="h1" className="my-3 text-xl font-semibold leading-6 text-gray-900">
                       Edit admin
                     </Dialog.Title>
 
@@ -126,7 +126,7 @@ export default function EditAdminModal({ errorMess, onCancel, initialValues, onV
                 <div className="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
                   <button
                     type="submit"
-                    className="inline-flex w-full justify-center rounded-md bg-gray-100 px-3 py-2 text-sm font-semibold text-gray-700 hover:opacity-80 sm:ml-3 sm:w-auto"
+                    className="inline-flex w-full justify-center rounded-md bg-gray-200 px-3 py-2 text-sm font-semibold text-gray-700 hover:opacity-80 sm:ml-3 sm:w-auto"
                   >
                     Apply
                   </button>

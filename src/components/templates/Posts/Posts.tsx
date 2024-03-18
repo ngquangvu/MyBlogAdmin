@@ -1,24 +1,33 @@
 import { Suspense, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-import { ArrowPathIcon, TrashIcon } from '@heroicons/react/24/outline'
+import { ArrowPathIcon, TrashIcon, ClipboardDocumentIcon } from '@heroicons/react/24/outline'
 import { useRecoilState, useRecoilValue } from 'recoil'
 
 import { Loading } from '@/components/atoms/Loading/Loading'
-import { CategoryCounter } from '@/components/molecules/CategoryCounter'
 import { DeleteModal } from '@/components/molecules/DeleteModal'
 import { SearchBox } from '@/components/molecules/SearchBox'
 import { Pagination } from '@/components/organisms/Pagination'
-import { useQueryTags } from '@/components/hooks/useQueryTag'
-import { useMutatePostCreate, useMutatePostUpdate, useMutatePostDelete, useMutatePostRestore } from '@/components/hooks/useMutatePost'
+import {
+  useMutatePostCreate,
+  useMutatePostUpdate,
+  useMutatePostDelete,
+  useMutatePostRestore
+} from '@/components/hooks/useMutatePost'
 import { RestoreModal } from '@/components/molecules/RestoreModal'
 import { PostCreateInput, PostDetailInput } from '@/schema/post'
 import { Post, PostMutate } from '@/types/post'
 import { useQueryPosts } from '@/components/hooks/useQueryPost'
 import { postsSearchQueryState, postsSearchState, postsPageState } from '@/states/postsSearchQueryState'
+import CreatePostModal from '@/components/molecules/Post/CreatePostModal/CreatePostModal'
+import { useQueryAdminUserDetail } from '@/components/hooks/useQueryAdmin'
+import EditPostModal from '@/components/molecules/Post/EditPostModal/EditPostModal'
+import { NotificationType } from '@/types/common'
+import { NotificationBadge } from '@/components/molecules/NotificationBadge'
 
 export const Posts = () => {
   const postsQuery = useRecoilValue(postsSearchQueryState)
+  const { adminUserDetail } = useQueryAdminUserDetail()
   const [searchState, setPostsSearch] = useRecoilState(postsSearchState)
   const { mutateAsync: addPostMutateAsync } = useMutatePostCreate()
   const { mutateAsync: updatePostMutateAsync } = useMutatePostUpdate()
@@ -26,8 +35,15 @@ export const Posts = () => {
   const { mutateAsync: restorePostMutateAsync } = useMutatePostRestore()
   const { posts } = useQueryPosts(postsQuery)
   const [page, setPage] = useRecoilState(postsPageState)
-
   const navigate = useNavigate()
+
+  // ========= Notification =========
+  const [showNotification, setShowNotification] = useState<boolean>(false)
+  const [notificationObj, setNotification] = useState<{
+    type: NotificationType
+    title: string
+    message: string
+  } | null>(null)
 
   // ========= Search =========
   const [isSearching, setIsSearching] = useState<boolean>(false)
@@ -181,26 +197,35 @@ export const Posts = () => {
                         <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
                           Author
                         </th>
-                        <th scope="col" className="min-w-[150px] px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+                        <th
+                          scope="col"
+                          className="min-w-[150px] px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                        >
                           Title
                         </th>
-                        <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+                        {/* <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
                           Meta title
-                        </th>
+                        </th> */}
                         <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
                           Slug
                         </th>
-                        <th scope="col" className="min-w-[150px] px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+                        <th
+                          scope="col"
+                          className="min-w-[150px] px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                        >
                           Summary
                         </th>
-                        <th scope="col" className="min-w-[250px] px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+                        <th
+                          scope="col"
+                          className="min-w-[250px] px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                        >
                           Content
                         </th>
                         <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
                           Thumbnail
                         </th>
                         <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
-                          Public
+                          Published
                         </th>
                         <th scope="col" className="relative py-3.5 pl-3 pr-4 sm:pr-0">
                           <span className="sr-only">Edit</span>
@@ -211,31 +236,34 @@ export const Posts = () => {
                       {posts?.data?.data.map((post_detail: Post) => (
                         <tr key={post_detail.id}>
                           <td className="py-4 pl-4 pr-3 text-sm font-semibold text-gray-900 sm:pl-0">
-                            {post_detail.id}
+                            <button
+                              className="rounded px-2 py-1"
+                              onClick={() => {
+                                navigator.clipboard.writeText(post_detail.id)
+                                setNotification({
+                                  type: NotificationType.SUCCESS,
+                                  title: 'Copied to clipboard',
+                                  message: post_detail.id
+                                })
+                                setShowNotification(true)
+                              }}
+                            >
+                              <ClipboardDocumentIcon className="w-5 h-5 text-gray-400" />
+                            </button>
                           </td>
-                          <td className="px-3 py-4 text-sm text-gray-500">
-                            {post_detail.authorId}
-                          </td>
-                          <td className="px-3 py-4 text-sm text-gray-500">
-                            {post_detail.title}
-                          </td>
-                          <td className="px-3 py-4 text-sm text-gray-500">
+                          <td className="px-3 py-4 text-sm text-gray-500">{post_detail.authorId}</td>
+                          <td className="px-3 py-4 text-sm text-gray-500">{post_detail.title}</td>
+                          {/* <td className="px-3 py-4 text-sm text-gray-500">
                             {post_detail.metaTitle}
-                          </td>
+                          </td> */}
+                          <td className="px-3 py-4 text-sm text-gray-500">{post_detail.slug}</td>
+                          <td className="px-3 py-4 text-sm text-gray-500">{post_detail.summary}</td>
+                          <td className="px-3 py-4 text-sm text-gray-500">{post_detail.content}</td>
                           <td className="px-3 py-4 text-sm text-gray-500">
-                            {post_detail.slug}
-                          </td>
-                          <td className="px-3 py-4 text-sm text-gray-500">
-                            {post_detail.summary}
-                          </td>
-                          <td className="px-3 py-4 text-sm text-gray-500">
-                            {post_detail.content}
-                          </td>
-                          <td className="px-3 py-4 text-sm text-gray-500">
-                           <img className='w-40 h-auto' src={post_detail.thumbnail} alt="" />
+                            <img className="w-40 h-auto" src={post_detail.thumbnail} alt={post_detail.thumbnail} />
                           </td>
                           <td className="text-center px-3 py-4 text-sm text-gray-500">
-                            {post_detail.published ? '⚪︎' : ""}
+                            {post_detail.published ? '⚪︎' : ''}
                           </td>
                           <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-center text-sm font-medium sm:pr-0">
                             <button
@@ -274,8 +302,9 @@ export const Posts = () => {
                       ))}
                     </tbody>
                   </table>
-                  {/* {isCreateModalOpen && (
+                  {isCreateModalOpen && (
                     <CreatePostModal
+                      author={adminUserDetail?.data ? adminUserDetail?.data : null}
                       errorMess={errorMessageCreateModalOpen}
                       onValid={async (values) => {
                         handleMutateAdd(values)
@@ -284,7 +313,7 @@ export const Posts = () => {
                     />
                   )}
                   {isEditModalOpen && (
-                    <EditTagModal
+                    <EditPostModal
                       errorMess={errorMessageEditModalOpen}
                       initialValues={editUser}
                       onValid={async (values) => {
@@ -292,7 +321,7 @@ export const Posts = () => {
                       }}
                       onCancel={handleCancelEditModal}
                     />
-                  )} */}
+                  )}
                   {isDeleteModalOpen && (
                     <DeleteModal
                       title="Delete Post"
@@ -300,7 +329,7 @@ export const Posts = () => {
                       actionDelete={handleMutateDelete}
                       onConfirm={handleConfirmDeleteModal}
                       onCancel={handleCancelDeleteModal}
-                  />
+                    />
                   )}
                   {isRestoreModalOpen && (
                     <RestoreModal
@@ -329,6 +358,13 @@ export const Posts = () => {
           </div>
         </Suspense>
       </div>
+      <NotificationBadge
+        show={showNotification}
+        setShow={setShowNotification}
+        type={notificationObj?.type}
+        text={notificationObj?.title}
+        message={notificationObj?.message}
+      />
     </main>
   )
 }

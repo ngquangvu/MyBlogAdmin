@@ -218,7 +218,7 @@ export const Tags = () => {
                             {tag_detail.slug}
                           </td>
                           <td className="px-3 py-4 text-sm text-gray-500">
-                            {tag_detail.image}
+                            <img className="w-10 h-auto" src={tag_detail.image} alt={tag_detail.image} />
                           </td>
                           <td className="px-3 py-4 text-sm text-gray-500">
                             {tag_detail.content}

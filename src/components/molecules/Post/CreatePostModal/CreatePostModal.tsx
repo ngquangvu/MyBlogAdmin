@@ -1,29 +1,39 @@
-import { Fragment, useRef } from 'react'
+import { Fragment, useEffect, useRef } from 'react'
 
 import { Dialog, Transition } from '@headlessui/react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
-import { CategoryDetailInput, CategoryDetailInputSchema, defaultValuesCategoryDetail } from '@/schema/Category'
+import { PostCreateInput, PostCreateInputSchema, defaultValuesPostCreate } from '@/schema/post'
+import { User } from '@/types/user'
 
 
 type Props = {
   errorMess: string
   onCancel: () => void
+  author: User | null
 
-  initialValues?: Partial<CategoryDetailInput>
-  onValid: (values: CategoryDetailInput) => Promise<void>
+  initialValues?: Partial<PostCreateInput>
+  onValid: (values: PostCreateInput) => Promise<void>
 }
 
-export default function EditCategoryModal({ errorMess, onCancel, initialValues, onValid }: Props) {
+export default function CreatePostModal({ errorMess, onCancel, author, initialValues, onValid }: Props) {
   const cancelButtonRef = useRef(null)
+  const adminMail = localStorage.getItem('admin')
+
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors }
   } = useForm({
-    defaultValues: { ...defaultValuesCategoryDetail, ...initialValues },
-    resolver: zodResolver(CategoryDetailInputSchema)
+    defaultValues: { ...defaultValuesPostCreate, ...initialValues },
+    resolver: zodResolver(PostCreateInputSchema)
   })
+
+  useEffect(() => {
+    setValue('authorId', author ? author.id : '')
+  }, [])
+
 
   return (
     <Transition.Root show={true} as={Fragment}>
@@ -55,13 +65,19 @@ export default function EditCategoryModal({ errorMess, onCancel, initialValues, 
                 <div className="w-full sm:flex sm:items-start">
                   <div className="w-full mt-3 text-center sm:mt-0 sm:text-left">
                     <Dialog.Title as="h1" className="my-3 text-xl font-semibold leading-6 text-gray-900">
-                      Edit Category
+                      Create Post
                     </Dialog.Title>
 
                     <span className="text-red-500">{errorMess}</span>
 
                     <div className="mt-5">
-                    <div className="mb-4">
+                      <div className="mb-4">
+                        <label className="block text-gray-800 leading-6 text-sm font-semibold mb-1" htmlFor="firstName">
+                        Author
+                        </label>
+                        <h3 className='w-full py-2 px-3 leading-6 mb-1'>{adminMail}</h3>
+                      </div>
+                      <div className="mb-4">
                         <label className="block text-gray-800 leading-6 text-sm font-semibold mb-2" htmlFor="firstName">
                         Title
                         </label>
@@ -99,15 +115,15 @@ export default function EditCategoryModal({ errorMess, onCancel, initialValues, 
                       </div>
                       <div className="mb-4">
                         <label className="block text-gray-800 leading-6 text-sm font-semibold mb-2" htmlFor="firstName">
-                        Image
+                        Summary
                         </label>
                         <input
-                          {...register('image')}
+                          {...register('summary')}
                           className="appearance-none border rounded w-full py-2 px-3 leading-6 mb-1"
-                          id="image"
+                          id="summary"
                           type="text"
                         />
-                        {errors.image && <span className="text-red-500 text-sm">{errors.image.message}</span>}
+                        {errors.summary && <span className="text-red-500 text-sm">{errors.summary.message}</span>}
                       </div>
                       <div className="mb-4">
                         <label className="block text-gray-800 leading-6 text-sm font-semibold mb-2" htmlFor="firstName">
@@ -121,6 +137,30 @@ export default function EditCategoryModal({ errorMess, onCancel, initialValues, 
                         />
                         {errors.content && <span className="text-red-500 text-sm">{errors.content.message}</span>}
                       </div>
+                      <div className="mb-4">
+                        <label className="block text-gray-800 leading-6 text-sm font-semibold mb-2" htmlFor="firstName">
+                        Thumbnail
+                        </label>
+                        <input
+                          {...register('thumbnail')}
+                          className="appearance-none border rounded w-full py-2 px-3 leading-6 mb-1"
+                          id="thumbnail"
+                          type="text"
+                        />
+                        {errors.thumbnail && <span className="text-red-500 text-sm">{errors.thumbnail.message}</span>}
+                      </div>
+                      <div className="mb-4">
+                        <label className="block text-gray-800 leading-6 text-sm font-semibold mb-2" htmlFor="firstName">
+                        Published
+                        </label>
+                        <input
+                          {...register('published')}
+                          className="appearance-none border rounded w-full py-2 px-3 leading-6 mb-1"
+                          id="published"
+                          type="text"
+                        />
+                        {errors.published && <span className="text-red-500 text-sm">{errors.published.message}</span>}
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -129,7 +169,7 @@ export default function EditCategoryModal({ errorMess, onCancel, initialValues, 
                     type="submit"
                     className="inline-flex w-full justify-center rounded-md bg-gray-200 px-3 py-2 text-sm font-semibold text-gray-700 hover:opacity-80 sm:ml-3 sm:w-auto"
                   >
-                    Apply
+                    Create
                   </button>
                   <button
                     type="button"
