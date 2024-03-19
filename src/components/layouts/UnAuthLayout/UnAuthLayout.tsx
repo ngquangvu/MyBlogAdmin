@@ -11,7 +11,7 @@ export const UnAuthLayout = () => {
 
   return (
     <div className="h-screen min-w-full bg-gray-200 flex justify-center items-center">
-      <div className="mb-36 rounded-lg h-fit w-5/6 max-w-[600px] mx-auto">
+      <div className="mb-[10vh] rounded-lg h-fit w-5/6 max-w-[600px] mx-auto">
         <Outlet />
       </div>
     </div>
