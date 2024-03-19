@@ -5,12 +5,8 @@ import { TrashIcon, ArrowPathIcon } from '@heroicons/react/24/outline'
 import { useRecoilState, useRecoilValue } from 'recoil'
 
 import { Loading } from '@/components/atoms/Loading/Loading'
-import { CategoryCounter } from '@/components/molecules/CategoryCounter'
-import { DeleteModal } from '@/components/molecules/DeleteModal'
 import { SearchBox } from '@/components/molecules/SearchBox'
 import { Pagination } from '@/components/organisms/Pagination'
-import CreateTagModal from '@/components/molecules/Tag/CreateTagModal/CreateTagModal'
-import EditTagModal from '@/components/molecules/Tag/EditTagModal/EditTagModal'
 import {
   categoriesSearchQueryState,
   categoriesSearchState,
@@ -25,7 +21,11 @@ import {
 import { useQueryCategories } from '@/components/hooks/useQueryCategory'
 import { CategoryMutate, Category } from '@/types/category'
 import { CategoryCreateInput, CategoryDetailInput } from '@/schema/category'
-import { RestoreModal } from '@/components/molecules/RestoreModal'
+import { CategoryCounter } from '@/components/organisms/CategoryCounter'
+import { DeleteModal } from '@/components/organisms/DeleteModal'
+import { RestoreModal } from '@/components/organisms/RestoreModal'
+import CreateTagModal from '@/components/organisms/Tag/CreateTagModal/CreateTagModal'
+import EditTagModal from '@/components/organisms/Tag/EditTagModal/EditTagModal'
 
 export const Categories = () => {
   const categoriesQuery = useRecoilValue(categoriesSearchQueryState)

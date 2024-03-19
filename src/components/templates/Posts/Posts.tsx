@@ -5,7 +5,6 @@ import { ArrowPathIcon, TrashIcon, ClipboardDocumentIcon } from '@heroicons/reac
 import { useRecoilState, useRecoilValue } from 'recoil'
 
 import { Loading } from '@/components/atoms/Loading/Loading'
-import { DeleteModal } from '@/components/molecules/DeleteModal'
 import { SearchBox } from '@/components/molecules/SearchBox'
 import { Pagination } from '@/components/organisms/Pagination'
 import {
@@ -14,16 +13,17 @@ import {
   useMutatePostDelete,
   useMutatePostRestore
 } from '@/components/hooks/useMutatePost'
-import { RestoreModal } from '@/components/molecules/RestoreModal'
 import { PostCreateInput, PostDetailInput } from '@/schema/post'
 import { Post, PostMutate } from '@/types/post'
 import { useQueryPosts } from '@/components/hooks/useQueryPost'
 import { postsSearchQueryState, postsSearchState, postsPageState } from '@/states/postsSearchQueryState'
-import CreatePostModal from '@/components/molecules/Post/CreatePostModal/CreatePostModal'
 import { useQueryAdminUserDetail } from '@/components/hooks/useQueryAdmin'
-import EditPostModal from '@/components/molecules/Post/EditPostModal/EditPostModal'
 import { NotificationType } from '@/types/common'
-import { NotificationBadge } from '@/components/molecules/NotificationBadge'
+import { DeleteModal } from '@/components/organisms/DeleteModal'
+import { NotificationBadge } from '@/components/organisms/NotificationBadge'
+import CreatePostModal from '@/components/organisms/Post/CreatePostModal/CreatePostModal'
+import EditPostModal from '@/components/organisms/Post/EditPostModal/EditPostModal'
+import { RestoreModal } from '@/components/organisms/RestoreModal'
 
 export const Posts = () => {
   const postsQuery = useRecoilValue(postsSearchQueryState)

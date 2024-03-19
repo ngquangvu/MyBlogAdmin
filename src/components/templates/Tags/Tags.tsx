@@ -5,8 +5,6 @@ import { ArrowPathIcon, TrashIcon } from '@heroicons/react/24/outline'
 import { useRecoilState, useRecoilValue } from 'recoil'
 
 import { Loading } from '@/components/atoms/Loading/Loading'
-import { CategoryCounter } from '@/components/molecules/CategoryCounter'
-import { DeleteModal } from '@/components/molecules/DeleteModal'
 import { SearchBox } from '@/components/molecules/SearchBox'
 import { Pagination } from '@/components/organisms/Pagination'
 import { useQueryTags } from '@/components/hooks/useQueryTag'
@@ -14,9 +12,11 @@ import { tagsPageState, tagsSearchQueryState, tagsSearchState } from '@/states'
 import { TagCreateInput, TagDetailInput } from '@/schema/tag'
 import { useMutateTagCreate, useMutateTagDelete, useMutateTagRestore, useMutateTagUpdate } from '@/components/hooks/useMutateTag'
 import { Tag, TagMutate } from '@/types/tag'
-import CreateTagModal from '@/components/molecules/Tag/CreateTagModal/CreateTagModal'
-import EditTagModal from '@/components/molecules/Tag/EditTagModal/EditTagModal'
-import { RestoreModal } from '@/components/molecules/RestoreModal'
+import { CategoryCounter } from '@/components/organisms/CategoryCounter'
+import { DeleteModal } from '@/components/organisms/DeleteModal'
+import { RestoreModal } from '@/components/organisms/RestoreModal'
+import CreateTagModal from '@/components/organisms/Tag/CreateTagModal/CreateTagModal'
+import EditTagModal from '@/components/organisms/Tag/EditTagModal/EditTagModal'
 
 export const Tags = () => {
   const tagsQuery = useRecoilValue(tagsSearchQueryState)
