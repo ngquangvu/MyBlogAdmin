@@ -24,8 +24,8 @@ import { CategoryCreateInput, CategoryDetailInput } from '@/schema/category'
 import { CategoryCounter } from '@/components/organisms/CategoryCounter'
 import { DeleteModal } from '@/components/organisms/DeleteModal'
 import { RestoreModal } from '@/components/organisms/RestoreModal'
-import CreateTagModal from '@/components/organisms/Tag/CreateTagModal/CreateTagModal'
-import EditTagModal from '@/components/organisms/Tag/EditTagModal/EditTagModal'
+import CreateCategoryModal from '@/components/organisms/Category/CreateCategoryModal/CreateCategoryModal'
+import EditCategoryModal from '@/components/organisms/Category/EditCategoryModal/EditCategoryModal'
 
 export const Categories = () => {
   const categoriesQuery = useRecoilValue(categoriesSearchQueryState)
@@ -275,7 +275,7 @@ export const Categories = () => {
                     </tbody>
                   </table>
                   {isCreateModalOpen && (
-                    <CreateTagModal
+                    <CreateCategoryModal
                       errorMess={errorMessageCreateModalOpen}
                       onValid={async (values) => {
                         handleMutateAdd(values)
@@ -284,7 +284,7 @@ export const Categories = () => {
                     />
                   )}
                   {isEditModalOpen && (
-                    <EditTagModal
+                    <EditCategoryModal
                       errorMess={errorMessageEditModalOpen}
                       initialValues={editUser}
                       onValid={async (values) => {
