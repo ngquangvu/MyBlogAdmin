@@ -35,7 +35,7 @@ export default function CreateUserModal({ errorMess, onCancel, initialValues, on
           <form onSubmit={handleSubmit(onValid)}>
             <div className="w-full sm:flex sm:items-start">
               <div className="w-full mt-3 text-center sm:mt-0 sm:text-left">
-                <h2 className="text-lg font-semibold mt-2 mb-8">Create User</h2>
+                <h2 className="text-gray-900 dark:text-white text-lg font-semibold mt-2 mb-8">Create User</h2>
 
                 <span className="text-red-500">{errorMess}</span>
 

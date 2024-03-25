@@ -12,10 +12,10 @@ export const LoginTemplate = () => {
 
   return (
     <>
-      <div className="bg-white shadow-md rounded-md px-8 pt-6 pb-8 mb-4 flex flex-col">
+      <div className="bg-white dark:bg-gray-700 shadow-md rounded-md px-8 pt-6 pb-8 mb-4 flex flex-col">
         <img className="h-8 w-auto mt-3" src={logo} alt="logo" />
 
-        <h1 className="text-lg leading-8 font-semibold mt-5 mb-3">Login</h1>
+        <h1 className="text-lg leading-8 font-semibold text-gray-900 dark:text-white mt-5 mb-3">Login</h1>
 
         {error && <span className="text-red-500">{error}</span>}
 

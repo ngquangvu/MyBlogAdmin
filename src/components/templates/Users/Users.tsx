@@ -143,7 +143,7 @@ export const Users = () => {
   return (
     <main>
       <div className="flex justify-between items-center pr-4 sm:pr-6 lg:pr-8 mb-4">
-        <h2 className="text-3xl font-bold tracking-tight text-gray-900">
+        <h2 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white">
           {isSearching ? 'Search user ' + searchState : 'All user '} ({users?.data?.totalCount})
         </h2>
         <div className="flex h-10">
@@ -162,7 +162,7 @@ export const Users = () => {
             onClick={async () => {
               handleOpenCreateModal()
             }}
-            className="ml-3 block rounded-md bg-gray-200 hover:opacity-80 px-3 py-2 text-center text-sm font-semibold text-gray-700 "
+            className="ml-3 block rounded-md bg-gray-200 dark:bg-gray-600 hover:opacity-80 px-3 py-2 text-center text-sm font-semibold text-gray-700  dark:text-white"
           >
             Create
           </button>
@@ -174,19 +174,19 @@ export const Users = () => {
             <div className="mt-8 flow-root">
               <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
                 <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
-                  <table className="min-w-full divide-y divide-gray-300">
+                  <table className="min-w-full divide-y divide-gray-300 dark:divide-gray-600">
                     <thead>
                       <tr>
                         <th
                           scope="col"
-                          className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0"
+                          className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 dark:text-white sm:pl-0"
                         >
                           Mail
                         </th>
-                        <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+                        <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-white">
                           Name
                         </th>
-                        <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+                        <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-white">
                           Post
                         </th>
                         <th scope="col" className="relative py-3.5 pl-3 pr-4 sm:pr-0">
@@ -194,16 +194,16 @@ export const Users = () => {
                         </th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-gray-200">
+                    <tbody className="divide-y divide-gray-200 dark:divide-gray-600">
                       {users?.data?.data.map((user_detail: User) => (
                         <tr key={user_detail.id}>
-                          <td className="py-4 pl-4 pr-3 text-sm font-semibold text-gray-900 sm:pl-0">
+                          <td className="py-4 pl-4 pr-3 text-sm font-semibold text-gray-900 dark:text-white sm:pl-0">
                             {user_detail.email}
                           </td>
-                          <td className="px-3 py-4 text-sm text-gray-500">
+                          <td className="px-3 py-4 text-sm text-gray-500 dark:text-white">
                             {user_detail.firstName + ' ' + user_detail.lastName}
                           </td>
-                          <td className="px-3 py-4 text-sm text-gray-500">
+                          <td className="px-3 py-4 text-sm text-gray-500 dark:text-white">
                             <CategoryCounter
                               category="Post"
                               counter={user_detail.posts.length}
@@ -217,7 +217,7 @@ export const Users = () => {
                                 setEditId(user_detail.id)
                                 handleOpenEditModal(user_detail)
                               }}
-                              className="text-gray-600 hover:opacity-80"
+                              className="text-gray-600 dark:text-white hover:opacity-80"
                             >
                               Edit<span className="sr-only">, {user_detail.email}</span>
                             </button>

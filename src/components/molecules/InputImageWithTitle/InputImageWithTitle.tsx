@@ -26,11 +26,11 @@ export const InputImageWithTitle = ({
   return (
     <div className={`${className}`}>
       <h3 {...labelProps}>
-        <span role="heading" className={`text-sm font-medium text-gray-700 ${isRequired ? 'required' : ''}`}>
+        <span role="heading" className={`text-sm font-medium text-gray-700 dark:text-white ${isRequired ? 'required' : ''}`}>
           {children}
         </span>
 
-        <div className="block w-full my-1 p-2.5 bg-gray-50 border border-gray-300 rounded-md">
+        <div className="block w-full my-1 p-2.5 bg-gray-50 dark:bg-gray-700  border border-gray-300 dark:border-gray-600 rounded-md">
           <div className='flex space-x-4'>
           <img src={imageSrc} className="w-24 h-auto p-1" alt="" />
           </div>
