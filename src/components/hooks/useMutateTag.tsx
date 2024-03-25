@@ -9,13 +9,23 @@ import type { UseMutationResult } from 'react-query'
 import axiosInstance from '@/config/axiosInstance'
 import { Tag, TagMutate, tagQueryKey, tagsQueryKey } from '@/types/tag'
 import { TagCreateInput } from '@/schema/tag'
+import { getFileNameAndExtension } from '@/utils'
 
 const updateTag = async (formData: TagMutate): Promise<ResponseDataType & { data: Tag | null }> => {
-  const copyData = { ...formData }
+  const copyData = { ...formData, image: formData.image && formData.image[0]}
+  const config =
+    copyData.image !== null
+      ? {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        }
+      : {}
   delete copyData.id
   const { data } = await axiosInstance.patch<Promise<ResponseDataType & { data: Tag | null }>>(
     `/admin/tags/${formData.id}`,
-    copyData
+    copyData,
+    config
   )
   return data
 }
@@ -99,4 +109,3 @@ export const useMutateTagRestore = (): UseMutationResult<
     }
   })
 }
-

@@ -1,0 +1,59 @@
+import type { ComponentPropsWithoutRef, ComponentPropsWithRef } from 'react'
+import { Textbox } from '@/components/atoms/Textbox'
+import { useId, useState } from 'react'
+
+type Props = {
+  className?: string
+  labelProps: Omit<ComponentPropsWithoutRef<'h3'>, 'htmlFor' | 'className'>
+  textboxProps: Omit<ComponentPropsWithRef<'input'>, 'id'>
+  imageSrc?: string
+  description?: string
+  error?: string
+  isRequired?: boolean
+}
+
+export const InputImageWithTitle = ({
+  className = '',
+  labelProps: { children, ...labelProps },
+  textboxProps,
+  imageSrc,
+  description,
+  error,
+  isRequired = false
+}: Props) => {
+  const [newImage, setNewImage] = useState(null)
+
+  return (
+    <div className={`${className}`}>
+      <h3 {...labelProps}>
+        <span role="heading" className={`text-sm font-medium text-gray-700 ${isRequired ? 'required' : ''}`}>
+          {children}
+        </span>
+
+        <div className="block w-full my-1 p-2.5 bg-gray-50 border border-gray-300 rounded-md">
+          <div className='flex space-x-4'>
+          <img src={imageSrc} className="w-24 h-auto p-1" alt="" />
+          </div>
+          <Textbox
+            {...textboxProps}
+            type="file"
+            accept="image/png, image/jpeg, image/jpg"
+            className={`${textboxProps?.className} w-full border-none bg-inherit hover:cursor-pointer p-0.5 m-0 mt-2`}
+          />
+        </div>
+      </h3>
+      <div className="mt-2">
+        {description && (
+          <p id={useId()} className="text-sm text-gray-500">
+            {description}
+          </p>
+        )}
+        {error && (
+          <p id={useId()} className="text-sm text-red-600">
+            {error}
+          </p>
+        )}
+      </div>
+    </div>
+  )
+}

@@ -27,6 +27,7 @@ export type TagMutate = {
   metaTitle?: string
   slug?: string
   image?: string
+  // imageFile?: string
   content?: string
 }
 

@@ -7,6 +7,7 @@ import { CancelButton } from '@/components/atoms/CancelButton'
 import { TextboxWithTitle } from '@/components/molecules/TextboxWithTitle'
 import { Modal } from '@/components/molecules/Modal'
 import { TagDetailInput, defaultValuesTagDetail, TagDetailInputSchema } from '@/schema/tag'
+import { InputImageWithTitle } from '@/components/molecules/InputImageWithTitle'
 
 type Props = {
   errorMess: string
@@ -18,10 +19,12 @@ type Props = {
 
 export default function EditTagModal({ errorMess, onCancel, initialValues, onValid }: Props) {
   const [isClose, setIsClose] = useState(false)
+  const [imageSrc, setImageSrc] = useState(initialValues?.image)
 
   const {
     register,
     handleSubmit,
+    getValues,
     formState: { errors }
   } = useForm({
     defaultValues: { ...defaultValuesTagDetail, ...initialValues },
@@ -69,12 +72,13 @@ export default function EditTagModal({ errorMess, onCancel, initialValues, onVal
                     isRequired
                   />
 
-                  <TextboxWithTitle
+                  <InputImageWithTitle
                     className="mb-4"
                     labelProps={{
                       children: <p>Image</p>
                     }}
-                    textboxProps={{ ...register('image'), type: 'text' }}
+                    imageSrc={imageSrc}
+                    textboxProps={{ ...register('image'), type: 'file' }}
                     error={errors.image?.message?.toString()}
                     isRequired
                   />

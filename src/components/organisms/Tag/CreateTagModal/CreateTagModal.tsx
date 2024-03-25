@@ -8,6 +8,7 @@ import { Button } from '@/components/atoms/Button'
 import { CancelButton } from '@/components/atoms/CancelButton'
 import { TextboxWithTitle } from '@/components/molecules/TextboxWithTitle'
 import { Modal } from '@/components/molecules/Modal'
+import { InputImageWithTitle } from '@/components/molecules/InputImageWithTitle'
 
 type Props = {
   errorMess: string
@@ -22,6 +23,7 @@ export default function CreateTagModal({ errorMess, onCancel, initialValues, onV
 
   const {
     register,
+    getValues,
     handleSubmit,
     formState: { errors }
   } = useForm({
@@ -75,7 +77,7 @@ export default function CreateTagModal({ errorMess, onCancel, initialValues, onV
                     labelProps={{
                       children: <p>Image</p>
                     }}
-                    textboxProps={{ ...register('image'), type: 'text' }}
+                    textboxProps={{ ...register('image'), type: 'file' }}
                     error={errors.image?.message}
                     isRequired
                   />
