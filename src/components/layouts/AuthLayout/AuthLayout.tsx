@@ -3,8 +3,8 @@ import { Navigate, Outlet } from 'react-router-dom'
 
 import { Loading } from '@/components/atoms/Loading'
 import { getAdminFromLocalStorage } from '@/components/hooks/useQueryAdmin'
-import { Aside } from '@/components/molecules/Aside'
-import Header from '@/components/molecules/Header/Header'
+import { Aside } from '@/components/organisms/Aside'
+import Header from '@/components/organisms/Header/Header'
 
 export const AuthLayout = () => {
   const admin = getAdminFromLocalStorage()

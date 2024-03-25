@@ -1,0 +1,52 @@
+import { z } from 'zod'
+
+const ACCEPTED_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp']
+
+export const TagCreateInputSchema = z
+  .object({
+    title: z.string().min(1, 'Title is required'),
+    metaTitle: z.string().optional(),
+    slug: z.string().min(1, 'Slug is required'),
+    // image: z.string().optional(),
+    image: z
+      .any()
+      .refine(
+        (files) => ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type),
+        'Only jpg, jpeg, png and webp formats are supported'
+      ),
+    content: z.string().optional(),
+  })
+
+export type TagCreateInput = z.infer<typeof TagCreateInputSchema>
+
+export const TagDetailInputSchema: any = z
+  .object({
+    title: z.string().min(1, 'Title is required'),
+    metaTitle: z.string().optional(),
+    slug: z.string().min(1, 'Slug is required'),
+    image: z
+      .any()
+      .refine(
+        (files) => ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type),
+        'Only jpg, jpeg, png and webp formats are supported'
+      ).optional(),
+    content: z.string().optional(),
+  })
+
+export type TagDetailInput = z.infer<typeof TagDetailInputSchema>
+
+export const defaultValuesTagDetail: TagDetailInput = {
+  title: '',
+  metaTitle: '',
+  slug: '',
+  image: '',
+  content: ''
+}
+
+export const defaultValuesTagCreate: TagCreateInput = {
+  title: '',
+  metaTitle: '',
+  slug: '',
+  image: '',
+  content: ''
+}

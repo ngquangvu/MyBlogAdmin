@@ -6,6 +6,8 @@ import { useForm } from 'react-hook-form'
 import type { LoginInput } from '@/types/login'
 
 import { LoginInputSchema } from '@/types/login'
+import { TextboxWithTitle } from '@/components/molecules/TextboxWithTitle'
+import { Button } from '@/components/atoms/Button'
 
 type Props = {
   initialValues?: Partial<LoginInput>
@@ -29,40 +31,28 @@ export const LoginForm = memo(({ initialValues, onValid }: Props) => {
 
   return (
     <form className="mt-4 grid grid-cols-1 gap-y-3 sm:gap-y-5" onSubmit={handleSubmit(onValid)}>
-      <div>
-        <label className="block text-gray-800 leading-6 text-sm font-semibold mb-2" htmlFor="email">
-          Mail
-        </label>
-        <input
-          {...register('email')}
-          className="appearance-none border rounded w-full py-2 px-3 leading-6 mb-1 "
-          id="email"
-          type="text"
-          placeholder="example@mail.com"
-        />
-        {errors.email && <span className="text-red-500">{errors.email.message}</span>}
-      </div>
-      <div className="mb-6">
-        <label className="block text-gray-800 leading-6 text-sm font-semibold mb-2" htmlFor="password">
-          Password
-        </label>
-        <input
-          {...register('password')}
-          className="appearance-none border rounded w-full py-2 px-3 leading-6 mb-1"
-          id="password"
-          type="password"
-          placeholder="**********"
-        />
-        {errors.password && <span className="text-red-500">{errors.password.message}</span>}
-      </div>
+      <TextboxWithTitle
+        className=""
+        labelProps={{
+          children: <p>Mail</p>
+        }}
+        textboxProps={register('email')}
+        error={errors.email?.message}
+        isRequired
+      />
+      <TextboxWithTitle
+        className=""
+        labelProps={{
+          children: <p>Password</p>
+        }}
+        textboxProps={{ ...register('password'), type: 'password', placeholder: '*********' }}
+        error={errors.password?.message}
+        isRequired
+      />
       <div className="flex items-center justify-end">
-        <button
-          disabled={isSubmitting}
-          className=" text-gray-800 bg-gray-100 hover:opacity-80 leading-6 text-sm font-semibold py-2 px-4 rounded"
-          type="submit"
-        >
+        <Button disabled={isSubmitting}  type="submit">
           Login
-        </button>
+        </Button>
       </div>
     </form>
   )

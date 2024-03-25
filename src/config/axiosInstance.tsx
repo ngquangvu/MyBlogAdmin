@@ -8,7 +8,7 @@ const axiosInstance = axios.create({
 })
 
 axiosInstance.interceptors.response.use((response) => {
-  if (response.data.statusCode === 401) {
+  if (response.data?.status === 401 && response.data?.path && !response.data?.path.includes('login')) {
     return new Promise((resolve, reject) => {
       axios
         .get('/admin/authentication/refresh', {
@@ -17,7 +17,7 @@ axiosInstance.interceptors.response.use((response) => {
           withCredentials: true
         })
         .then(({ data }) => {
-          if (data.statusCode === 401) {
+          if (data.status === 401) {
             removeAdminFromLocalStorage()
           }
           location.reload()

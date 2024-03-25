@@ -6,13 +6,16 @@ import type { ResponseDataType } from '@/types/common'
 import { setToLocalStorage } from '@/components/hooks/useQueryUser'
 import axiosInstance from '@/config/axiosInstance'
 import { adminsQueryKey, type AdminsSearchQuery, type AdminsResponseDataType, adminQueryKey } from '@/types/admin'
+import { User, userQueryKey } from '@/types/user'
 
 export const setAdminToLocalStorage = (admin: Admin | null) => {
   setToLocalStorage('admin', `${admin?.email}`)
+  setToLocalStorage('admin_id', `${admin?.id}`)
 }
 
 export const removeAdminFromLocalStorage = () => {
   localStorage.removeItem('admin')
+  localStorage.removeItem('admin_id')
 }
 
 export const getAdminFromLocalStorage = (): string | null => {
@@ -59,4 +62,16 @@ export const useQueryAdminDetail = (adminId: string) => {
   const { data: adminDetail, remove } = useQuery([adminQueryKey, adminId], () => getAdminDetail(adminId))
 
   return { adminDetail, remove }
+}
+
+const getAdminUserDetail = async (): Promise<ResponseDataType & { data: User | null }> => {
+  const { data } = await axiosInstance.get<ResponseDataType & { data: User | null }>(`/admin/admins/user`)
+
+  return data
+}
+
+export const useQueryAdminUserDetail = () => {
+  const { data: adminUserDetail, refetch } = useQuery([userQueryKey], () => getAdminUserDetail())
+
+  return { adminUserDetail, refetch }
 }

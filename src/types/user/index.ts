@@ -1,9 +1,7 @@
-export type Post = {
-  id: string
-}
+import { Post } from "../post"
 
 export type User = {
-  id: number
+  id: string
   firstName: string
   lastName: string
   email: string
@@ -25,7 +23,7 @@ export type UsersResponseDataType = {
 }
 
 export type UserMutate = {
-  id?: number
+  id?: string
   firstName?: string
   lastName?: string
   email?: string

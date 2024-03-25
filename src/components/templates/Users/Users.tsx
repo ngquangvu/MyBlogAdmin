@@ -1,22 +1,23 @@
 import { Suspense, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-import { TrashIcon } from '@heroicons/react/24/outline'
+import { ArrowPathIcon, TrashIcon } from '@heroicons/react/24/outline'
 import { useRecoilState, useRecoilValue } from 'recoil'
 
 import type { UserCreateInput, UserDetailInput } from '@/schema/user'
 import type { User, UserMutate } from '@/types/user'
 
 import { Loading } from '@/components/atoms/Loading/Loading'
-import { useMutateUserCreate, useMutateUserDelete, useMutateUserUpdate } from '@/components/hooks/useMutateUser'
+import { useMutateUserCreate, useMutateUserDelete, useMutateUserRestore, useMutateUserUpdate } from '@/components/hooks/useMutateUser'
 import { useQueryUsers } from '@/components/hooks/useQueryUser'
-import { CategoryCounter } from '@/components/molecules/CategoryCounter'
-import { DeleteModal } from '@/components/molecules/DeleteModal'
 import { SearchBox } from '@/components/molecules/SearchBox'
-import CreateUserModal from '@/components/molecules/Users/CreateUserModal/CreateUserModal'
-import EditUserModal from '@/components/molecules/Users/EditUserModal/EditUserModal'
 import { Pagination } from '@/components/organisms/Pagination'
 import { usersPageState, usersSearchQueryState, usersSearchState } from '@/states'
+import { CategoryCounter } from '@/components/organisms/CategoryCounter'
+import { DeleteModal } from '@/components/organisms/DeleteModal'
+import { RestoreModal } from '@/components/organisms/RestoreModal'
+import CreateUserModal from '@/components/organisms/Users/CreateUserModal/CreateUserModal'
+import EditUserModal from '@/components/organisms/Users/EditUserModal/EditUserModal'
 
 export const Users = () => {
   const usersQuery = useRecoilValue(usersSearchQueryState)
@@ -24,6 +25,7 @@ export const Users = () => {
   const { mutateAsync: addUserMutateAsync } = useMutateUserCreate()
   const { mutateAsync: updateUserMutateAsync } = useMutateUserUpdate()
   const { mutateAsync: deleteUserMutateAsync } = useMutateUserDelete()
+  const { mutateAsync: restoreUserMutateAsync } = useMutateUserRestore()
   const { users } = useQueryUsers(usersQuery)
   const [page, setPage] = useRecoilState(usersPageState)
 
@@ -115,6 +117,29 @@ export const Users = () => {
     setIsDeleteModalOpen(false)
   }
 
+  // ========= Restore =========
+  const [isRestoreModalOpen, setIsRestoreModalOpen] = useState(false)
+  const [restoreId, setRestoreId] = useState(0)
+
+  const handleMutateRestore = () => {
+    restoreUserMutateAsync(restoreId).then(() => {
+      setIsRestoreModalOpen(false)
+    })
+  }
+
+  const handleOpenRestoreModal = (id: number) => {
+    setRestoreId(id)
+    setIsRestoreModalOpen(true)
+  }
+
+  const handleConfirmRestoreModal = () => {
+    setIsRestoreModalOpen(false)
+  }
+
+  const handleCancelRestoreModal = () => {
+    setIsRestoreModalOpen(false)
+  }
+
   return (
     <main>
       <div className="flex justify-between items-center pr-4 sm:pr-6 lg:pr-8 mb-4">
@@ -198,14 +223,25 @@ export const Users = () => {
                             </button>
                           </td>
                           <td className="relative whitespace-nowrap py-4 pl-8 pr-8 text-center text-sm font-medium sm:pr-0">
-                            <button
-                              onClick={async () => {
-                                handleOpenDeleteModal(user_detail.id)
-                              }}
-                              className="w-5 h-5 text-red-700 hover:opacity-80"
-                            >
-                              <TrashIcon className="w-5 h-5" />
-                            </button>
+                            {user_detail.deletedAt ? (
+                              <button
+                                onClick={async () => {
+                                  handleOpenRestoreModal(user_detail.id)
+                                }}
+                                className="w-5 h-5 text-blue-700 hover:opacity-80"
+                              >
+                                <ArrowPathIcon className="w-5 h-5" />
+                              </button>
+                            ) : (
+                              <button
+                                onClick={async () => {
+                                  handleOpenDeleteModal(user_detail.id)
+                                }}
+                                className="w-5 h-5 text-red-700 hover:opacity-80"
+                              >
+                                <TrashIcon className="w-5 h-5" />
+                              </button>
+                            )}
                           </td>
                         </tr>
                       ))}
@@ -237,6 +273,15 @@ export const Users = () => {
                       actionDelete={handleMutateDelete}
                       onConfirm={handleConfirmDeleteModal}
                       onCancel={handleCancelDeleteModal}
+                  />
+                  )}
+                  {isRestoreModalOpen && (
+                    <RestoreModal
+                      title="Restore User"
+                      body="Are you sure you want to restore this user?"
+                      actionRestore={handleMutateRestore}
+                      onConfirm={handleConfirmRestoreModal}
+                      onCancel={handleCancelRestoreModal}
                   />
                   )}
                 </div>

@@ -4,7 +4,7 @@ export const Loading = ({ className = '' }: { className?: string }) => {
       <div role="status">
         <svg
           aria-hidden="true"
-          className="h-12 w-12 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-[#c7b752] opacity-80"
+          className="h-12 w-12 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600 opacity-80"
           viewBox="0 0 100 101"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"

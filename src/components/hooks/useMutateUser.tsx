@@ -81,3 +81,25 @@ export const useMutateUserDelete = (): UseMutationResult<
     }
   })
 }
+
+const restoreUser = async (id?: number): Promise<ResponseDataType & { data: User | null }> => {
+  const { data } = await axiosInstance.patch<ResponseDataType & { data: User | null }>(`/admin/users/restore/${id}`)
+  return data
+}
+
+export const useMutateUserRestore = (): UseMutationResult<
+  ResponseDataType & { data: User | null },
+  AxiosError,
+  number | undefined,
+  undefined
+> => {
+  const admin = getAdminFromLocalStorage()
+
+  const queryClient = useQueryClient()
+  return useMutation(restoreUser, {
+    onSuccess() {
+      queryClient.refetchQueries([admin, usersQueryKey])
+    }
+  })
+}
+
