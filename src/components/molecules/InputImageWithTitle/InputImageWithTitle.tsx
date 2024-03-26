@@ -21,8 +21,6 @@ export const InputImageWithTitle = ({
   error,
   isRequired = false
 }: Props) => {
-  const [newImage, setNewImage] = useState(null)
-
   return (
     <div className={`${className}`}>
       <h3 {...labelProps}>
