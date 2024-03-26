@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
@@ -19,7 +19,11 @@ type Props = {
 
 export default function EditTagModal({ errorMess, onCancel, initialValues, onValid }: Props) {
   const [isClose, setIsClose] = useState(false)
-  const [imageSrc, setImageSrc] = useState(initialValues?.image)
+  const [imageSrc, setImageSrc] = useState()
+
+  useEffect(() => {
+    setImageSrc(initialValues?.image)
+  }, [setImageSrc])
 
   const {
     register,
@@ -38,7 +42,7 @@ export default function EditTagModal({ errorMess, onCancel, initialValues, onVal
           <form onSubmit={handleSubmit(onValid)}>
             <div className="w-full sm:flex sm:items-start">
               <div className="w-full mt-3 text-center sm:mt-0 sm:text-left">
-                <h2 className="text-lg font-semibold mt-2 mb-8">Edit Tag</h2>
+                <h2 className="text-gray-900 dark:text-white text-lg font-semibold mt-2 mb-8">Edit Tag</h2>
 
                 <span className="text-red-500">{errorMess}</span>
 

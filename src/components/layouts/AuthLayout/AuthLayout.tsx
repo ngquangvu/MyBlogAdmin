@@ -16,7 +16,7 @@ export const AuthLayout = () => {
   return (
     <div className="w-full h-screen flex">
       <Aside />
-      <div className="w-full h-full">
+      <div className="w-full h-full bg-white dark:bg-gray-700">
         <Header />
         <div className="p-[3vw]">
           <Suspense fallback={<Loading className="" />}>

@@ -24,7 +24,7 @@ export const TextboxWithTitle = ({
       <label {...labelProps}>
         <span
           role="heading"
-          className={`text-sm font-medium text-gray-700 ${isRequired ? 'required' : ''}`}
+          className={`text-sm font-medium text-gray-700 dark:text-white ${isRequired ? 'required' : ''}`}
         >
           {children}
         </span>

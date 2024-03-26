@@ -154,7 +154,7 @@ export const Posts = () => {
   return (
     <main>
       <div className="flex justify-between items-center pr-4 sm:pr-6 lg:pr-8 mb-4">
-        <h2 className="text-3xl font-bold tracking-tight text-gray-900">
+        <h2 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white">
           {isSearching ? 'Search post ' + searchState : 'All post '} ({posts?.data?.totalCount})
         </h2>
         <div className="flex h-10">
@@ -173,7 +173,7 @@ export const Posts = () => {
             onClick={async () => {
               handleOpenCreateModal()
             }}
-            className="ml-3 block rounded-md bg-gray-200 hover:opacity-80 px-3 py-2 text-center text-sm font-semibold text-gray-700 "
+            className="ml-3 block rounded-md bg-gray-200 dark:bg-gray-600 hover:opacity-80 px-3 py-2 text-center text-sm font-semibold text-gray-700  dark:text-white"
           >
             Create
           </button>
@@ -185,46 +185,46 @@ export const Posts = () => {
             <div className="mt-8 flow-root">
               <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
                 <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
-                  <table className="min-w-full divide-y divide-gray-300">
+                  <table className="min-w-full divide-y divide-gray-300 dark:divide-gray-600">
                     <thead>
                       <tr>
                         <th
                           scope="col"
-                          className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0"
+                          className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 dark:text-white sm:pl-0"
                         >
                           #
                         </th>
-                        <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+                        <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-white">
                           Author
                         </th>
                         <th
                           scope="col"
-                          className="min-w-[150px] px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                          className="min-w-[150px] px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-white"
                         >
                           Title
                         </th>
-                        {/* <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+                        {/* <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-white">
                           Meta title
                         </th> */}
-                        <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+                        <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-white">
                           Slug
                         </th>
                         <th
                           scope="col"
-                          className="min-w-[150px] px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                          className="min-w-[150px] px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-white"
                         >
                           Summary
                         </th>
                         <th
                           scope="col"
-                          className="min-w-[250px] px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                          className="min-w-[250px] px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-white"
                         >
                           Content
                         </th>
-                        <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+                        <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-white">
                           Thumbnail
                         </th>
-                        <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+                        <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-white">
                           Published
                         </th>
                         <th scope="col" className="relative py-3.5 pl-3 pr-4 sm:pr-0">
@@ -232,10 +232,10 @@ export const Posts = () => {
                         </th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-gray-200">
+                    <tbody className="divide-y divide-gray-200 dark:divide-gray-600">
                       {posts?.data?.data.map((post_detail: Post) => (
                         <tr key={post_detail.id}>
-                          <td className="py-4 pl-4 pr-3 text-sm font-semibold text-gray-900 sm:pl-0">
+                          <td className="py-4 pl-4 pr-3 text-sm font-semibold text-gray-900 dark:text-white sm:pl-0">
                             <button
                               className="rounded px-2 py-1"
                               onClick={() => {
@@ -251,18 +251,18 @@ export const Posts = () => {
                               <ClipboardDocumentIcon className="w-5 h-5 text-gray-400" />
                             </button>
                           </td>
-                          <td className="px-3 py-4 text-sm text-gray-500">{post_detail.authorId}</td>
-                          <td className="px-3 py-4 text-sm text-gray-500">{post_detail.title}</td>
-                          {/* <td className="px-3 py-4 text-sm text-gray-500">
+                          <td className="px-3 py-4 text-sm text-gray-500 dark:text-white">{post_detail.authorId}</td>
+                          <td className="px-3 py-4 text-sm text-gray-500 dark:text-white">{post_detail.title}</td>
+                          {/* <td className="px-3 py-4 text-sm text-gray-500 dark:text-white">
                             {post_detail.metaTitle}
                           </td> */}
-                          <td className="px-3 py-4 text-sm text-gray-500">{post_detail.slug}</td>
-                          <td className="px-3 py-4 text-sm text-gray-500">{post_detail.summary}</td>
-                          <td className="px-3 py-4 text-sm text-gray-500">{post_detail.content}</td>
-                          <td className="px-3 py-4 text-sm text-gray-500">
+                          <td className="px-3 py-4 text-sm text-gray-500 dark:text-white">{post_detail.slug}</td>
+                          <td className="px-3 py-4 text-sm text-gray-500 dark:text-white">{post_detail.summary}</td>
+                          <td className="px-3 py-4 text-sm text-gray-500 dark:text-white">{post_detail.content}</td>
+                          <td className="px-3 py-4 text-sm text-gray-500 dark:text-white">
                             <img className="w-40 h-auto" src={post_detail.thumbnail} alt={post_detail.thumbnail} />
                           </td>
-                          <td className="text-center px-3 py-4 text-sm text-gray-500">
+                          <td className="text-center px-3 py-4 text-sm text-gray-500 dark:text-white">
                             {post_detail.published ? '⚪︎' : ''}
                           </td>
                           <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-center text-sm font-medium sm:pr-0">
@@ -272,7 +272,7 @@ export const Posts = () => {
                                 setEditId(post_detail.id)
                                 handleOpenEditModal(post_detail)
                               }}
-                              className="text-gray-600 hover:opacity-80"
+                              className="text-gray-600 dark:text-white hover:opacity-80"
                             >
                               Edit<span className="sr-only">, {post_detail.id}</span>
                             </button>

@@ -9,14 +9,14 @@ export const SearchBox: FC<Props> = ({ onSubmit, textboxProps }) => {
   return (
     <>
       <form onSubmit={onSubmit} className="flex justify-end items-center">
-        <input {...textboxProps} className="h-10 rounded-l-md border border-gray-200 px-3 py-2 text-sm" type="search" />
+        <input {...textboxProps} className="h-10 rounded-l-md text-gray-900 dark:text-white border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 px-3 py-2 text-sm" type="search" />
         <div>
           <button
             type="submit"
-            className="hover:opacity-80 h-10 p-2.5 bg-gray-200 text-gray-400 group relative min-w-0 flex-1 overflow-hidden text-sm font-medium text-center focus:z-10 last:rounded-r-md"
+            className="hover:opacity-80 h-10 p-2.5 bg-gray-200 dark:bg-gray-600 text-gray-400 group relative min-w-0 flex-1 overflow-hidden text-sm font-medium text-center focus:z-10 last:rounded-r-md"
           >
             <svg
-              className="h-5 w-5 text-gray-700"
+              className="h-5 w-5 text-gray-700 dark:text-gray-300"
               width="24"
               height="24"
               viewBox="0 0 24 24"

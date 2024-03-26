@@ -48,7 +48,7 @@ export const NotificationBadge: FC<Props> = ({ show, setShow = undefined, type, 
                   )}
                 </div>
                 <div className="ml-3 w-0 flex-1 pt-0.5">
-                  <h3 className="text-base font-semibold text-gray-900 mb-2">{text}</h3>
+                  <h3 className="text-base font-semibold text-gray-900 dark:text-white mb-2">{text}</h3>
                   {message && <p className="mt-1text-[1.691vh] xl:text-sm text-gray-500">{message}</p>}
                 </div>
                 {setShow && (

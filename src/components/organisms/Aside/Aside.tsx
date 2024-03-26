@@ -29,10 +29,10 @@ export const Aside = () => {
   return (
     <aside className="w-52 md:w-52 lg:w-52 xl:w-56 min-h-full">
       <div className="h-full w-52 md:w-52 lg:w-52 xl:w-56 inset-y-0 z-50 flex flex-col">
-        <div className="fixed z-[60] w-52 md:w-52 lg:w-52 xl:w-56 h-full flex flex-col gap-y-5 o border-r border-gray-200 bg-white px-7 py-4">
+        <div className="fixed z-[60] w-52 md:w-52 lg:w-52 xl:w-56 h-full flex flex-col gap-y-5 o border-r border-gray-200 bg-white dark:bg-gray-800 dark:border-gray-700 px-7 py-4">
           <div className="flex h-16 shrink-0 items-center">
             <Link className="flex items-center space-x-2" to={import.meta.env.VITE_ADMIN_ROUTE}>
-              <img className="h-7 w-auto" src={logo} alt="logo" /> <h1>My Blog</h1>
+              <img className="h-7 w-auto" src={logo} alt="logo" /> <h1 className='text-gray-900 dark:text-white'>My Blog</h1>
             </Link>
           </div>
           <nav className="flex flex-1 flex-col">
@@ -45,8 +45,8 @@ export const Aside = () => {
                         to={item.href}
                         className={classNames(
                           item.current
-                            ? 'bg-gray-100 text-gray-700'
-                            : 'text-gray-700 hover:text-gray-700 hover:bg-gray-50',
+                            ? 'bg-gray-100 text-gray-700 '
+                            : 'text-gray-700 hover:text-gray-700 dark:text-white dark:hover:text-gray-700 hover:bg-gray-50',
                           'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold'
                         )}
                       >
