@@ -37,7 +37,7 @@ export const TextboxWithTitle = ({
       </label>
       <div className='mt-2'>
         {description && (
-          <p id={useId()} className="text-sm text-gray-500">
+          <p id={useId()} className="text-sm text-gray-500 dark:text-white">
             {description}
           </p>
         )}

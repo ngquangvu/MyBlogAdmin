@@ -20,6 +20,7 @@ type Props = {
 
 export default function CreateTagModal({ errorMess, onCancel, initialValues, onValid }: Props) {
   const [isClose, setIsClose] = useState(false)
+  const [imageSrc, setImageSrc] = useState(initialValues?.image)
 
   const {
     register,
@@ -72,13 +73,14 @@ export default function CreateTagModal({ errorMess, onCancel, initialValues, onV
                     isRequired
                   />
 
-                  <TextboxWithTitle
+                  <InputImageWithTitle
                     className="mb-4"
                     labelProps={{
                       children: <p>Image</p>
                     }}
+                    imageSrc={imageSrc}
                     textboxProps={{ ...register('image'), type: 'file' }}
-                    error={errors.image?.message}
+                    error={errors.image?.message?.toString()}
                     isRequired
                   />
 
