@@ -8,6 +8,7 @@ import { CancelButton } from '@/components/atoms/CancelButton'
 import { TextboxWithTitle } from '@/components/molecules/TextboxWithTitle'
 import { Modal } from '@/components/molecules/Modal'
 import { CategoryCreateInput, CategoryCreateInputSchema } from '@/schema/category'
+import { InputImageWithTitle } from '@/components/molecules/InputImageWithTitle'
 
 type Props = {
   errorMess: string
@@ -19,6 +20,7 @@ type Props = {
 
 export default function CreateCategoryModal({ errorMess, onCancel, initialValues, onValid }: Props) {
   const [isClose, setIsClose] = useState(false)
+  const [imageSrc, setImageSrc] = useState(initialValues?.image)
 
   const {
     register,
@@ -36,7 +38,7 @@ export default function CreateCategoryModal({ errorMess, onCancel, initialValues
           <form onSubmit={handleSubmit(onValid)}>
             <div className="w-full sm:flex sm:items-start">
               <div className="w-full mt-3 text-center sm:mt-0 sm:text-left">
-                <h2 className='text-gray-900 dark:text-white text-lg font-semibold mt-2 mb-8'> Create category</h2>
+                <h2 className="text-gray-900 dark:text-white text-lg font-semibold mt-2 mb-8"> Create category</h2>
 
                 <span className="text-red-500">{errorMess}</span>
 
@@ -70,13 +72,14 @@ export default function CreateCategoryModal({ errorMess, onCancel, initialValues
                     isRequired
                   />
 
-                  <TextboxWithTitle
+                  <InputImageWithTitle
                     className="mb-4"
                     labelProps={{
                       children: <p>Image</p>
                     }}
-                    textboxProps={{ ...register('image'), type: 'text' }}
-                    error={errors.image?.message}
+                    imageSrc={imageSrc}
+                    textboxProps={{ ...register('image'), type: 'file' }}
+                    error={errors.image?.message?.toString()}
                     isRequired
                   />
 

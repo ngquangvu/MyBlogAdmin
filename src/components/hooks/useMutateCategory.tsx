@@ -11,11 +11,20 @@ import { Category, CategoryMutate, categoriesQueryKey, categoryQueryKey } from '
 import { CategoryCreateInput } from '@/schema/category'
 
 const updateCategory = async (formData: CategoryMutate): Promise<ResponseDataType & { data: Category | null }> => {
-  const copyData = { ...formData }
+  const copyData = { ...formData, image: formData.image && formData.image[0] }
+  const config =
+    copyData.image !== null
+      ? {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        }
+      : {}
   delete copyData.id
   const { data } = await axiosInstance.patch<Promise<ResponseDataType & { data: Category | null }>>(
     `/admin/categories/${formData.id}`,
-    copyData
+    copyData,
+    config
   )
   return data
 }
@@ -38,7 +47,16 @@ export const useMutateCategoryUpdate = (): UseMutationResult<
 }
 
 const createCategory = async (formData: CategoryCreateInput): Promise<ResponseDataType & { data: Category | null }> => {
-  const { data } = await axiosInstance.post<ResponseDataType & { data: Category | null }>(`/admin/categories/`, formData)
+  const copyData = { ...formData, image: formData.image && formData.image[0] }
+  const config =
+    copyData.image !== null
+      ? {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        }
+      : {}
+  const { data } = await axiosInstance.post<ResponseDataType & { data: Category | null }>(`/admin/categories/`, copyData, config)
   return data
 }
 

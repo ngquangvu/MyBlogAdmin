@@ -1,3 +1,4 @@
+import { ACCEPTED_IMAGE_TYPES } from '@/utils'
 import { z } from 'zod'
 
 export const PostCreateInputSchema = z.object({
@@ -7,7 +8,9 @@ export const PostCreateInputSchema = z.object({
   slug: z.string().optional(),
   summary: z.string().optional(),
   content: z.string().optional(),
-  thumbnail: z.string().optional(),
+  thumbnail: z
+    .any()
+    .refine((files) => ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type), 'Please input jpg, jpeg, png or webp format'),
   published: z.boolean()
 })
 
@@ -19,7 +22,7 @@ export const PostDetailInputSchema: any = z.object({
   slug: z.string().optional(),
   summary: z.string().optional(),
   content: z.string().optional(),
-  thumbnail: z.string().optional(),
+  thumbnail: z.any(),
   published: z.boolean()
 })
 

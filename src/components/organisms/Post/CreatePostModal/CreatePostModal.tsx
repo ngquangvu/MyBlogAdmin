@@ -7,6 +7,7 @@ import { Modal } from '@/components/molecules/Modal'
 import { Button } from '@/components/atoms/Button'
 import { CancelButton } from '@/components/atoms/CancelButton'
 import { TextboxWithTitle } from '@/components/molecules/TextboxWithTitle'
+import { InputImageWithTitle } from '@/components/molecules/InputImageWithTitle'
 
 type Props = {
   errorMess: string
@@ -19,6 +20,7 @@ type Props = {
 
 export default function CreatePostModal({ errorMess, onCancel, author, initialValues, onValid }: Props) {
   const [isClose, setIsClose] = useState(false)
+  const [imageSrc, setImageSrc] = useState(initialValues?.thumbnail)
   const adminMail = localStorage.getItem('admin')
 
   const {
@@ -48,10 +50,10 @@ export default function CreatePostModal({ errorMess, onCancel, author, initialVa
 
                 <div className="mt-5">
                   <div className="mb-4">
-                    <label className="block text-gray-800 leading-6 text-sm font-semibold" htmlFor="firstName">
+                    <label className="block text-gray-800 dark:text-white leading-6 text-sm font-semibold" htmlFor="firstName">
                       Author
                     </label>
-                    <h3 className="w-full py-2 px-3 leading-6 mb-1">{adminMail}</h3>
+                    <h3 className="w-full py-2 px-3 leading-6 text-gray-900 dark:text-white mb-1">{adminMail}</h3>
                   </div>
                   <TextboxWithTitle
                     className="mb-4"
@@ -102,13 +104,14 @@ export default function CreatePostModal({ errorMess, onCancel, author, initialVa
                     isRequired
                   />
 
-                  <TextboxWithTitle
+                  <InputImageWithTitle
                     className="mb-4"
                     labelProps={{
                       children: <p>Thumbnail</p>
                     }}
-                    textboxProps={{ ...register('thumbnail'), type: 'text' }}
-                    error={errors.thumbnail?.message}
+                    imageSrc={imageSrc}
+                    textboxProps={{ ...register('thumbnail'), type: 'file' }}
+                    error={errors.thumbnail?.message?.toString()}
                     isRequired
                   />
 

@@ -64,7 +64,7 @@ export default function CreateAdminModal({ errorMess, onCancel, initialValues, o
 
                     <div className="mt-5">
                       <div className="mb-4">
-                        <label className="block text-gray-800 leading-6 text-sm font-semibold mb-2" htmlFor="email">
+                        <label className="block text-gray-800 dark:text-white leading-6 text-sm font-semibold mb-2" htmlFor="email">
                           Mail
                         </label>
                         <input
@@ -76,7 +76,7 @@ export default function CreateAdminModal({ errorMess, onCancel, initialValues, o
                         {errors.email && <span className="text-red-500 text-sm">{errors.email.message}</span>}
                       </div>
                       <div className="mb-4">
-                        <label className="block text-gray-800 leading-6 text-sm font-semibold mb-2" htmlFor="password">
+                        <label className="block text-gray-800 dark:text-white leading-6 text-sm font-semibold mb-2" htmlFor="password">
                           Password
                         </label>
                         <input
@@ -89,7 +89,7 @@ export default function CreateAdminModal({ errorMess, onCancel, initialValues, o
                       </div>
                       <div className="mb-4">
                         <label
-                          className="block text-gray-800 leading-6 text-sm font-semibold mb-2"
+                          className="block text-gray-800 dark:text-white leading-6 text-sm font-semibold mb-2"
                           htmlFor="confirmPassword"
                         >
                           Password (confirm)

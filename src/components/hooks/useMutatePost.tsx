@@ -11,11 +11,19 @@ import { PostCreateInput } from '@/schema/post'
 import { Post, PostMutate, postQueryKey, postsQueryKey } from '@/types/post'
 
 const updatePost = async (formData: PostMutate): Promise<ResponseDataType & { data: Post | null }> => {
-  const copyData = { ...formData }
+  const copyData = { ...formData, thumbnail: formData.thumbnail && formData.thumbnail[0] }
+  const config =
+    copyData.thumbnail !== null
+      ? {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        }
+      : {}
   delete copyData.id
   const { data } = await axiosInstance.patch<Promise<ResponseDataType & { data: Post | null }>>(
     `/admin/posts/${formData.id}`,
-    copyData
+    copyData, config
   )
   return data
 }
@@ -38,7 +46,16 @@ export const useMutatePostUpdate = (): UseMutationResult<
 }
 
 const createPost = async (formData: PostCreateInput): Promise<ResponseDataType & { data: Post | null }> => {
-  const { data } = await axiosInstance.post<ResponseDataType & { data: Post | null }>(`/admin/posts/`, formData)
+  const copyData = { ...formData, thumbnail: formData.thumbnail && formData.thumbnail[0] }
+  const config =
+    copyData.thumbnail !== null
+      ? {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        }
+      : {}
+  const { data } = await axiosInstance.post<ResponseDataType & { data: Post | null }>(`/admin/posts/`, copyData, config)
   return data
 }
 
