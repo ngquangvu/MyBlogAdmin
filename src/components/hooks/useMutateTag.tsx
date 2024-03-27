@@ -12,7 +12,7 @@ import { TagCreateInput } from '@/schema/tag'
 import { getFileNameAndExtension } from '@/utils'
 
 const updateTag = async (formData: TagMutate): Promise<ResponseDataType & { data: Tag | null }> => {
-  const copyData = { ...formData, image: formData.image && formData.image[0]}
+  const copyData = { ...formData, image: formData.image && formData.image[0] }
   const config =
     copyData.image !== null
       ? {
@@ -48,7 +48,17 @@ export const useMutateTagUpdate = (): UseMutationResult<
 }
 
 const createTag = async (formData: TagCreateInput): Promise<ResponseDataType & { data: Tag | null }> => {
-  const { data } = await axiosInstance.post<ResponseDataType & { data: Tag | null }>(`/admin/tags/`, formData)
+  const copyData = { ...formData, image: formData.image && formData.image[0] }
+  const config =
+    copyData.image !== null
+      ? {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        }
+      : {}
+
+  const { data } = await axiosInstance.post<ResponseDataType & { data: Tag | null }>(`/admin/tags/`, copyData, config)
   return data
 }
 

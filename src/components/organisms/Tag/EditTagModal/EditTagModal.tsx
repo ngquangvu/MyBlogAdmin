@@ -19,11 +19,7 @@ type Props = {
 
 export default function EditTagModal({ errorMess, onCancel, initialValues, onValid }: Props) {
   const [isClose, setIsClose] = useState(false)
-  const [imageSrc, setImageSrc] = useState()
-
-  useEffect(() => {
-    setImageSrc(initialValues?.image)
-  }, [setImageSrc])
+  const [imageSrc, setImageSrc] = useState(initialValues?.image)
 
   const {
     register,

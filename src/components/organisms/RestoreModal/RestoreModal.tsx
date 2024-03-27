@@ -27,9 +27,9 @@ export const RestoreModal: FC<Props> = ({ title, body, actionRestore, onCancel }
                 <ArrowPathIcon className="h-6 w-6 text-blue-600" aria-hidden="true" />
               </div>
               <div className="text-center ml-6 sm:mt-0 sm:text-left">
-                <h2 className="text-lg font-semibold mb-2"> {title}</h2>
+                <h2 className="text-lg font-semibold mb-2 text-gray-900 dark:text-white"> {title}</h2>
                 <div className="">
-                  <p className="text-sm text-gray-500">{body}</p>
+                  <p className="text-sm text-gray-500 dark:text-white">{body}</p>
                 </div>
               </div>
             </div>
