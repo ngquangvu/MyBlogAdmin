@@ -1,6 +1,5 @@
+import { ACCEPTED_IMAGE_TYPES } from '@/utils'
 import { z } from 'zod'
-
-const ACCEPTED_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp']
 
 export const TagCreateInputSchema = z.object({
   title: z.string().min(1, 'Title is required'),

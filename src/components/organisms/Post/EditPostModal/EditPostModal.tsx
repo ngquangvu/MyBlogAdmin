@@ -6,6 +6,7 @@ import { CancelButton } from '@/components/atoms/CancelButton'
 import { Modal } from '@/components/molecules/Modal'
 import { TextboxWithTitle } from '@/components/molecules/TextboxWithTitle'
 import { useState } from 'react'
+import { InputImageWithTitle } from '@/components/molecules/InputImageWithTitle'
 
 type Props = {
   errorMess: string
@@ -17,6 +18,7 @@ type Props = {
 
 export default function EditPostModal({ errorMess, onCancel, initialValues, onValid }: Props) {
   const [isClose, setIsClose] = useState(false)
+  const [imageSrc, setImageSrc] = useState(initialValues?.thumbnail)
 
   const {
     register,
@@ -88,12 +90,13 @@ export default function EditPostModal({ errorMess, onCancel, initialValues, onVa
                     isRequired
                   />
 
-                  <TextboxWithTitle
+                  <InputImageWithTitle
                     className="mb-4"
                     labelProps={{
                       children: <p>Thumbnail</p>
                     }}
-                    textboxProps={{ ...register('thumbnail'), type: 'text' }}
+                    imageSrc={imageSrc}
+                    textboxProps={{ ...register('thumbnail'), type: 'file' }}
                     error={errors.thumbnail?.message?.toString()}
                     isRequired
                   />

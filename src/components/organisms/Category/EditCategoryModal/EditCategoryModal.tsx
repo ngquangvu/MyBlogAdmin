@@ -7,6 +7,7 @@ import { CancelButton } from '@/components/atoms/CancelButton'
 import { TextboxWithTitle } from '@/components/molecules/TextboxWithTitle'
 import { Modal } from '@/components/molecules/Modal'
 import { CategoryDetailInput, defaultValuesCategoryDetail, CategoryDetailInputSchema } from '@/schema/category'
+import { InputImageWithTitle } from '@/components/molecules/InputImageWithTitle'
 
 type Props = {
   errorMess: string
@@ -18,6 +19,7 @@ type Props = {
 
 export default function EditCategoryModal({ errorMess, onCancel, initialValues, onValid }: Props) {
   const [isClose, setIsClose] = useState(false)
+  const [imageSrc, setImageSrc] = useState(initialValues?.image)
 
   const {
     register,
@@ -56,7 +58,6 @@ export default function EditCategoryModal({ errorMess, onCancel, initialValues, 
                     }}
                     textboxProps={{ ...register('metaTitle'), type: 'text' }}
                     error={errors.metaTitle?.message?.toString()}
-                    isRequired
                   />
 
                   <TextboxWithTitle
@@ -69,12 +70,13 @@ export default function EditCategoryModal({ errorMess, onCancel, initialValues, 
                     isRequired
                   />
 
-                  <TextboxWithTitle
+                  <InputImageWithTitle
                     className="mb-4"
                     labelProps={{
                       children: <p>Image</p>
                     }}
-                    textboxProps={{ ...register('image'), type: 'text' }}
+                    imageSrc={imageSrc}
+                    textboxProps={{ ...register('image'), type: 'file' }}
                     error={errors.image?.message?.toString()}
                     isRequired
                   />
