@@ -317,7 +317,7 @@ export const Posts = () => {
                       errorMess={errorMessageEditModalOpen}
                       initialValues={editUser}
                       onValid={async (values) => {
-                        handleMutateEdit({ ...values, id: editId })
+                        handleMutateEdit({ ...values, id: editId, published: "false" })
                       }}
                       onCancel={handleCancelEditModal}
                     />

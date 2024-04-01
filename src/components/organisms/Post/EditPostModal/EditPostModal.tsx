@@ -7,6 +7,7 @@ import { Modal } from '@/components/molecules/Modal'
 import { TextboxWithTitle } from '@/components/molecules/TextboxWithTitle'
 import { useState } from 'react'
 import { InputImageWithTitle } from '@/components/molecules/InputImageWithTitle'
+import { SelectWithTitle } from '@/components/molecules/SelectWithTitle'
 
 type Props = {
   errorMess: string
@@ -23,9 +24,11 @@ export default function EditPostModal({ errorMess, onCancel, initialValues, onVa
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors }
   } = useForm({
     defaultValues: { ...defaultValuesPostDetail, ...initialValues },
+    mode: 'onChange',
     resolver: zodResolver(PostDetailInputSchema)
   })
 
@@ -101,12 +104,21 @@ export default function EditPostModal({ errorMess, onCancel, initialValues, onVa
                     isRequired
                   />
 
-                  <TextboxWithTitle
+                  <SelectWithTitle
                     className="mb-4"
                     labelProps={{
                       children: <p>Published</p>
                     }}
-                    textboxProps={{ ...register('published'), type: 'text' }}
+                    options={[
+                      { value: 'true', name: 'True' },
+                      { value: 'false', name: 'False' }
+                    ]}
+                    selectProps={{
+                      ...register('published'),
+                      // onChange: (e) => {
+                      //   setValue('published', true)
+                      // }
+                    }}
                     error={errors.published?.message?.toString()}
                     isRequired
                   />
