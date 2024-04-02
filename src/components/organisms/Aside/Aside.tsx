@@ -20,10 +20,10 @@ export const Aside = () => {
     { name: 'Home', href: '', icon: HomeIcon, current: pathname === import.meta.env.VITE_ADMIN_ROUTE },
     { name: 'User', href: 'users', icon: UsersIcon, current: pathname.includes('users') },
     { name: 'Post', href: 'posts', icon: ListBulletIcon, current: pathname.includes('posts') },
-    { name: 'Comment', href: 'comments', icon: ChatBubbleLeftIcon, current: pathname.includes('comments') },
+    // { name: 'Comment', href: 'comments', icon: ChatBubbleLeftIcon, current: pathname.includes('comments') },
     { name: 'Category', href: 'categories', icon: SwatchIcon, current: pathname.includes('categories') },
     { name: 'Tag', href: 'tags', icon: TagIcon, current: pathname.includes('tags') },
-    { name: 'Admin', href: 'admins', icon: ShieldCheckIcon, current: pathname.includes('admins') }
+    // { name: 'Admin', href: 'admins', icon: ShieldCheckIcon, current: pathname.includes('admins') }
   ]
 
   return (
