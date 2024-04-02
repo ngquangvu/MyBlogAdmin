@@ -11,7 +11,7 @@ export const PostCreateInputSchema = z.object({
   thumbnail: z
     .any()
     .refine((files) => ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type), 'Please input jpg, jpeg, png or webp format'),
-  published:z.string()
+  published: z.literal<boolean>(true)
 })
 
 export type PostCreateInput = z.infer<typeof PostCreateInputSchema>
@@ -23,7 +23,7 @@ export const PostDetailInputSchema: any = z.object({
   summary: z.string().optional(),
   content: z.string().optional(),
   thumbnail: z.any(),
-  published:z.string()
+  published: z.literal<boolean>(true)
 })
 
 export type PostDetailInput = z.infer<typeof PostDetailInputSchema>
@@ -36,7 +36,7 @@ export const defaultValuesPostDetail: PostDetailInput = {
   summary: '',
   content: '',
   thumbnail: '',
-  published: ''
+  published: true
 }
 
 export const defaultValuesPostCreate: PostCreateInput = {
@@ -47,5 +47,5 @@ export const defaultValuesPostCreate: PostCreateInput = {
   summary: '',
   content: '',
   thumbnail: '',
-  published: ''
+  published: true
 }
