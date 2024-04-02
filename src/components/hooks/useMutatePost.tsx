@@ -12,13 +12,14 @@ import { Post, PostMutate, postQueryKey, postsQueryKey } from '@/types/post'
 
 const updatePost = async (formData: PostMutate): Promise<ResponseDataType & { data: Post | null }> => {
   const copyData = { ...formData, thumbnail: formData.thumbnail && formData.thumbnail[0] }
-  console.log(copyData);
-  
-  const config = {
-    headers: {
-      'Content-Type': 'multipart/form-data'
-    }
-  }
+  const config =
+    copyData.thumbnail !== null
+      ? {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        }
+      : {}
   delete copyData.id
   const { data } = await axiosInstance.patch<Promise<ResponseDataType & { data: Post | null }>>(
     `/admin/posts/${formData.id}`,
