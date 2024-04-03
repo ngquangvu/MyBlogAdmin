@@ -149,15 +149,14 @@ const MenuBar = () => {
         {/* blockquote */}
         <Icon icon="fa6-solid:quote-right" className='h-4 w-4 text-gray-600 dark:text-white' />
       </button>
-      <button
+      {/* <button
         onClick={() => editor.chain().focus().setColor('#958DF1').run()}
         className={`px-2 py-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-800 ${
           editor.isActive('textStyle', { color: '#958DF1' }) ? 'is-active bg-gray-300 dark:bg-gray-600' : ''
         } `}
       >
-        {/* purple */}
         <Icon icon="fa6-solid:paintbrush" className='h-4 w-4 text-gray-600 dark:text-white' />
-      </button>
+      </button> */}
       <button className="px-2 py-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-800" onClick={() => editor.chain().focus().undo().run()} disabled={!editor.can().chain().focus().undo().run()}>
         {/* undo */}
         <Icon icon="fa6-solid:arrow-rotate-left" className='h-4 w-4 text-gray-600 dark:text-white' />
@@ -172,7 +171,7 @@ const MenuBar = () => {
 
 const extensions = [
   Color.configure({ types: [TextStyle.name, ListItem.name] }),
-  TextStyle.configure({ types: [ListItem.name] }),
+//   TextStyle.configure({ types: [ListItem.name] }),
   StarterKit.configure({
     bulletList: {
       keepMarks: true,
@@ -220,7 +219,7 @@ export const Tiptap = () => {
   return (
     <div className="bg-white text-gray-900 dark:bg-gray-600 dark:text-white rounded-md p-5">
       <EditorProvider slotBefore={<></>} extensions={extensions} content={content}>
-        <BubbleMenu className="w-full min-w-[630px] bg-white text-gray-900 dark:bg-black dark:text-white rounded-md border border-gray-500 p-1.5">
+        <BubbleMenu className="w-full min-w-[590px] bg-white text-gray-900 dark:bg-black dark:text-white rounded-md border border-gray-500 p-1.5">
           <MenuBar />
         </BubbleMenu>
       </EditorProvider>

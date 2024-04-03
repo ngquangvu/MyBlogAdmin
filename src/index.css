@@ -2,6 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
+
+/* ============= Tiptap WYSIWYG ============= */
 .tiptap {
     padding: 0.75rem;
     outline: none;
@@ -30,6 +32,10 @@
 .tiptap h5 {
     font-size: 0.75rem;
     line-height: 1.5;
+}
+
+.tiptap pre {
+    background-color: #333;
 }
 
 .tiptap ol,
