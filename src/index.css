@@ -5,8 +5,10 @@
 
 /* ============= Tiptap WYSIWYG ============= */
 .tiptap {
+    min-height: 400px;
+    outline: solid 1px #a1a1a1;
+    border-radius: 5px;
     padding: 0.75rem;
-    outline: none;
 }
 
 .tiptap h1 {

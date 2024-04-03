@@ -171,7 +171,8 @@ export const Posts = () => {
           <button
             type="button"
             onClick={async () => {
-              handleOpenCreateModal()
+              // handleOpenCreateModal()
+              navigate({ pathname: `${import.meta.env.VITE_ADMIN_ROUTE}/posts/create` })
             }}
             className="ml-3 block rounded-md bg-gray-200 dark:bg-gray-600 hover:opacity-80 px-3 py-2 text-center text-sm font-semibold text-gray-700  dark:text-white"
           >

@@ -67,7 +67,7 @@ export const Users = () => {
 
   // ========= Edit =========
   const [isEditModalOpen, setIsEditModalOpen] = useState(false)
-  const [editId, setEditId] = useState<number>()
+  const [editId, setEditId] = useState<string>()
   const [errorMessageEditModalOpen, setErrorMessageEditModalOpen] = useState('')
   const [editUser, setEditUser] = useState<UserDetailInput>()
 
@@ -96,7 +96,7 @@ export const Users = () => {
 
   // ========= Delete =========
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
-  const [deleteId, setDeleteId] = useState(0)
+  const [deleteId, setDeleteId] = useState('')
 
   const handleMutateDelete = () => {
     deleteUserMutateAsync(deleteId).then(() => {
@@ -104,7 +104,7 @@ export const Users = () => {
     })
   }
 
-  const handleOpenDeleteModal = (id: number) => {
+  const handleOpenDeleteModal = (id: string) => {
     setDeleteId(id)
     setIsDeleteModalOpen(true)
   }
@@ -119,7 +119,7 @@ export const Users = () => {
 
   // ========= Restore =========
   const [isRestoreModalOpen, setIsRestoreModalOpen] = useState(false)
-  const [restoreId, setRestoreId] = useState(0)
+  const [restoreId, setRestoreId] = useState('')
 
   const handleMutateRestore = () => {
     restoreUserMutateAsync(restoreId).then(() => {
@@ -127,7 +127,7 @@ export const Users = () => {
     })
   }
 
-  const handleOpenRestoreModal = (id: number) => {
+  const handleOpenRestoreModal = (id: string) => {
     setRestoreId(id)
     setIsRestoreModalOpen(true)
   }
@@ -162,7 +162,7 @@ export const Users = () => {
             onClick={async () => {
               handleOpenCreateModal()
             }}
-            className="ml-3 block rounded-md bg-gray-200 dark:bg-gray-600 hover:opacity-80 px-3 py-2 text-center text-sm font-semibold text-gray-700  dark:text-white"
+            className="ml-3 block rounded-md bg-gray-200 hover:opacity-80 px-3 py-2 text-center text-sm font-semibold text-gray-700 "
           >
             Create
           </button>

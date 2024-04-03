@@ -9,9 +9,6 @@ import { CancelButton } from '@/components/atoms/CancelButton'
 import { TextboxWithTitle } from '@/components/molecules/TextboxWithTitle'
 import { InputImageWithTitle } from '@/components/molecules/InputImageWithTitle'
 
-import { EditorProvider, FloatingMenu, BubbleMenu, EditorContent, useEditor } from '@tiptap/react'
-import StarterKit from '@tiptap/starter-kit'
-
 type Props = {
   errorMess: string
   onCancel: () => void
@@ -20,10 +17,6 @@ type Props = {
   initialValues?: Partial<PostCreateInput>
   onValid: (values: PostCreateInput) => Promise<void>
 }
-
-const extensions = [StarterKit]
-
-const content = '<p>Hello World!</p>'
 
 export default function CreatePostModal({ errorMess, onCancel, author, initialValues, onValid }: Props) {
   const [isClose, setIsClose] = useState(false)
@@ -43,11 +36,6 @@ export default function CreatePostModal({ errorMess, onCancel, author, initialVa
   useEffect(() => {
     setValue('authorId', author ? author.id : '')
   }, [])
-
-  const editor = useEditor({
-    extensions,
-    content
-  })
 
   return (
     <Modal
@@ -69,9 +57,6 @@ export default function CreatePostModal({ errorMess, onCancel, author, initialVa
                       Author
                     </label>
                     <h3 className="w-full py-2 px-3 leading-6 text-gray-900 dark:text-white mb-1">{adminMail}</h3>
-                  </div>
-                  <div>
-                    <EditorContent editor={editor} />
                   </div>
 
                   <TextboxWithTitle

@@ -8,6 +8,7 @@ import { TextboxWithTitle } from '@/components/molecules/TextboxWithTitle'
 import { useState } from 'react'
 import { InputImageWithTitle } from '@/components/molecules/InputImageWithTitle'
 import { SelectWithTitle } from '@/components/molecules/SelectWithTitle'
+import { Tiptap } from '@/components/molecules/Tiptap'
 
 type Props = {
   errorMess: string
@@ -25,6 +26,7 @@ export default function EditPostModal({ errorMess, onCancel, initialValues, onVa
     register,
     handleSubmit,
     setValue,
+    getValues,
     formState: { errors }
   } = useForm({
     defaultValues: { ...defaultValuesPostDetail, ...initialValues },
@@ -82,6 +84,8 @@ export default function EditPostModal({ errorMess, onCancel, initialValues, onVa
                     error={errors.summary?.message?.toString()}
                     isRequired
                   />
+
+                  <Tiptap content={getValues('content')}/>
 
                   <TextboxWithTitle
                     className="mb-4"
