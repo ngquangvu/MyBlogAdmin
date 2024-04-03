@@ -1,3 +1,80 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+/* ============= Tiptap WYSIWYG ============= */
+.tiptap {
+    min-height: 400px;
+    outline: solid 1px #a1a1a1;
+    border-radius: 5px;
+    padding: 0.75rem;
+}
+
+.tiptap h1 {
+    font-size: 2rem;
+    line-height: 1.5;
+}
+
+.tiptap h2 {
+    font-size: 1.5rem;
+    line-height: 1.5;
+}
+
+.tiptap h3 {
+    font-size: 1.25rem;
+    line-height: 1.5;
+}
+
+.tiptap h4 {
+    font-size: 1rem;
+    line-height: 1.5;
+}
+
+.tiptap h5 {
+    font-size: 0.75rem;
+    line-height: 1.5;
+}
+
+.tiptap pre {
+    background-color: #333;
+}
+
+.tiptap ol,
+.tiptap ul,
+.tiptap menu {
+  margin: 0.75rem 0;
+  padding: 0 1.75rem;
+}
+
+.tiptap ol {
+  list-style: auto;
+  margin: 0.75rem 0;
+}
+
+.tiptap ul {
+  list-style: disc;
+  margin: 0.75rem 0;
+}
+
+.tiptap li {
+  margin: 0.75rem 0;
+}
+
+.tiptap blockquote {
+    position: relative;
+    background-color: #ebebeb;
+    padding: 8px 12px;
+    margin: 0.75rem 0;
+    margin-left: 20px;
+}
+
+.tiptap blockquote::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -3px;
+    width: 4px;
+    height: 100%;
+    background-color: #777777;
+}

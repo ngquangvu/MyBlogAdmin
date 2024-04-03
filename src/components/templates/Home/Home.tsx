@@ -13,7 +13,7 @@ export const Home = () => {
   return (
     <main>
         <Suspense fallback={<Loading className="" />}>
-          <div> <Tiptap /></div>
+          <div> <Tiptap content='hahahahahawwww'/></div>
         </Suspense>
     </main>
   )

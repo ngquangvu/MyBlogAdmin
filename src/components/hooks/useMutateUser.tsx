@@ -61,7 +61,7 @@ export const useMutateUserCreate = (): UseMutationResult<
   })
 }
 
-const deleteUser = async (id?: number): Promise<ResponseDataType & { data: User | null }> => {
+const deleteUser = async (id?: string): Promise<ResponseDataType & { data: User | null }> => {
   const { data } = await axiosInstance.delete<ResponseDataType & { data: User | null }>(`/admin/users/${id}`)
   return data
 }
@@ -69,7 +69,7 @@ const deleteUser = async (id?: number): Promise<ResponseDataType & { data: User 
 export const useMutateUserDelete = (): UseMutationResult<
   ResponseDataType & { data: User | null },
   AxiosError,
-  number | undefined,
+  string | undefined,
   undefined
 > => {
   const admin = getAdminFromLocalStorage()
@@ -82,7 +82,7 @@ export const useMutateUserDelete = (): UseMutationResult<
   })
 }
 
-const restoreUser = async (id?: number): Promise<ResponseDataType & { data: User | null }> => {
+const restoreUser = async (id?: string): Promise<ResponseDataType & { data: User | null }> => {
   const { data } = await axiosInstance.patch<ResponseDataType & { data: User | null }>(`/admin/users/restore/${id}`)
   return data
 }
@@ -90,7 +90,7 @@ const restoreUser = async (id?: number): Promise<ResponseDataType & { data: User
 export const useMutateUserRestore = (): UseMutationResult<
   ResponseDataType & { data: User | null },
   AxiosError,
-  number | undefined,
+  string | undefined,
   undefined
 > => {
   const admin = getAdminFromLocalStorage()

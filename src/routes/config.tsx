@@ -7,7 +7,7 @@ import { Login } from '@/pages/Login'
 import { Users } from '@/pages/Users'
 import { Tags } from '@/pages/Tags'
 import { Categories } from '@/pages/Categories'
-import { Posts } from '@/components/templates/Posts'
+import { Posts, PostCreate } from '@/components/templates/Posts'
 
 export const RouterConfig: React.FC = () => {
   const adminRoute = import.meta.env.VITE_ADMIN_ROUTE
@@ -19,6 +19,11 @@ export const RouterConfig: React.FC = () => {
             <Route index element={<Home />} />
             <Route path="users" element={<Users />} />
             <Route path="posts" element={<Posts />} />
+            <Route index path="" element={<Navigate to={`partner`} />} />
+            <Route path="posts">
+              <Route index path="" element={<Posts/>} />
+              <Route path="create" element={<PostCreate />} />
+            </Route>
             <Route path="tags" element={<Tags />} />
             <Route path="categories" element={<Categories />} />
           </Route>
