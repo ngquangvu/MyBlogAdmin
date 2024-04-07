@@ -7,7 +7,7 @@ import { Pagination } from '@/components/organisms/Pagination'
 import { defaultValuesPostCreate, PostCreateInput, PostCreateInputSchema } from '@/schema/post'
 import { useQueryPosts } from '@/components/hooks/useQueryPost'
 import { postsSearchQueryState, postsPageState } from '@/states/postsSearchQueryState'
-import { useQueryAdminUserDetail } from '@/components/hooks/useQueryAdmin'
+import { getAdminFromLocalStorage, useQueryAdminUserDetail } from '@/components/hooks/useQueryAdmin'
 import { NotificationType } from '@/types/common'
 import { NotificationBadge } from '@/components/organisms/NotificationBadge'
 import { Button } from '@/components/atoms/Button'
@@ -21,8 +21,9 @@ import { Tiptap } from '@/components/molecules/Tiptap'
 
 export const PostCreate = () => {
   const postsQuery = useRecoilValue(postsSearchQueryState)
+  const adminEmail = getAdminFromLocalStorage()
+  const { adminUserDetail } = useQueryAdminUserDetail(adminEmail ? adminEmail : '')
   const { mutateAsync: addPostMutateAsync } = useMutatePostCreate()
-  const { adminUserDetail } = useQueryAdminUserDetail()
   const { posts } = useQueryPosts(postsQuery)
   const [page, setPage] = useRecoilState(postsPageState)
 
@@ -61,8 +62,8 @@ export const PostCreate = () => {
   })
 
   useEffect(() => {
-    setValue('authorId', adminUserDetail?.data ? adminUserDetail?.data.id : '')
-  }, [])
+    setValue('authorId', adminUserDetail?.data ? adminUserDetail.data.id : '')
+  }, [adminUserDetail])
 
   return (
     <main>

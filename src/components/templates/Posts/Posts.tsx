@@ -17,7 +17,6 @@ import { PostCreateInput, PostDetailInput } from '@/schema/post'
 import { Post, PostMutate } from '@/types/post'
 import { useQueryPosts } from '@/components/hooks/useQueryPost'
 import { postsSearchQueryState, postsSearchState, postsPageState } from '@/states/postsSearchQueryState'
-import { useQueryAdminUserDetail } from '@/components/hooks/useQueryAdmin'
 import { NotificationType } from '@/types/common'
 import { DeleteModal } from '@/components/organisms/DeleteModal'
 import { NotificationBadge } from '@/components/organisms/NotificationBadge'
@@ -27,7 +26,6 @@ import { RestoreModal } from '@/components/organisms/RestoreModal'
 
 export const Posts = () => {
   const postsQuery = useRecoilValue(postsSearchQueryState)
-  const { adminUserDetail } = useQueryAdminUserDetail()
   const [searchState, setPostsSearch] = useRecoilState(postsSearchState)
   const { mutateAsync: addPostMutateAsync } = useMutatePostCreate()
   const { mutateAsync: updatePostMutateAsync } = useMutatePostUpdate()
@@ -305,7 +303,7 @@ export const Posts = () => {
                   </table>
                   {isCreateModalOpen && (
                     <CreatePostModal
-                      author={adminUserDetail?.data ? adminUserDetail?.data : null}
+                      author={null}
                       errorMess={errorMessageCreateModalOpen}
                       onValid={async (values) => {
                         handleMutateAdd(values)
