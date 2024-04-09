@@ -257,7 +257,7 @@ export const Posts = () => {
                           </td> */}
                           <td className="px-3 py-4 text-sm text-gray-500 dark:text-white">{post_detail.slug}</td>
                           <td className="px-3 py-4 text-sm text-gray-500 dark:text-white">{post_detail.summary}</td>
-                          <td className="px-3 py-4 text-sm text-gray-500 dark:text-white">{post_detail.content}</td>
+                          <td className="px-3 py-4 text-sm text-gray-500 dark:text-white"><div dangerouslySetInnerHTML={{__html: post_detail.content}}></div></td>
                           <td className="px-3 py-4 text-sm text-gray-500 dark:text-white">
                             <img className="w-40 h-auto" src={post_detail.thumbnail} alt={post_detail.thumbnail} />
                           </td>

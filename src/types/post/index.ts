@@ -13,6 +13,22 @@ export type Post = {
   deletedAt: string | null
 }
 
+export type PostImage = {
+  id: string
+  authorId: string
+  name: string
+  originalName: string
+  sizeKb: string
+  mimeType: string
+  sizeType: string
+  width: number
+  height: number
+  createdAt: string
+  updatedAt: string
+  deletedAt: string | null
+}
+
+
 export type PostsSearchQuery = {
   page: number
   limit: number

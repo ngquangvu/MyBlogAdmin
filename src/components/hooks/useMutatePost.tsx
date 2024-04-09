@@ -8,7 +8,7 @@ import type { UseMutationResult } from 'react-query'
 
 import axiosInstance from '@/config/axiosInstance'
 import { PostCreateInput } from '@/schema/post'
-import { Post, PostMutate, postQueryKey, postsQueryKey } from '@/types/post'
+import { Post, PostImage, PostMutate, postQueryKey, postsQueryKey } from '@/types/post'
 
 const updatePost = async (formData: PostMutate): Promise<ResponseDataType & { data: Post | null }> => {
   const copyData = { ...formData, thumbnail: formData.thumbnail && formData.thumbnail[0] }
@@ -23,7 +23,8 @@ const updatePost = async (formData: PostMutate): Promise<ResponseDataType & { da
   delete copyData.id
   const { data } = await axiosInstance.patch<Promise<ResponseDataType & { data: Post | null }>>(
     `/admin/posts/${formData.id}`,
-    copyData, config
+    copyData,
+    config
   )
   return data
 }
@@ -75,6 +76,35 @@ export const useMutatePostCreate = (): UseMutationResult<
   })
 }
 
+const uploadImage = async (formData: {
+  userId: string
+  imageFile: File
+}): Promise<ResponseDataType & { data: PostImage | null }> => {
+  const config = {
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+  }
+  const { data } = await axiosInstance.post<ResponseDataType & { data: PostImage | null }>(
+    `/admin/posts/upload_image/`,
+    formData,
+    config
+  )
+  return data
+}
+
+export const useMutateUploadImage = (): UseMutationResult<
+  ResponseDataType & { data: PostImage | null },
+  AxiosError,
+  {
+    userId: string
+    imageFile: File
+  },
+  undefined
+> => {
+  return useMutation(uploadImage, {})
+}
+
 const deletePost = async (id?: string): Promise<ResponseDataType & { data: Post | null }> => {
   const { data } = await axiosInstance.delete<ResponseDataType & { data: Post | null }>(`/admin/posts/${id}`)
   return data
@@ -116,4 +146,3 @@ export const useMutatePostRestore = (): UseMutationResult<
     }
   })
 }
-
