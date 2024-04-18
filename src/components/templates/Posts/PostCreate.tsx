@@ -67,6 +67,9 @@ export const PostCreate = () => {
 
   return (
     <main>
+      <div className="flex justify-between items-center pr-4 sm:pr-6 lg:pr-8 mb-4">
+        <h2 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white"> Create Post</h2>
+      </div>
       <div className="mt-2 pb-9">
         <Suspense fallback={<Loading className="mt-20" />}>
           <div className="px-4 sm:px-6 lg:px-8">
@@ -80,11 +83,9 @@ export const PostCreate = () => {
                   >
                     <div className="w-full sm:flex sm:items-start">
                       <div className="w-full mt-3 text-center sm:mt-0 sm:text-left">
-                        <h2 className="text-gray-900 dark:text-white text-lg font-semibold mt-2 mb-8"> Create Post</h2>
-
                         <span className="text-red-500">{errorMess}</span>
 
-                        <div className="mt-5">
+                        <div className="">
                           <div className="mb-4">
                             <label
                               className="block text-gray-800 dark:text-white leading-6 text-sm font-semibold"
@@ -115,26 +116,27 @@ export const PostCreate = () => {
                             error={errors.metaTitle?.message}
                             isRequired
                           />
+                          <div className="flex w-full max-w-[600px] space-x-5">
+                            <TextboxWithTitle
+                              className="w-1/2 mb-4"
+                              labelProps={{
+                                children: <p>Slug</p>
+                              }}
+                              textboxProps={{ ...register('slug'), type: 'text' }}
+                              error={errors.slug?.message}
+                              isRequired
+                            />
 
-                          <TextboxWithTitle
-                            className="mb-4"
-                            labelProps={{
-                              children: <p>Slug</p>
-                            }}
-                            textboxProps={{ ...register('slug'), type: 'text' }}
-                            error={errors.slug?.message}
-                            isRequired
-                          />
-
-                          <TextboxWithTitle
-                            className="mb-4"
-                            labelProps={{
-                              children: <p>Summary</p>
-                            }}
-                            textboxProps={{ ...register('summary'), type: 'text' }}
-                            error={errors.summary?.message}
-                            isRequired
-                          />
+                            <TextboxWithTitle
+                              className="w-1/2 mb-4"
+                              labelProps={{
+                                children: <p>Summary</p>
+                              }}
+                              textboxProps={{ ...register('summary'), type: 'text' }}
+                              error={errors.summary?.message}
+                              isRequired
+                            />
+                          </div>
 
                           <div className="mb-4">
                             <label>
