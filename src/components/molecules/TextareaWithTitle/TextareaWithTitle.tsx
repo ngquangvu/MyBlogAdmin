@@ -1,25 +1,24 @@
 import type { ComponentPropsWithoutRef, ComponentPropsWithRef } from 'react'
-import { Textbox } from '@/components/atoms/Textbox'
-import { useId } from 'react';
+import { useId } from 'react'
+import { Textarea } from '@/components/atoms/Textarea'
 
 type Props = {
   className?: string
   labelProps: Omit<ComponentPropsWithoutRef<'label'>, 'htmlFor' | 'className'>
-  textboxProps: Omit<ComponentPropsWithRef<'input'>, 'id'>
+  textareaProps: Omit<ComponentPropsWithRef<'textarea'>, 'id'>
   description?: string
   error?: string
   isRequired?: boolean
 }
 
-export const TextboxWithTitle = ({
+export const TextareaWithTitle = ({
   className = '',
   labelProps: { children, ...labelProps },
-  textboxProps,
+  textareaProps,
   description,
   error,
   isRequired = false
 }: Props) => {
-
   return (
     <div className={`${className}`}>
       <label {...labelProps}>
@@ -30,13 +29,10 @@ export const TextboxWithTitle = ({
           {children}
         </span>
         <div className="mt-1">
-          <Textbox
-            {...textboxProps}
-            className={textboxProps?.className}
-          />
+          <Textarea {...textareaProps} className={textareaProps?.className} />
         </div>
       </label>
-      <div className='mt-2'>
+      <div className="mt-2">
         {description && (
           <p id={useId()} className="text-sm text-gray-500 dark:text-white">
             {description}

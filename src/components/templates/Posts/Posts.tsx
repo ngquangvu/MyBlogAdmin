@@ -13,8 +13,7 @@ import {
   useMutatePostDelete,
   useMutatePostRestore
 } from '@/components/hooks/useMutatePost'
-import { PostCreateInput, PostDetailInput } from '@/schema/post'
-import { Post, PostMutate } from '@/types/post'
+import { Post } from '@/types/post'
 import { useQueryPosts } from '@/components/hooks/useQueryPost'
 import { postsSearchQueryState, postsSearchState, postsPageState } from '@/states/postsSearchQueryState'
 import { NotificationType } from '@/types/common'
@@ -27,8 +26,6 @@ import { RestoreModal } from '@/components/organisms/RestoreModal'
 export const Posts = () => {
   const postsQuery = useRecoilValue(postsSearchQueryState)
   const [searchState, setPostsSearch] = useRecoilState(postsSearchState)
-  const { mutateAsync: addPostMutateAsync } = useMutatePostCreate()
-  const { mutateAsync: updatePostMutateAsync } = useMutatePostUpdate()
   const { mutateAsync: deletePostMutateAsync } = useMutatePostDelete()
   const { mutateAsync: restorePostMutateAsync } = useMutatePostRestore()
   const { posts } = useQueryPosts(postsQuery)
@@ -52,55 +49,6 @@ export const Posts = () => {
     setIsSearching(searchText !== '')
 
     setPostsSearch(searchText)
-  }
-
-  // ========= Create =========
-  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false)
-  const [errorMessageCreateModalOpen, setErrorMessageCreateModalOpen] = useState('')
-
-  const handleMutateAdd = (postInput: PostCreateInput) => {
-    addPostMutateAsync(postInput)
-      .then(() => {
-        setIsCreateModalOpen(false)
-      })
-      .catch((err) => {
-        setErrorMessageCreateModalOpen(err.response.data.message)
-      })
-  }
-
-  const handleOpenCreateModal = () => {
-    setErrorMessageCreateModalOpen('')
-    setIsCreateModalOpen(true)
-  }
-
-  const handleCancelCreateModal = () => {
-    setIsCreateModalOpen(false)
-  }
-
-  // ========= Edit =========
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false)
-  const [editId, setEditId] = useState<string>()
-  const [errorMessageEditModalOpen, setErrorMessageEditModalOpen] = useState('')
-  const [editUser, setEditUser] = useState<PostDetailInput>()
-
-  const handleMutateEdit = (postInput: PostMutate) => {
-    updatePostMutateAsync(postInput)
-      .then(() => {
-        setIsEditModalOpen(false)
-      })
-      .catch((err) => {
-        setErrorMessageEditModalOpen(err.response.data.message)
-      })
-  }
-
-  const handleOpenEditModal = (postInput: PostDetailInput) => {
-    setEditUser(postInput)
-    setErrorMessageEditModalOpen('')
-    setIsEditModalOpen(true)
-  }
-
-  const handleCancelEditModal = () => {
-    setIsEditModalOpen(false)
   }
 
   // ========= Delete =========
@@ -268,8 +216,7 @@ export const Posts = () => {
                             <button
                               type="button"
                               onClick={() => {
-                                setEditId(post_detail.id)
-                                handleOpenEditModal(post_detail)
+                                navigate({ pathname: `${import.meta.env.VITE_ADMIN_ROUTE}/posts/edit/` + post_detail.id })
                               }}
                               className="text-gray-600 dark:text-white hover:opacity-80"
                             >
@@ -301,26 +248,6 @@ export const Posts = () => {
                       ))}
                     </tbody>
                   </table>
-                  {isCreateModalOpen && (
-                    <CreatePostModal
-                      author={null}
-                      errorMess={errorMessageCreateModalOpen}
-                      onValid={async (values) => {
-                        handleMutateAdd(values)
-                      }}
-                      onCancel={handleCancelCreateModal}
-                    />
-                  )}
-                  {isEditModalOpen && (
-                    <EditPostModal
-                      errorMess={errorMessageEditModalOpen}
-                      initialValues={editUser}
-                      onValid={async (values) => {
-                        handleMutateEdit({ ...values, id: editId})
-                      }}
-                      onCancel={handleCancelEditModal}
-                    />
-                  )}
                   {isDeleteModalOpen && (
                     <DeleteModal
                       title="Delete Post"

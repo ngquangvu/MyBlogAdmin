@@ -8,6 +8,7 @@ import { Users } from '@/pages/Users'
 import { Tags } from '@/pages/Tags'
 import { Categories } from '@/pages/Categories'
 import { Posts, PostCreate } from '@/components/templates/Posts'
+import { PostEdit } from '@/components/templates/Posts/PostEdit'
 
 export const RouterConfig: React.FC = () => {
   const adminRoute = import.meta.env.VITE_ADMIN_ROUTE
@@ -23,6 +24,7 @@ export const RouterConfig: React.FC = () => {
             <Route path="posts">
               <Route index path="" element={<Posts/>} />
               <Route path="create" element={<PostCreate />} />
+              <Route path="edit/:id" element={<PostEdit />} />
             </Route>
             <Route path="tags" element={<Tags />} />
             <Route path="categories" element={<Categories />} />

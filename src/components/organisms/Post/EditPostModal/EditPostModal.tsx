@@ -85,7 +85,7 @@ export default function EditPostModal({ errorMess, onCancel, initialValues, onVa
                     isRequired
                   />
 
-                  <Tiptap content={getValues('content')}/>
+                  {/* <Tiptap content={getValues('content')}/> */}
 
                   <TextboxWithTitle
                     className="mb-4"
