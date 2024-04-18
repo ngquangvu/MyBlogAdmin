@@ -4,8 +4,8 @@ import { useRecoilState, useRecoilValue } from 'recoil'
 
 import { Loading } from '@/components/atoms/Loading/Loading'
 import { Pagination } from '@/components/organisms/Pagination'
-import { defaultValuesPostCreate, PostCreateInput, PostCreateInputSchema } from '@/schema/post'
-import { useQueryPosts } from '@/components/hooks/useQueryPost'
+import { defaultValuesPostCreate, PostCreateInput, PostCreateInputSchema, PostDetailInput } from '@/schema/post'
+import { useQueryPostDetail, useQueryPosts } from '@/components/hooks/useQueryPost'
 import { postsSearchQueryState, postsPageState } from '@/states/postsSearchQueryState'
 import { getAdminFromLocalStorage, useQueryAdminUserDetail } from '@/components/hooks/useQueryAdmin'
 import { NotificationType } from '@/types/common'
@@ -16,30 +16,21 @@ import { TextboxWithTitle } from '@/components/molecules/TextboxWithTitle'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { useMutatePostCreate } from '@/components/hooks/useMutatePost'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { Tiptap } from '@/components/molecules/Tiptap'
 import { TextareaWithTitle } from '@/components/molecules/TextareaWithTitle'
 import { SelectWithTitle } from '@/components/molecules/SelectWithTitle'
 
-export const PostCreate = () => {
-  const postsQuery = useRecoilValue(postsSearchQueryState)
+export const PostEdit = () => {
+  let { id } = useParams()
   const adminEmail = getAdminFromLocalStorage()
+  const { postDetail } = useQueryPostDetail(id ? id : '')
   const { adminUserDetail } = useQueryAdminUserDetail(adminEmail ? adminEmail : '')
   const { mutateAsync: addPostMutateAsync } = useMutatePostCreate()
-  const { posts } = useQueryPosts(postsQuery)
-  const [page, setPage] = useRecoilState(postsPageState)
-
-  // ========= Notification =========
-  const [showNotification, setShowNotification] = useState<boolean>(false)
-  const [notificationObj, setNotification] = useState<{
-    type: NotificationType
-    title: string
-    message: string
-  } | null>(null)
 
   const navigate = useNavigate()
   const [errorMess, setErrorMess] = useState('')
-  const [imageSrc, setImageSrc] = useState()
+  const [imageSrc, setImageSrc] = useState<string>()
   const adminMail = localStorage.getItem('admin')
 
   const handleMutateAdd = (postInput: PostCreateInput) => {
@@ -58,7 +49,7 @@ export const PostCreate = () => {
     setValue,
     formState: { errors }
   } = useForm({
-    defaultValues: { ...defaultValuesPostCreate },
+    defaultValues: { ...defaultValuesPostCreate, ...postDetail?.data },
     resolver: zodResolver(PostCreateInputSchema)
   })
 
@@ -68,12 +59,13 @@ export const PostCreate = () => {
 
   useEffect(() => {
     setValue('authorId', adminUserDetail?.data ? adminUserDetail.data.id : '')
+    setImageSrc(postDetail?.data ? postDetail?.data?.thumbnail : '');
   }, [adminUserDetail])
 
   return (
     <main>
       <div className="flex justify-between items-center pr-4 sm:pr-6 lg:pr-8 mb-4">
-        <h2 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white"> Create Post</h2>
+        <h2 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white"> Edit Post</h2>
       </div>
       <div className="mt-2 pb-9">
         <Suspense fallback={<Loading className="mt-20" />}>
@@ -109,7 +101,7 @@ export const PostCreate = () => {
                               children: <p>Title</p>
                             }}
                             textboxProps={{ ...register('title'), type: 'text' }}
-                            error={errors.title?.message}
+                            error={errors.title?.message?.toString()}
                             isRequired
                           />
                           <TextboxWithTitle
@@ -118,7 +110,7 @@ export const PostCreate = () => {
                               children: <p>Meta title</p>
                             }}
                             textboxProps={{ ...register('metaTitle'), type: 'text' }}
-                            error={errors.metaTitle?.message}
+                            error={errors.metaTitle?.message?.toString()}
                             isRequired
                           />
                           <div className="flex w-full max-w-[600px] space-x-5">
@@ -128,7 +120,7 @@ export const PostCreate = () => {
                                 children: <p>Slug</p>
                               }}
                               textboxProps={{ ...register('slug'), type: 'text' }}
-                              error={errors.slug?.message}
+                              error={errors.slug?.message?.toString()}
                               isRequired
                             />
 
@@ -138,7 +130,7 @@ export const PostCreate = () => {
                                 children: <p>Summary</p>
                               }}
                               textboxProps={{ ...register('summary'), type: 'text' }}
-                              error={errors.summary?.message}
+                              error={errors.summary?.message?.toString()}
                               isRequired
                             />
                           </div>
@@ -172,7 +164,7 @@ export const PostCreate = () => {
                               children: <p>Content</p>
                             }}
                             textareaProps={{ ...register('content'), rows: 10 }}
-                            error={errors.content?.message}
+                            error={errors.content?.message?.toString()}
                             isRequired
                           />
 
@@ -208,7 +200,7 @@ export const PostCreate = () => {
                       </div>
                     </div>
                     <div className="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
-                      <Button type="submit">Create</Button>
+                      <Button type="submit">Apply</Button>
                     </div>
                   </form>
                 </div>
@@ -217,13 +209,6 @@ export const PostCreate = () => {
           </div>
         </Suspense>
       </div>
-      <NotificationBadge
-        show={showNotification}
-        setShow={setShowNotification}
-        type={notificationObj?.type}
-        text={notificationObj?.title}
-        message={notificationObj?.message}
-      />
     </main>
   )
 }

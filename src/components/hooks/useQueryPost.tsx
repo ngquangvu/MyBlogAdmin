@@ -5,8 +5,7 @@ import { getAdminFromLocalStorage } from './useQueryAdmin'
 import type { ResponseDataType } from '@/types/common'
 
 import axiosInstance from '@/config/axiosInstance'
-import { Post } from '@/types/user'
-import { PostsSearchQuery, PostsResponseDataType, postsQueryKey, postQueryKey } from '@/types/post'
+import { PostsSearchQuery, PostsResponseDataType, postsQueryKey, postQueryKey, Post } from '@/types/post'
 
 const getPosts = async (
   params: PostsSearchQuery
