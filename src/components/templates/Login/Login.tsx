@@ -26,8 +26,6 @@ export const LoginTemplate = () => {
                 if (result?.statusCode != 401) {
                   navigate(import.meta.env.VITE_ADMIN_ROUTE)
                 } else {
-                  console.log(111)
-
                   setError(result?.message)
                 }
               })

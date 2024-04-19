@@ -17,6 +17,8 @@ export const PostCreateInputSchema = z.object({
 export type PostCreateInput = z.infer<typeof PostCreateInputSchema>
 
 export const PostDetailInputSchema: any = z.object({
+  id: z.string(),
+  authorId: z.string(),
   title: z.string().min(1, 'Title is required'),
   metaTitle: z.string().optional(),
   slug: z.string().optional(),
@@ -29,6 +31,7 @@ export const PostDetailInputSchema: any = z.object({
 export type PostDetailInput = z.infer<typeof PostDetailInputSchema>
 
 export const defaultValuesPostDetail: PostDetailInput = {
+  id: '',
   authorId: '',
   title: '',
   metaTitle: '',

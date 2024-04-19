@@ -1,39 +1,36 @@
 import { Suspense, useEffect, useState } from 'react'
 
-import { useRecoilState, useRecoilValue } from 'recoil'
 
 import { Loading } from '@/components/atoms/Loading/Loading'
-import { Pagination } from '@/components/organisms/Pagination'
-import { defaultValuesPostCreate, PostCreateInput, PostCreateInputSchema, PostDetailInput } from '@/schema/post'
-import { useQueryPostDetail, useQueryPosts } from '@/components/hooks/useQueryPost'
-import { postsSearchQueryState, postsPageState } from '@/states/postsSearchQueryState'
-import { getAdminFromLocalStorage, useQueryAdminUserDetail } from '@/components/hooks/useQueryAdmin'
-import { NotificationType } from '@/types/common'
-import { NotificationBadge } from '@/components/organisms/NotificationBadge'
+import {
+  defaultValuesPostCreate,
+  PostDetailInput,
+  PostDetailInputSchema
+} from '@/schema/post'
+import { useQueryPostDetail } from '@/components/hooks/useQueryPost'
+import { useQueryAdminUserDetail } from '@/components/hooks/useQueryAdmin'
 import { Button } from '@/components/atoms/Button'
 import { InputImageWithTitle } from '@/components/molecules/InputImageWithTitle'
 import { TextboxWithTitle } from '@/components/molecules/TextboxWithTitle'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
-import { useMutatePostCreate } from '@/components/hooks/useMutatePost'
+import { useMutatePostUpdate } from '@/components/hooks/useMutatePost'
 import { useNavigate, useParams } from 'react-router-dom'
-import { Tiptap } from '@/components/molecules/Tiptap'
 import { TextareaWithTitle } from '@/components/molecules/TextareaWithTitle'
 import { SelectWithTitle } from '@/components/molecules/SelectWithTitle'
 
 export const PostEdit = () => {
   let { id } = useParams()
-  const adminEmail = getAdminFromLocalStorage()
   const { postDetail } = useQueryPostDetail(id ? id : '')
-  const { adminUserDetail } = useQueryAdminUserDetail(adminEmail ? adminEmail : '')
-  const { mutateAsync: addPostMutateAsync } = useMutatePostCreate()
+  const { adminUserDetail } = useQueryAdminUserDetail()
+  const { mutateAsync: addPostMutateAsync } = useMutatePostUpdate()
 
   const navigate = useNavigate()
   const [errorMess, setErrorMess] = useState('')
   const [imageSrc, setImageSrc] = useState<string>()
   const adminMail = localStorage.getItem('admin')
 
-  const handleMutateAdd = (postInput: PostCreateInput) => {
+  const handleMutateEdit = (postInput: PostDetailInput) => {
     addPostMutateAsync(postInput)
       .then(() => {
         navigate({ pathname: `${import.meta.env.VITE_ADMIN_ROUTE}/posts` })
@@ -50,7 +47,7 @@ export const PostEdit = () => {
     formState: { errors }
   } = useForm({
     defaultValues: { ...defaultValuesPostCreate, ...postDetail?.data },
-    resolver: zodResolver(PostCreateInputSchema)
+    resolver: zodResolver(PostDetailInputSchema)
   })
 
   const handleChangePublish = (event: { target: { value: { toString: () => string } } }) => {
@@ -58,9 +55,8 @@ export const PostEdit = () => {
   }
 
   useEffect(() => {
-    setValue('authorId', adminUserDetail?.data ? adminUserDetail.data.id : '')
-    setImageSrc(postDetail?.data ? postDetail?.data?.thumbnail : '');
-  }, [adminUserDetail])
+    setImageSrc(postDetail?.data ? postDetail?.data?.thumbnail : '')
+  }, [])
 
   return (
     <main>
@@ -75,7 +71,7 @@ export const PostEdit = () => {
                 <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
                   <form
                     onSubmit={handleSubmit(async (values) => {
-                      handleMutateAdd(values)
+                      handleMutateEdit(values)
                     })}
                   >
                     <div className="w-full sm:flex sm:items-start">
@@ -94,6 +90,26 @@ export const PostEdit = () => {
                               {adminMail}
                             </h3>
                           </div>
+
+                          <TextboxWithTitle
+                            className="hidden"
+                            labelProps={{
+                              children: <p>Id</p>
+                            }}
+                            textboxProps={{ ...register('id'), type: 'text', value: postDetail?.data?.id }}
+                            error={errors.id?.message?.toString()}
+                            isRequired
+                          />
+
+                          <TextboxWithTitle
+                            className="hidden"
+                            labelProps={{
+                              children: <p>AuthorId</p>
+                            }}
+                            textboxProps={{ ...register('authorId'), type: 'text', value: adminUserDetail?.data?.id }}
+                            error={errors.authorId?.message?.toString()}
+                            isRequired
+                          />
 
                           <TextboxWithTitle
                             className="mb-4"

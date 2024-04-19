@@ -64,14 +64,15 @@ export const useQueryAdminDetail = (adminId: string) => {
   return { adminDetail, remove }
 }
 
-const getAdminUserDetail = async (email: string): Promise<ResponseDataType & { data: User | null }> => {
-  const { data } = await axiosInstance.get<ResponseDataType & { data: User | null }>(`/admin/admins/user`)
+const getAdminUserDetail = async (): Promise<ResponseDataType & { data: User | null }> => {
+  const adminEmail = getAdminFromLocalStorage()
+  const { data } = await axiosInstance.get<ResponseDataType & { data: User | null }>(`/admin/admins/user/${adminEmail}`)
 
   return data
 }
 
-export const useQueryAdminUserDetail = (email: string) => {
-  const { data: adminUserDetail, refetch } = useQuery([userQueryKey], () => getAdminUserDetail(email))
+export const useQueryAdminUserDetail = () => {
+  const { data: adminUserDetail, refetch } = useQuery([userQueryKey], () => getAdminUserDetail())
 
   return { adminUserDetail, refetch }
 }
