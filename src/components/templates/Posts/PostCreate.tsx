@@ -24,7 +24,7 @@ import { SelectWithTitle } from '@/components/molecules/SelectWithTitle'
 export const PostCreate = () => {
   const postsQuery = useRecoilValue(postsSearchQueryState)
   const adminEmail = getAdminFromLocalStorage()
-  const { adminUserDetail } = useQueryAdminUserDetail(adminEmail ? adminEmail : '')
+  const { adminUserDetail } = useQueryAdminUserDetail()
   const { mutateAsync: addPostMutateAsync } = useMutatePostCreate()
   const { posts } = useQueryPosts(postsQuery)
   const [page, setPage] = useRecoilState(postsPageState)
