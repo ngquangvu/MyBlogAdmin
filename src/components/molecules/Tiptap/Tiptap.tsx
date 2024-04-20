@@ -4,6 +4,7 @@ import TextStyle from '@tiptap/extension-text-style'
 import { BubbleMenu, EditorContent, useEditor } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import { Image } from '@tiptap/extension-image'
+import ImageResize from 'tiptap-extension-resize-image';
 import { Icon } from '@iconify/react'
 import '../../../assets/css/tiptap.css'
 import { useMutateUploadImage } from '@/components/hooks/useMutatePost'
@@ -21,16 +22,18 @@ const extensions = [
       keepAttributes: false
     }
   }),
-  Image
+  Image,
+  ImageResize
 ]
 
 type Props = {
+  userId?: string
   className?: string
   content: string
   setContent: (html: string) => void
 }
 
-export const Tiptap = ({ className = '', content, setContent }: Props) => {
+export const Tiptap = ({ userId, className = '', content, setContent }: Props) => {
   const { mutateAsync: uploadImageMutateAsync } = useMutateUploadImage()
 
   // Initialize the editor
@@ -53,7 +56,7 @@ export const Tiptap = ({ className = '', content, setContent }: Props) => {
 
   // Upload image, return image url
   const handleMutateUploadImage = (uploadFile: File): Promise<string> => {
-    return uploadImageMutateAsync({ userId: '1234', imageFile: uploadFile })
+    return uploadImageMutateAsync({ userId: userId, imageFile: uploadFile })
       .then((res) => {
         if(res.data) {
           return res.data.url;
