@@ -23,7 +23,7 @@ export const Home = () => {
             </p>
             "
             className=""
-            setContent={function (html: string): void {
+            setNewContent={function (html: string): void {
               console.log(html)
             }}
           />
