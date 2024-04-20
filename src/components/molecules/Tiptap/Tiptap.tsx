@@ -3,15 +3,17 @@ import ListItem from '@tiptap/extension-list-item'
 import TextStyle from '@tiptap/extension-text-style'
 import { BubbleMenu, EditorContent, useEditor } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
-import Image from '@tiptap/extension-image'
+import TextAlign from '@tiptap/extension-text-align'
+import { Image } from '@tiptap/extension-image'
+import ImageResize from 'tiptap-extension-resize-image'
+import Youtube from '@tiptap/extension-youtube'
+
 import { Icon } from '@iconify/react'
-import '../../../assets/css/tiptap.css'
+import TiptapIframe from './TiptapIframe'
 import { useMutateUploadImage } from '@/components/hooks/useMutatePost'
 
 const extensions = [
-  // Image,
   Color.configure({ types: [TextStyle.name, ListItem.name] }),
-  //   TextStyle.configure({ types: [ListItem.name] }),
   StarterKit.configure({
     bulletList: {
       keepMarks: true,
@@ -21,249 +23,379 @@ const extensions = [
       keepMarks: true,
       keepAttributes: false
     }
+  }),
+  TextAlign.configure({
+    types: ['heading', 'paragraph', 'image', 'iframe']
+  }),
+  Image,
+  ImageResize,
+  TiptapIframe,
+  Youtube.configure({
+    controls: false
   })
 ]
 
 type Props = {
+  userId?: string
   className?: string
   content: string
-  setContent: (html: string) => void
+  setNewContent: (html: string) => void
 }
 
-// const { mutateAsync: uploadImageMutateAsync } = useMutateUploadImage()
-// function uploadImage(file: any): Promise<any> {
-//   const userId = '1111'
-//   if (file) {
-//     const data: { userId: string; imageFile: File } = { userId: userId, imageFile: file }
-//     uploadImageMutateAsync(data)
-//       .then((response) => {
-//         console.log(response)
-//         return response
-//       })
-//       .catch((err) => {
-//         return err
-//       })
-//   }
-//   return new Promise<any>(() => {});
-// }
+export const Tiptap = ({ userId, className = '', content, setNewContent }: Props) => {
+  const { mutateAsync: uploadImageMutateAsync } = useMutateUploadImage()
+  // const widthIframeRef = useRef(null)
+  // const heightIframeRef = useRef(null)
 
-export const Tiptap = ({ className = '', content, setContent }: Props) => {
+  // useEffect(() => {
+  //   if (widthIframeRef.current && heightIframeRef.current) {
+  //     ;(widthIframeRef.current as HTMLInputElement).value = '640'
+  //     ;(heightIframeRef.current as HTMLInputElement).value = '480'
+  //   }
+  // }, [widthIframeRef.current, heightIframeRef.current])
+
+  // Initialize the editor
   const editor = useEditor(
     {
       extensions: extensions,
-      // editorProps: {
-      //   handleDrop: function (view, event, slice, moved) {
-      //     if (!moved && event.dataTransfer && event.dataTransfer.files && event.dataTransfer.files[0]) {
-      //       // if dropping external files
-      //       let file = event.dataTransfer.files[0] // the dropped file
-      //       let fileSize = (file.size / 1024 / 1024).toFixed(4) // get the fileSize in MB
-      //       if ((file.type === 'image/jpeg' || file.type === 'image/png') && +fileSize < 10) {
-      //         // check valid image type under 10MB
-      //         // check the dimensions
-      //         let _URL = window.URL || window.webkitURL
-      //         let img = new Image() /* global Image */
-      //         img.src = _URL.createObjectURL(file)
-      //         img.onload = function () {
-      //           if (this.width > 5000 || this.height > 5000) {
-      //             window.alert('Your images need to be less than 5000 pixels in height and width.') // display alert
-      //           } else {
-      //             // valid image so upload to server
-      //             // uploadImage will be your function to upload the image to the server or s3 bucket somewhere
-      //             uploadImage(file)
-      //               .then(function (response: string) {
-      //                 console.log(response)
-      //                 // Do something with the response (image url for where it has been saved)
-      //               })
-      //               .catch(function (error: any) {
-      //                 console.error(error)
-      //                 window.alert(error) // Display error message in alert
-      //               })
-      //           }
-      //         }
-      //       } else {
-      //         window.alert('Images need to be in jpg or png format and less than 10mb in size.')
-      //       }
-      //       return true // handled
-      //     }
-      //     return false // not handled use default behaviour
-      //   }
-      // },
       content: `${content}`,
       onUpdate: ({ editor }) => {
-        const html = editor.getHTML()
-        setContent(html)
+        setNewContent(editor?.getHTML())
       }
     },
     [content]
   )
 
+  // Upload image, return image url
+  const handleMutateUploadImage = (uploadFile: File): Promise<string> => {
+    return uploadImageMutateAsync({ userId: userId, imageFile: uploadFile })
+      .then((res) => {
+        if (res.data) {
+          return res.data.url
+        }
+        return ''
+      })
+      .catch((err: any) => {
+        console.log(err.response.data.message)
+        return ''
+      })
+  }
+
+  // Adding image to the editor
+  const addImage = (url: string) => {
+    if (url && editor) {
+      editor.chain().focus().setImage({ src: url }).run()
+    }
+  }
+
+  // Hand submit image
+  const handleSubmitImage = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e?.target?.files?.[0]) return
+    handleMutateUploadImage(e.target.files[0])
+      .then((res) => addImage(res))
+      .catch((err) => console.error(err))
+  }
+
+  // Add youtube video
+  const addYoutubeVideo = () => {
+    const url = prompt('Enter YouTube URL')
+    if (url && editor) {
+      editor.commands.setYoutubeVideo({
+        src: url,
+        width: 900,
+        height: 600
+      })
+    }
+  }
+
+  // Add iframe
+  // const addIframe = () => {
+  //   const url = window.prompt('URL')
+  //   if (url && editor) {
+  //     editor
+  //       .chain()
+  //       .focus()
+  //       .setIframe({
+  //         src: url,
+  //         width: 1000,
+  //         height: 1000
+  //       })
+  //       .run()
+  //   }
+  // }
+
   return (
     editor && (
       <div className={`${className} bg-white text-gray-900 dark:bg-gray-600 dark:text-white rounded-md`}>
-        {/* <EditorProvider slotBefore={<></>} content={''}>
-        </EditorProvider> */}
         <div>
+          {/* Input iframe */}
+          {/* <button
+          type='button' onClick={addIframe}>add iframe</button>
+          <div className="">
+            <input type="number" ref={widthIframeRef} placeholder="Width" />
+            <input type="number" ref={heightIframeRef} placeholder="Height" />
+          </div> */}
+
           <BubbleMenu
             editor={editor}
-            className="w-full min-w-[590px] bg-white text-gray-900 dark:bg-black dark:text-white rounded-md border border-gray-300 dark:border-gray-600 p-1"
+            className="w-full min-w-[475px] bg-white text-gray-900 dark:bg-black dark:text-white rounded-md border border-gray-300 dark:border-gray-600 p-1"
           >
-            <div className="space-x-1">
-              <button
-                onClick={() => editor.chain().focus().toggleBold().run()}
-                disabled={!editor.can().chain().focus().toggleBold().run()}
-                className={`px-2 py-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-800 ${
-                  editor.isActive('bold') ? 'is-active bg-gray-300 dark:bg-gray-600' : ''
-                } `}
-              >
+            <div className="w-full flex flex-col space-y-1">
+              <div className="w-full flex space-x-1">
                 {/* bold */}
-                <Icon icon="fa6-solid:bold" className="h-4 w-4 text-gray-600 dark:text-white" />
-              </button>
-              <button
-                onClick={() => editor.chain().focus().toggleItalic().run()}
-                disabled={!editor.can().chain().focus().toggleItalic().run()}
-                className={`px-2 py-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-800 ${
-                  editor.isActive('italic') ? 'is-active bg-gray-300 dark:bg-gray-600' : ''
-                } `}
-              >
+                <button
+                  type="button"
+                  onClick={() => editor.chain().focus().toggleBold().run()}
+                  disabled={!editor.can().chain().focus().toggleBold().run()}
+                  className={`px-2 py-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-800 ${
+                    editor.isActive('bold') ? 'is-active bg-gray-300 dark:bg-gray-600' : ''
+                  } `}
+                >
+                  <Icon icon="fa6-solid:bold" className="h-4 w-4 text-gray-600 dark:text-white" />
+                </button>
+
                 {/* italic */}
-                <Icon icon="fa6-solid:italic" className="h-4 w-4 text-gray-600 dark:text-white" />
-              </button>
-              <button
-                onClick={() => editor.chain().focus().toggleStrike().run()}
-                disabled={!editor.can().chain().focus().toggleStrike().run()}
-                className={`px-2 py-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-800 ${
-                  editor.isActive('strike') ? 'is-active bg-gray-300 dark:bg-gray-600' : ''
-                } `}
-              >
+                <button
+                  type="button"
+                  onClick={() => editor.chain().focus().toggleItalic().run()}
+                  disabled={!editor.can().chain().focus().toggleItalic().run()}
+                  className={`px-2 py-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-800 ${
+                    editor.isActive('italic') ? 'is-active bg-gray-300 dark:bg-gray-600' : ''
+                  } `}
+                >
+                  <Icon icon="fa6-solid:italic" className="h-4 w-4 text-gray-600 dark:text-white" />
+                </button>
+
                 {/* strike */}
-                <Icon icon="fa6-solid:strikethrough" className="h-4 w-4 text-gray-600 dark:text-white" />
-              </button>
-              <button
-                onClick={() => editor.chain().focus().toggleCode().run()}
-                disabled={!editor.can().chain().focus().toggleCode().run()}
-                className={`px-2 py-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-800 ${
-                  editor.isActive('code') ? 'is-active bg-gray-300 dark:bg-gray-600' : ''
-                } `}
-              >
+                <button
+                  type="button"
+                  onClick={() => editor.chain().focus().toggleStrike().run()}
+                  disabled={!editor.can().chain().focus().toggleStrike().run()}
+                  className={`px-2 py-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-800 ${
+                    editor.isActive('strike') ? 'is-active bg-gray-300 dark:bg-gray-600' : ''
+                  } `}
+                >
+                  <Icon icon="fa6-solid:strikethrough" className="h-4 w-4 text-gray-600 dark:text-white" />
+                </button>
+
                 {/* code */}
-                <Icon icon="lucide:code" className="h-5 w-5 -m-0.5 text-gray-600 dark:text-white" />
-              </button>
-              {/* <button onClick={() => editor.chain().focus().unsetAllMarks().run()}>clear marks</button>
-              <button onClick={() => editor.chain().focus().clearNodes().run()}>clear nodes</button> */}
-              <button
-                onClick={() => editor.chain().focus().setParagraph().run()}
-                className={`px-2 py-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-800 ${
-                  editor.isActive('paragraph') ? 'is-active bg-gray-300 dark:bg-gray-600' : ''
-                } `}
-              >
+                <button
+                  type="button"
+                  onClick={() => editor.chain().focus().toggleCode().run()}
+                  disabled={!editor.can().chain().focus().toggleCode().run()}
+                  className={`px-2 py-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-800 ${
+                    editor.isActive('code') ? 'is-active bg-gray-300 dark:bg-gray-600' : ''
+                  } `}
+                >
+                  <Icon icon="lucide:code" className="h-5 w-5 -m-0.5 text-gray-600 dark:text-white" />
+                </button>
+
                 {/* paragraph */}
-                <Icon icon="fa6-solid:paragraph" className="h-4 w-4 text-gray-600 dark:text-white" />
-              </button>
-              <button
-                onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
-                className={`px-2 py-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-800 ${
-                  editor.isActive('heading', { level: 1 }) ? 'is-active bg-gray-300 dark:bg-gray-600' : ''
-                } `}
-              >
+                <button
+                  type="button"
+                  onClick={() => editor.chain().focus().setParagraph().run()}
+                  className={`px-2 py-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-800 ${
+                    editor.isActive('paragraph') ? 'is-active bg-gray-300 dark:bg-gray-600' : ''
+                  } `}
+                >
+                  <Icon icon="fa6-solid:paragraph" className="h-4 w-4 text-gray-600 dark:text-white" />
+                </button>
+
                 {/* h1 */}
-                <Icon icon="ci:heading-h1" className="h-5 w-5 -m-0.5 text-gray-600 dark:text-white" />
-              </button>
-              <button
-                onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
-                className={`px-2 py-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-800 ${
-                  editor.isActive('heading', { level: 2 }) ? 'is-active bg-gray-300 dark:bg-gray-600' : ''
-                } `}
-              >
+                <button
+                  type="button"
+                  onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
+                  className={`px-2 py-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-800 ${
+                    editor.isActive('heading', { level: 1 }) ? 'is-active bg-gray-300 dark:bg-gray-600' : ''
+                  } `}
+                >
+                  <Icon icon="ci:heading-h1" className="h-5 w-5 -m-0.5 text-gray-600 dark:text-white" />
+                </button>
+
                 {/* h2 */}
-                <Icon icon="ci:heading-h2" className="h-5 w-5 -m-0.5 text-gray-600 dark:text-white" />
-              </button>
-              <button
-                onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
-                className={`px-2 py-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-800 ${
-                  editor.isActive('heading', { level: 3 }) ? 'is-active bg-gray-300 dark:bg-gray-600' : ''
-                } `}
-              >
+                <button
+                  type="button"
+                  onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
+                  className={`px-2 py-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-800 ${
+                    editor.isActive('heading', { level: 2 }) ? 'is-active bg-gray-300 dark:bg-gray-600' : ''
+                  } `}
+                >
+                  <Icon icon="ci:heading-h2" className="h-5 w-5 -m-0.5 text-gray-600 dark:text-white" />
+                </button>
+
                 {/* h3 */}
-                <Icon icon="ci:heading-h3" className="h-5 w-5 -m-0.5 text-gray-600 dark:text-white" />
-              </button>
-              <button
-                onClick={() => editor.chain().focus().toggleHeading({ level: 4 }).run()}
-                className={`px-2 py-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-800 ${
-                  editor.isActive('heading', { level: 4 }) ? 'is-active bg-gray-300 dark:bg-gray-600' : ''
-                } `}
-              >
+                <button
+                  type="button"
+                  onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
+                  className={`px-2 py-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-800 ${
+                    editor.isActive('heading', { level: 3 }) ? 'is-active bg-gray-300 dark:bg-gray-600' : ''
+                  } `}
+                >
+                  <Icon icon="ci:heading-h3" className="h-5 w-5 -m-0.5 text-gray-600 dark:text-white" />
+                </button>
+
                 {/* h4 */}
-                <Icon icon="ci:heading-h4" className="h-5 w-5 -m-0.5 text-gray-600 dark:text-white" />
-              </button>
-              <button
-                onClick={() => editor.chain().focus().toggleHeading({ level: 5 }).run()}
-                className={`px-2 py-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-800 ${
-                  editor.isActive('heading', { level: 5 }) ? 'is-active bg-gray-300 dark:bg-gray-600' : ''
-                } `}
-              >
+                <button
+                  type="button"
+                  onClick={() => editor.chain().focus().toggleHeading({ level: 4 }).run()}
+                  className={`px-2 py-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-800 ${
+                    editor.isActive('heading', { level: 4 }) ? 'is-active bg-gray-300 dark:bg-gray-600' : ''
+                  } `}
+                >
+                  <Icon icon="ci:heading-h4" className="h-5 w-5 -m-0.5 text-gray-600 dark:text-white" />
+                </button>
+
                 {/* h5 */}
-                <Icon icon="ci:heading-h5" className="h-5 w-5 -m-0.5 text-gray-600 dark:text-white" />
-              </button>
-              <button
-                onClick={() => editor.chain().focus().toggleBulletList().run()}
-                className={`px-2 py-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-800 ${
-                  editor.isActive('bulletList') ? 'is-active bg-gray-300 dark:bg-gray-600' : ''
-                } `}
-              >
+                <button
+                  type="button"
+                  onClick={() => editor.chain().focus().toggleHeading({ level: 5 }).run()}
+                  className={`px-2 py-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-800 ${
+                    editor.isActive('heading', { level: 5 }) ? 'is-active bg-gray-300 dark:bg-gray-600' : ''
+                  } `}
+                >
+                  <Icon icon="ci:heading-h5" className="h-5 w-5 -m-0.5 text-gray-600 dark:text-white" />
+                </button>
+
                 {/* bullet list */}
-                <Icon icon="fa6-solid:list-ul" className="h-4 w-4 text-gray-600 dark:text-white" />
-              </button>
-              <button
-                onClick={() => editor.chain().focus().toggleOrderedList().run()}
-                className={`px-2 py-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-800 ${
-                  editor.isActive('orderedList') ? 'is-active bg-gray-300 dark:bg-gray-600' : ''
-                } `}
-              >
+                <button
+                  type="button"
+                  onClick={() => editor.chain().focus().toggleBulletList().run()}
+                  className={`px-2 py-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-800 ${
+                    editor.isActive('bulletList') ? 'is-active bg-gray-300 dark:bg-gray-600' : ''
+                  } `}
+                >
+                  <Icon icon="fa6-solid:list-ul" className="h-4 w-4 text-gray-600 dark:text-white" />
+                </button>
+
                 {/* ordered list */}
-                <Icon icon="fa6-solid:list-ol" className="h-4 w-4 text-gray-600 dark:text-white" />
-              </button>
-              <button
-                onClick={() => editor.chain().focus().toggleCodeBlock().run()}
-                className={`px-2 py-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-800 ${
-                  editor.isActive('codeBlock') ? 'is-active bg-gray-300 dark:bg-gray-600' : ''
-                } `}
-              >
+                <button
+                  type="button"
+                  onClick={() => editor.chain().focus().toggleOrderedList().run()}
+                  className={`px-2 py-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-800 ${
+                    editor.isActive('orderedList') ? 'is-active bg-gray-300 dark:bg-gray-600' : ''
+                  } `}
+                >
+                  <Icon icon="fa6-solid:list-ol" className="h-4 w-4 text-gray-600 dark:text-white" />
+                </button>
+
                 {/* code block */}
-                <Icon icon="fa6-solid:code" className="h-5 w-5 -m-0.5 text-gray-600 dark:text-white" />
-              </button>
-              <button
-                onClick={() => editor.chain().focus().toggleBlockquote().run()}
-                className={`px-2 py-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-800 ${
-                  editor.isActive('blockquote') ? 'is-active bg-gray-300 dark:bg-gray-600' : ''
-                } `}
-              >
+                <button
+                  type="button"
+                  onClick={() => editor.chain().focus().toggleCodeBlock().run()}
+                  className={`px-2 py-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-800 ${
+                    editor.isActive('codeBlock') ? 'is-active bg-gray-300 dark:bg-gray-600' : ''
+                  } `}
+                >
+                  <Icon icon="fa6-solid:code" className="h-5 w-5 -m-0.5 text-gray-600 dark:text-white" />
+                </button>
+              </div>
+
+              <div className="flex space-x-1">
+                {/* align left */}
+                <button
+                  type="button"
+                  onClick={() => editor.chain().focus().setTextAlign('left').run()}
+                  className={`px-2 py-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-800 ${
+                    editor.isActive({ textAlign: 'left' }) ? 'is-active bg-gray-300 dark:bg-gray-600' : ''
+                  } `}
+                >
+                  <Icon icon="fa6-solid:align-left" className="h-4 w-4 text-gray-600 dark:text-white" />
+                </button>
+
+                {/* align center */}
+                <button
+                  type="button"
+                  onClick={() => editor.chain().focus().setTextAlign('center').run()}
+                  className={`px-2 py-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-800 ${
+                    editor.isActive({ textAlign: 'center' }) ? 'is-active bg-gray-300 dark:bg-gray-600' : ''
+                  } `}
+                >
+                  <Icon icon="fa6-solid:align-center" className="h-4 w-4 text-gray-600 dark:text-white" />
+                </button>
+
+                {/* align right */}
+                <button
+                  type="button"
+                  onClick={() => editor.chain().focus().setTextAlign('right').run()}
+                  className={`px-2 py-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-800 ${
+                    editor.isActive({ textAlign: 'right' }) ? 'is-active bg-gray-300 dark:bg-gray-600' : ''
+                  } `}
+                >
+                  <Icon icon="fa6-solid:align-right" className="h-4 w-4 text-gray-600 dark:text-white" />
+                </button>
+
+                {/* align justify */}
+                <button
+                  type="button"
+                  onClick={() => editor.chain().focus().setTextAlign('justify').run()}
+                  className={`px-2 py-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-800 ${
+                    editor.isActive({ textAlign: 'justify' }) ? 'is-active bg-gray-300 dark:bg-gray-600' : ''
+                  } `}
+                >
+                  <Icon icon="fa6-solid:align-justify" className="h-4 w-4 text-gray-600 dark:text-white" />
+                </button>
+
                 {/* blockquote */}
-                <Icon icon="fa6-solid:quote-right" className="h-4 w-4 text-gray-600 dark:text-white" />
-              </button>
-              {/* <button
-                onClick={() => editor.chain().focus().setColor('#958DF1').run()}
-                className={`px-2 py-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-800 ${
-                  editor.isActive('textStyle', { color: '#958DF1' }) ? 'is-active bg-gray-300 dark:bg-gray-600' : ''
-                } `}
-              >
-                <Icon icon="fa6-solid:paintbrush" className='h-4 w-4 text-gray-600 dark:text-white' />
-              </button> */}
-              <button
-                className="px-2 py-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-800"
-                onClick={() => editor.chain().focus().undo().run()}
-                disabled={!editor.can().chain().focus().undo().run()}
-              >
+                <button
+                  type="button"
+                  onClick={() => editor.chain().focus().toggleBlockquote().run()}
+                  className={`px-2 py-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-800 ${
+                    editor.isActive('blockquote') ? 'is-active bg-gray-300 dark:bg-gray-600' : ''
+                  } `}
+                >
+                  <Icon icon="fa6-solid:quote-right" className="h-4 w-4 text-gray-600 dark:text-white" />
+                </button>
+
+                {/* image */}
+                <label
+                  className="p-2 inline-block cursor-pointer rounded-md hover:bg-gray-200 dark:hover:bg-gray-800 "
+                  htmlFor="upload"
+                >
+                  <Icon icon="fa6-solid:image" className="h-4 w-4 text-gray-600 dark:text-white" />
+                  <input className="hidden h-0 w-0" id="upload" type="file" onChange={handleSubmitImage} />
+                </label>
+
+                {/* Youtube */}
+                <button
+                  type="button"
+                  onClick={addYoutubeVideo}
+                  className={`px-2 py-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-800 `}
+                >
+                  <Icon icon="fa-brands:youtube" className="h-5 w-5 -m-0.5 text-gray-600 dark:text-white" />
+                </button>
+
+                {/* clear */}
+                <button
+                  type="button"
+                  onClick={() => {
+                    editor.chain().focus().unsetAllMarks().run()
+                    editor.chain().focus().clearNodes().run()
+                  }}
+                  className={`px-2 py-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-800`}
+                >
+                  <Icon icon="fa6-solid:ban" className="h-4 w-4 text-gray-600 dark:text-white" />
+                </button>
+
                 {/* undo */}
-                <Icon icon="fa6-solid:arrow-rotate-left" className="h-4 w-4 text-gray-600 dark:text-white" />
-              </button>
-              <button
-                className="px-2 py-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-800"
-                onClick={() => editor.chain().focus().redo().run()}
-                disabled={!editor.can().chain().focus().redo().run()}
-              >
+                <button
+                  type="button"
+                  className="px-2 py-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-800"
+                  onClick={() => editor.chain().focus().undo().run()}
+                  disabled={!editor.can().chain().focus().undo().run()}
+                >
+                  <Icon icon="fa6-solid:arrow-rotate-left" className="h-4 w-4 text-gray-600 dark:text-white" />
+                </button>
+
                 {/* redo */}
-                <Icon icon="fa6-solid:arrow-rotate-right" className="h-4 w-4 text-gray-600 dark:text-white" />
-              </button>
+                <button
+                  type="button"
+                  className="px-2 py-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-800"
+                  onClick={() => editor.chain().focus().redo().run()}
+                  disabled={!editor.can().chain().focus().redo().run()}
+                >
+                  <Icon icon="fa6-solid:arrow-rotate-right" className="h-4 w-4 text-gray-600 dark:text-white" />
+                </button>
+              </div>
             </div>
           </BubbleMenu>
           <EditorContent editor={editor}></EditorContent>

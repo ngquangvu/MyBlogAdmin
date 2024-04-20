@@ -15,8 +15,10 @@
     "@heroicons/react": "^2.0.18",
     "@hookform/resolvers": "^3.3.1",
     "@tiptap/extension-color": "^2.2.4",
-    "@tiptap/extension-image": "^2.2.6",
+    "@tiptap/extension-image": "^2.3.0",
+    "@tiptap/extension-text-align": "^2.3.0",
     "@tiptap/extension-text-style": "^2.2.4",
+    "@tiptap/extension-youtube": "^2.3.0",
     "@tiptap/pm": "^2.2.4",
     "@tiptap/react": "^2.2.4",
     "@tiptap/starter-kit": "^2.2.4",
@@ -28,6 +30,7 @@
     "react-query": "^3.39.3",
     "react-router-dom": "^6.16.0",
     "recoil": "^0.7.7",
+    "tiptap-extension-resize-image": "^1.0.4",
     "zod": "^3.22.3"
   },
   "devDependencies": {

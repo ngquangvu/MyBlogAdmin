@@ -1,12 +1,7 @@
 import { Suspense, useEffect, useState } from 'react'
 
-
 import { Loading } from '@/components/atoms/Loading/Loading'
-import {
-  defaultValuesPostCreate,
-  PostDetailInput,
-  PostDetailInputSchema
-} from '@/schema/post'
+import { defaultValuesPostCreate, PostDetailInput, PostDetailInputSchema } from '@/schema/post'
 import { useQueryPostDetail } from '@/components/hooks/useQueryPost'
 import { useQueryAdminUserDetail } from '@/components/hooks/useQueryAdmin'
 import { Button } from '@/components/atoms/Button'
@@ -18,6 +13,7 @@ import { useMutatePostUpdate } from '@/components/hooks/useMutatePost'
 import { useNavigate, useParams } from 'react-router-dom'
 import { TextareaWithTitle } from '@/components/molecules/TextareaWithTitle'
 import { SelectWithTitle } from '@/components/molecules/SelectWithTitle'
+import { Tiptap } from '@/components/molecules/Tiptap'
 
 export const PostEdit = () => {
   let { id } = useParams()
@@ -151,7 +147,7 @@ export const PostEdit = () => {
                             />
                           </div>
 
-                          {/* <div className="mb-4">
+                          <div className="mb-4">
                             <label>
                               <span
                                 role="heading"
@@ -162,27 +158,16 @@ export const PostEdit = () => {
                               <div className="mt-1">
                                 <div className="">
                                   <Tiptap
-                                    content=""
+                                    content={postDetail?.data?.content || ''}
                                     className=""
-                                    setContent={function (html: string): void {
+                                    setNewContent={(html: string) => {
                                       setValue('content', html)
                                     }}
                                   />
                                 </div>
                               </div>
                             </label>
-                            <div className="mt-2"></div>
-                          </div> */}
-
-                          <TextareaWithTitle
-                            className="mb-4"
-                            labelProps={{
-                              children: <p>Content</p>
-                            }}
-                            textareaProps={{ ...register('content'), rows: 10 }}
-                            error={errors.content?.message?.toString()}
-                            isRequired
-                          />
+                          </div>
 
                           <InputImageWithTitle
                             className="mb-4"

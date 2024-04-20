@@ -16,6 +16,7 @@ export type Post = {
 export type PostImage = {
   id: string
   authorId: string
+  url: string
   name: string
   originalName: string
   sizeKb: string

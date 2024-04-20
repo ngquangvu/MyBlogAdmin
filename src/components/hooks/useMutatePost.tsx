@@ -77,7 +77,7 @@ export const useMutatePostCreate = (): UseMutationResult<
 }
 
 const uploadImage = async (formData: {
-  userId: string
+  userId?: string
   imageFile: File
 }): Promise<ResponseDataType & { data: PostImage | null }> => {
   const config = {
@@ -97,7 +97,7 @@ export const useMutateUploadImage = (): UseMutationResult<
   ResponseDataType & { data: PostImage | null },
   AxiosError,
   {
-    userId: string
+    userId?: string
     imageFile: File
   },
   undefined

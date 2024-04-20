@@ -150,9 +150,6 @@ export const Posts = () => {
                         >
                           Title
                         </th>
-                        {/* <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-white">
-                          Meta title
-                        </th> */}
                         <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-white">
                           Slug
                         </th>
@@ -199,13 +196,10 @@ export const Posts = () => {
                             </button>
                           </td>
                           <td className="px-3 py-4 text-sm text-gray-500 dark:text-white">{post_detail.authorId}</td>
-                          <td className="px-3 py-4 text-sm text-gray-500 dark:text-white">{post_detail.title}</td>
-                          {/* <td className="px-3 py-4 text-sm text-gray-500 dark:text-white">
-                            {post_detail.metaTitle}
-                          </td> */}
+                          <td className="px-3 py-4 text-sm text-gray-500 dark:text-white"><p className='line-clamp-4'>{post_detail.title}</p></td>
                           <td className="px-3 py-4 text-sm text-gray-500 dark:text-white">{post_detail.slug}</td>
-                          <td className="px-3 py-4 text-sm text-gray-500 dark:text-white">{post_detail.summary}</td>
-                          <td className="px-3 py-4 text-sm text-gray-500 dark:text-white"><div dangerouslySetInnerHTML={{__html: post_detail.content}}></div></td>
+                          <td className="px-3 py-4 text-sm text-gray-500 dark:text-white"><p className='line-clamp-4'>{post_detail.summary}</p></td>
+                          <td className="px-3 py-4 text-sm text-gray-500 dark:text-white"><div className='line-clamp-4' dangerouslySetInnerHTML={{__html: post_detail.content}}></div></td>
                           <td className="px-3 py-4 text-sm text-gray-500 dark:text-white">
                             <img className="w-40 h-auto" src={post_detail.thumbnail} alt={post_detail.thumbnail} />
                           </td>
