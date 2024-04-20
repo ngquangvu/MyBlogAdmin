@@ -139,17 +139,9 @@ export const Tiptap = ({ userId, className = '', content, setContent }: Props) =
 
           <BubbleMenu
             editor={editor}
-            className="w-full min-w-[780px] bg-white text-gray-900 dark:bg-black dark:text-white rounded-md border border-gray-300 dark:border-gray-600 p-1"
+            className="w-full min-w-[740px] bg-white text-gray-900 dark:bg-black dark:text-white rounded-md border border-gray-300 dark:border-gray-600 p-1"
           >
             <div className="space-x-1">
-              <label
-                className="p-2 -mb-2 inline-block cursor-pointer rounded-md hover:bg-gray-200 dark:hover:bg-gray-800 "
-                htmlFor="upload"
-              >
-                <Icon icon="fa6-solid:image" className="h-4 w-4 text-gray-600 dark:text-white" />
-                <input className="hidden h-0 w-0" id="upload" type="file" onChange={handleSubmitImage} />
-              </label>
-
               {/* bold */}
               <button
                 onClick={() => editor.chain().focus().toggleBold().run()}
@@ -334,12 +326,32 @@ export const Tiptap = ({ userId, className = '', content, setContent }: Props) =
                 <Icon icon="fa6-solid:quote-right" className="h-4 w-4 text-gray-600 dark:text-white" />
               </button>
 
+              {/* image */}
+              <label
+                className="p-2 -mb-2 inline-block cursor-pointer rounded-md hover:bg-gray-200 dark:hover:bg-gray-800 "
+                htmlFor="upload"
+              >
+                <Icon icon="fa6-solid:image" className="h-4 w-4 text-gray-600 dark:text-white" />
+                <input className="hidden h-0 w-0" id="upload" type="file" onChange={handleSubmitImage} />
+              </label>
+
               {/* Youtube */}
               <button
                 onClick={addYoutubeVideo}
                 className={`px-2 py-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-800 `}
               >
                 <Icon icon="fa-brands:youtube" className="h-5 w-5 -m-0.5 text-gray-600 dark:text-white" />
+              </button>
+
+              {/* clear */}
+              <button
+                onClick={() => {
+                  editor.chain().focus().unsetAllMarks().run()
+                  editor.chain().focus().clearNodes().run()
+                }}
+                className={`px-2 py-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-800`}
+              >
+                <Icon icon="fa6-solid:ban" className='h-4 w-4 text-gray-600 dark:text-white' />
               </button>
 
               {/* undo */}
