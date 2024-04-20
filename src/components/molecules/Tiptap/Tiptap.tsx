@@ -3,13 +3,12 @@ import ListItem from '@tiptap/extension-list-item'
 import TextStyle from '@tiptap/extension-text-style'
 import { BubbleMenu, EditorContent, useEditor } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
-import Image from '@tiptap/extension-image'
+import { Image } from '@tiptap/extension-image'
 import { Icon } from '@iconify/react'
 import '../../../assets/css/tiptap.css'
 import { useMutateUploadImage } from '@/components/hooks/useMutatePost'
 
 const extensions = [
-  // Image,
   Color.configure({ types: [TextStyle.name, ListItem.name] }),
   //   TextStyle.configure({ types: [ListItem.name] }),
   StarterKit.configure({
@@ -21,7 +20,8 @@ const extensions = [
       keepMarks: true,
       keepAttributes: false
     }
-  })
+  }),
+  Image
 ]
 
 type Props = {
@@ -30,64 +30,18 @@ type Props = {
   setContent: (html: string) => void
 }
 
-// const { mutateAsync: uploadImageMutateAsync } = useMutateUploadImage()
-// function uploadImage(file: any): Promise<any> {
-//   const userId = '1111'
-//   if (file) {
-//     const data: { userId: string; imageFile: File } = { userId: userId, imageFile: file }
-//     uploadImageMutateAsync(data)
-//       .then((response) => {
-//         console.log(response)
-//         return response
-//       })
-//       .catch((err) => {
-//         return err
-//       })
-//   }
-//   return new Promise<any>(() => {});
-// }
-
 export const Tiptap = ({ className = '', content, setContent }: Props) => {
+  const { mutateAsync: uploadImageMutateAsync } = useMutateUploadImage()
+
+  // Initialize the editor
   const editor = useEditor(
     {
       extensions: extensions,
-      // editorProps: {
-      //   handleDrop: function (view, event, slice, moved) {
-      //     if (!moved && event.dataTransfer && event.dataTransfer.files && event.dataTransfer.files[0]) {
-      //       // if dropping external files
-      //       let file = event.dataTransfer.files[0] // the dropped file
-      //       let fileSize = (file.size / 1024 / 1024).toFixed(4) // get the fileSize in MB
-      //       if ((file.type === 'image/jpeg' || file.type === 'image/png') && +fileSize < 10) {
-      //         // check valid image type under 10MB
-      //         // check the dimensions
-      //         let _URL = window.URL || window.webkitURL
-      //         let img = new Image() /* global Image */
-      //         img.src = _URL.createObjectURL(file)
-      //         img.onload = function () {
-      //           if (this.width > 5000 || this.height > 5000) {
-      //             window.alert('Your images need to be less than 5000 pixels in height and width.') // display alert
-      //           } else {
-      //             // valid image so upload to server
-      //             // uploadImage will be your function to upload the image to the server or s3 bucket somewhere
-      //             uploadImage(file)
-      //               .then(function (response: string) {
-      //                 console.log(response)
-      //                 // Do something with the response (image url for where it has been saved)
-      //               })
-      //               .catch(function (error: any) {
-      //                 console.error(error)
-      //                 window.alert(error) // Display error message in alert
-      //               })
-      //           }
-      //         }
-      //       } else {
-      //         window.alert('Images need to be in jpg or png format and less than 10mb in size.')
-      //       }
-      //       return true // handled
-      //     }
-      //     return false // not handled use default behaviour
-      //   }
-      // },
+      editorProps: {
+        attributes: {
+          class: 'prose prose-sm sm:prose lg:prose-lg xl:prose-2xl mx-auto p-10 rounded-b-xl focus:outline-none'
+        }
+      },
       content: `${content}`,
       onUpdate: ({ editor }) => {
         const html = editor.getHTML()
@@ -97,17 +51,49 @@ export const Tiptap = ({ className = '', content, setContent }: Props) => {
     [content]
   )
 
+  // Upload image, return image url
+  const handleMutateUploadImage = (uploadFile: File): Promise<string> => {
+    return uploadImageMutateAsync({ userId: '1234', imageFile: uploadFile })
+      .then((res) => {
+        if(res.data) {
+          return res.data.url;
+        }
+        return '';
+      })
+      .catch((err: any) => {
+        console.log(err.response.data.message)
+        return '';
+      });
+  }
+
+  // Adding image to the editor
+  const addImage = (url: string) => {
+    if (url && editor) {
+      editor.chain().focus().setImage({ src: url }).run()
+    }
+  }
+
+  // Hand submit image
+  const handleSubmitImage = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e?.target?.files?.[0]) return
+    handleMutateUploadImage(e.target.files[0])
+      .then((res) => addImage(res))
+      .catch((err) => console.error(err))
+  }
+
   return (
     editor && (
       <div className={`${className} bg-white text-gray-900 dark:bg-gray-600 dark:text-white rounded-md`}>
-        {/* <EditorProvider slotBefore={<></>} content={''}>
-        </EditorProvider> */}
         <div>
           <BubbleMenu
             editor={editor}
-            className="w-full min-w-[590px] bg-white text-gray-900 dark:bg-black dark:text-white rounded-md border border-gray-300 dark:border-gray-600 p-1"
+            className="w-full min-w-[620px] bg-white text-gray-900 dark:bg-black dark:text-white rounded-md border border-gray-300 dark:border-gray-600 p-1"
           >
             <div className="space-x-1">
+              <label className="inline-block px-2 cursor-pointer" htmlFor="upload">
+                <Icon icon="fa6-solid:image" className="h-4 w-4 text-gray-600 dark:text-white" />
+                <input className="hidden" id="upload" type="file" onChange={handleSubmitImage} />
+              </label>
               <button
                 onClick={() => editor.chain().focus().toggleBold().run()}
                 disabled={!editor.can().chain().focus().toggleBold().run()}
