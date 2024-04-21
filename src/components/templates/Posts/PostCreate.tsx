@@ -1,33 +1,27 @@
 import { Suspense, useEffect, useState } from 'react'
 
-import { useRecoilState, useRecoilValue } from 'recoil'
-
 import { Loading } from '@/components/atoms/Loading/Loading'
-import { Pagination } from '@/components/organisms/Pagination'
 import { defaultValuesPostCreate, PostCreateInput, PostCreateInputSchema } from '@/schema/post'
-import { useQueryPosts } from '@/components/hooks/useQueryPost'
-import { postsSearchQueryState, postsPageState } from '@/states/postsSearchQueryState'
-import { getAdminFromLocalStorage, useQueryAdminUserDetail } from '@/components/hooks/useQueryAdmin'
+import { useQueryAdminUserDetail } from '@/components/hooks/useQueryAdmin'
 import { NotificationType } from '@/types/common'
 import { NotificationBadge } from '@/components/organisms/NotificationBadge'
 import { Button } from '@/components/atoms/Button'
 import { InputImageWithTitle } from '@/components/molecules/InputImageWithTitle'
 import { TextboxWithTitle } from '@/components/molecules/TextboxWithTitle'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useForm } from 'react-hook-form'
+import { set, useForm } from 'react-hook-form'
 import { useMutatePostCreate } from '@/components/hooks/useMutatePost'
 import { useNavigate } from 'react-router-dom'
 import { Tiptap } from '@/components/molecules/Tiptap'
-import { TextareaWithTitle } from '@/components/molecules/TextareaWithTitle'
 import { SelectWithTitle } from '@/components/molecules/SelectWithTitle'
+import { useQueryAllTags } from '@/components/hooks/useQueryTag'
+import { Tag } from '@/types/tag'
 
 export const PostCreate = () => {
-  const postsQuery = useRecoilValue(postsSearchQueryState)
-  const adminEmail = getAdminFromLocalStorage()
+  const { tags } = useQueryAllTags()
+
   const { adminUserDetail } = useQueryAdminUserDetail()
   const { mutateAsync: addPostMutateAsync } = useMutatePostCreate()
-  const { posts } = useQueryPosts(postsQuery)
-  const [page, setPage] = useRecoilState(postsPageState)
 
   // ========= Notification =========
   const [showNotification, setShowNotification] = useState<boolean>(false)
@@ -66,6 +60,14 @@ export const PostCreate = () => {
     setValue('published', event.target.value.toString() === 'true' ? true : false, { shouldDirty: true })
   }
 
+  const handleSetTagIds = () => {
+    const tagIdsArray: number[] = []
+    Array.from(document.querySelectorAll('input[name="tagIdsArray[]"]:checked')).map((el) => {
+      tagIdsArray.push(parseInt(el.getAttribute('value') || ''))
+    })
+    setValue('tagIds', tagIdsArray.join(','), { shouldDirty: true })
+  }
+
   useEffect(() => {
     setValue('authorId', adminUserDetail?.data ? adminUserDetail.data.id : '')
   }, [adminUserDetail])
@@ -91,16 +93,21 @@ export const PostCreate = () => {
                         <span className="text-red-500">{errorMess}</span>
 
                         <div className="">
-                          <div className="mb-4">
-                            <label
-                              className="block text-gray-800 dark:text-white leading-6 text-sm font-semibold"
-                              htmlFor="firstName"
-                            >
-                              Author
-                            </label>
-                            <h3 className="w-full py-2 px-3 leading-6 text-gray-900 dark:text-white mb-1">
-                              {adminMail}
-                            </h3>
+                          <div className="flex w-full max-w-[700px] space-x-5">
+                            <TextboxWithTitle
+                              className="w-1/2 mb-4"
+                              labelProps={{
+                                children: <p>Author</p>
+                              }}
+                              textboxProps={{
+                                type: 'text',
+                                value: adminMail || '',
+                                disabled: true,
+                                className: '!text-gray-400'
+                              }}
+                              isRequired
+                            />
+                            <div className="w-1/2"></div>
                           </div>
 
                           <TextboxWithTitle
@@ -112,16 +119,18 @@ export const PostCreate = () => {
                             error={errors.title?.message}
                             isRequired
                           />
-                          <TextboxWithTitle
-                            className="mb-4"
-                            labelProps={{
-                              children: <p>Meta title</p>
-                            }}
-                            textboxProps={{ ...register('metaTitle'), type: 'text' }}
-                            error={errors.metaTitle?.message}
-                            isRequired
-                          />
-                          <div className="flex w-full max-w-[600px] space-x-5">
+
+                          <div className="flex w-full max-w-[700px] space-x-5">
+                            <TextboxWithTitle
+                              className="w-1/2 mb-4"
+                              labelProps={{
+                                children: <p>Meta title</p>
+                              }}
+                              textboxProps={{ ...register('metaTitle'), type: 'text' }}
+                              error={errors.metaTitle?.message}
+                              isRequired
+                            />
+
                             <TextboxWithTitle
                               className="w-1/2 mb-4"
                               labelProps={{
@@ -131,17 +140,42 @@ export const PostCreate = () => {
                               error={errors.slug?.message}
                               isRequired
                             />
-
-                            <TextboxWithTitle
-                              className="w-1/2 mb-4"
-                              labelProps={{
-                                children: <p>Summary</p>
-                              }}
-                              textboxProps={{ ...register('summary'), type: 'text' }}
-                              error={errors.summary?.message}
-                              isRequired
-                            />
                           </div>
+
+                          <div className="mb-4">
+                            <p className="text-sm font-medium text-gray-700 dark:text-white required">Tags</p>
+                            <div className="w-full flex flex-wrap gap-2 mt-1">
+                              {tags?.data?.data &&
+                                tags?.data?.data.map((tag: Tag) => (
+                                  <label
+                                    htmlFor={`tagId-${tag.id}`}
+                                    key={tag.id}
+                                    className="w-28 flex flex-col justify-between items-center border rounded-md cursor-pointer p-2"
+                                  >
+                                    <p className="ml-2 text-sm text-gray-700 dark:text-white">{tag.title}</p>
+
+                                    <input
+                                      type="checkbox"
+                                      name="tagIdsArray[]"
+                                      id={`tagId-${tag.id}`}
+                                      value={tag.id}
+                                      onChange={handleSetTagIds}
+                                      className="h-4 w-4 text-blue-600 border-gray-300 rounded cursor-pointer mt-2"
+                                    />
+                                  </label>
+                                ))}
+                            </div>
+                          </div>
+
+                          <TextboxWithTitle
+                            className=" mb-4"
+                            labelProps={{
+                              children: <p>Summary</p>
+                            }}
+                            textboxProps={{ ...register('summary'), type: 'text' }}
+                            error={errors.summary?.message}
+                            isRequired
+                          />
 
                           <div className="mb-4">
                             <label>
@@ -155,9 +189,6 @@ export const PostCreate = () => {
                                 <div className="">
                                   <Tiptap
                                     content="<strong><h1>Title</h1></strong>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.<br/>Nulla vitae elit libero, a pharetra augue. Sed non mauris vitae erat consequat auctor eu in elit. Sed posuere consectetur est at lobortis. Cras mattis consectetur purus sit amet fermentum. Donec id elit non mi porta gravida at eget metus.<br/>Nullam id dolor id nibh ultricies vehicula ut id elit. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Maecenas faucibus mollis interdum. Nullam id dolor id nibh ultricies vehicula ut id elit. Donec sed odio dui. Nullam quis risus eget urna mollis ornare vel eu leo. Donec sed odio dui. Donec id elit non mi porta gravida at eget metus. Nullam quis risus eget urna mollis ornare vel eu leo. Donec id elit non mi porta gravida at eget metus.
-                                    </p>
-                                    <iframe src='https://www.youtube.com/embed/NmxFxBiCrL4' frameborder='0' allowfullscreen></iframe>
                                     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.<br/>Nulla vitae elit libero, a pharetra augue. Sed non mauris vitae erat consequat auctor eu in elit. Sed posuere consectetur est at lobortis. Cras mattis consectetur purus sit amet fermentum. Donec id elit non mi porta gravida at eget metus.<br/>Nullam id dolor id nibh ultricies vehicula ut id elit. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Maecenas faucibus mollis interdum. Nullam id dolor id nibh ultricies vehicula ut id elit. Donec sed odio dui. Nullam quis risus eget urna mollis ornare vel eu leo. Donec sed odio dui. Donec id elit non mi porta gravida at eget metus. Nullam quis risus eget urna mollis ornare vel eu leo. Donec id elit non mi porta gravida at eget metus.
                                     </p>
                                     "

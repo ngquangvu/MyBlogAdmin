@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+.table-data img {
+  object-fit: contain;
+}
+
 /* ============= Tiptap WYSIWYG ============= */
 .tiptap {
   min-height: 400px;

@@ -34,7 +34,7 @@ export const InputImageWithTitle = ({
         <div className="block w-full my-1 p-1 bg-gray-50 dark:bg-gray-700  border border-gray-300 dark:border-gray-600 rounded-md">
           {imageSrc && (
             <div className="flex p-2.5 pb-1">
-              <img src={imageSrc} className="w-24 h-auto" alt="" />
+              <img src={imageSrc} className="w-48 h-auto" alt="" />
             </div>
           )}
           <Textbox
