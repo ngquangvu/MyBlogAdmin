@@ -57,6 +57,15 @@
   line-height: 1.6;
 }
 
+.tiptap a {
+  color: #1e40af;
+}
+
+.tiptap p {
+  font-size: 1.125rem;
+  line-height: 1.6;
+}
+
 .tiptap ol,
 .tiptap ul,
 .tiptap menu {

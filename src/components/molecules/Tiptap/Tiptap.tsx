@@ -8,6 +8,7 @@ import { Image } from '@tiptap/extension-image'
 import ImageResize from 'tiptap-extension-resize-image'
 import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight'
 import Youtube from '@tiptap/extension-youtube'
+import Link from '@tiptap/extension-link'
 import css from 'highlight.js/lib/languages/css'
 import js from 'highlight.js/lib/languages/javascript'
 import ts from 'highlight.js/lib/languages/typescript'
@@ -17,6 +18,7 @@ import { common, createLowlight } from 'lowlight'
 import { Icon } from '@iconify/react'
 import TiptapIframe from './TiptapIframe'
 import { useMutateUploadImage } from '@/components/hooks/useMutatePost'
+import { useCallback } from 'react'
 const lowlight = createLowlight()
 lowlight.register({ css })
 lowlight.register({ js })
@@ -45,6 +47,10 @@ const extensions = [
   Youtube.configure({
     controls: false
   }),
+  Link.configure({
+    openOnClick: false,
+    autolink: true
+  }),
   CodeBlockLowlight.configure({
     lowlight: createLowlight(common)
   })
@@ -59,16 +65,6 @@ type Props = {
 
 export const Tiptap = ({ userId, className = '', content, setNewContent }: Props) => {
   const { mutateAsync: uploadImageMutateAsync } = useMutateUploadImage()
-  // const widthIframeRef = useRef(null)
-  // const heightIframeRef = useRef(null)
-
-  // useEffect(() => {
-  //   if (widthIframeRef.current && heightIframeRef.current) {
-  //     ;(widthIframeRef.current as HTMLInputElement).value = '640'
-  //     ;(heightIframeRef.current as HTMLInputElement).value = '480'
-  //   }
-  // }, [widthIframeRef.current, heightIframeRef.current])
-
   // Initialize the editor
   const editor = useEditor(
     {
@@ -123,34 +119,29 @@ export const Tiptap = ({ userId, className = '', content, setNewContent }: Props
     }
   }
 
-  // Add iframe
-  // const addIframe = () => {
-  //   const url = window.prompt('URL')
-  //   if (url && editor) {
-  //     editor
-  //       .chain()
-  //       .focus()
-  //       .setIframe({
-  //         src: url,
-  //         width: 1000,
-  //         height: 1000
-  //       })
-  //       .run()
-  //   }
-  // }
+  // Set link
+  const setLink = useCallback(() => {
+    if (editor) {
+      const previousUrl = editor.getAttributes('link').href
+      const url = window.prompt('URL', previousUrl)
+      // cancelled
+      if (url === null) {
+        return
+      }
+      // empty
+      if (url === '') {
+        editor.chain().focus().extendMarkRange('link').unsetLink().run()
+        return
+      }
+      // update link
+      editor.chain().focus().extendMarkRange('link').setLink({ href: url }).run()
+    }
+  }, [editor])
 
   return (
     editor && (
       <div className={`${className} bg-white text-gray-900 dark:bg-gray-600 dark:text-white rounded-md`}>
         <div>
-          {/* Input iframe */}
-          {/* <button
-          type='button' onClick={addIframe}>add iframe</button>
-          <div className="">
-            <input type="number" ref={widthIframeRef} placeholder="Width" />
-            <input type="number" ref={heightIframeRef} placeholder="Height" />
-          </div> */}
-
           <BubbleMenu
             editor={editor}
             className="w-full min-w-[445px] bg-white text-gray-900 dark:bg-black dark:text-white rounded-md border border-gray-300 dark:border-gray-600 p-1"
@@ -359,6 +350,17 @@ export const Tiptap = ({ userId, className = '', content, setNewContent }: Props
                   } `}
                 >
                   <Icon icon="fa6-solid:code" className="h-5 w-5 -m-0.5 text-gray-600 dark:text-white" />
+                </button>
+
+                {/* Link */}
+                <button
+                  type="button"
+                  onClick={setLink}
+                  className={`px-2 py-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-800 ${
+                    editor.isActive('link') ? 'is-active bg-gray-300 dark:bg-gray-600' : ''
+                  } `}
+                >
+                  <Icon icon="fa6-solid:link" className="h-5 w-5 -m-0.5 text-gray-600 dark:text-white" />
                 </button>
 
                 {/* image */}
