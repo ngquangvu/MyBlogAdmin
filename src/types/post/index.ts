@@ -23,6 +23,16 @@ export type PostTag = {
   image: string
 }
 
+export type PostCate = {
+  id: string
+  parentId: string
+  title: string
+  metaTitle: string
+  slug: string
+  content: string
+  image: string
+}
+
 export type Post = {
   id: string
   authorId: string
@@ -31,6 +41,7 @@ export type Post = {
   slug: string
   summary: string
   postTags: PostTag[]
+  postCategories: PostCate[]
   content: string
   thumbnail: string
   published: boolean
@@ -58,6 +69,7 @@ export type PostMutate = {
   slug?: string
   summary?: string
   tagIds?: string
+  cateIds?: string
   content?: string
   thumbnail?: string
   published?: boolean

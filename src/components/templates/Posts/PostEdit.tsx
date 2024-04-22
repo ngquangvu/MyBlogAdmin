@@ -15,10 +15,13 @@ import { SelectWithTitle } from '@/components/molecules/SelectWithTitle'
 import { Tiptap } from '@/components/molecules/Tiptap'
 import { useQueryAllTags } from '@/components/hooks/useQueryTag'
 import { Tag } from '@/types/tag'
+import { useQueryAllCategories } from '@/components/hooks/useQueryCategory'
+import { Category } from '@/types/category'
 
 export const PostEdit = () => {
   let { id } = useParams()
   const { tags } = useQueryAllTags()
+  const { categories } = useQueryAllCategories()
   const { postDetail } = useQueryPostDetail(id ? id : '')
   const { adminUserDetail } = useQueryAdminUserDetail()
   const { mutateAsync: addPostMutateAsync } = useMutatePostUpdate()
@@ -27,17 +30,8 @@ export const PostEdit = () => {
   const [errorMess, setErrorMess] = useState('')
   const [imageSrc, setImageSrc] = useState<string>()
   const [checkedTags, setCheckedTags] = useState<string[]>([''])
+  const [checkedCates, setCheckedCates] = useState<string[]>([''])
   const adminMail = localStorage.getItem('admin')
-
-  const handleMutateEdit = (postInput: PostDetailInput) => {
-    addPostMutateAsync(postInput)
-      .then(() => {
-        navigate({ pathname: `${import.meta.env.VITE_ADMIN_ROUTE}/posts` })
-      })
-      .catch((err) => {
-        setErrorMess(err.response.data.message)
-      })
-  }
 
   const {
     register,
@@ -49,10 +43,30 @@ export const PostEdit = () => {
     resolver: zodResolver(PostDetailInputSchema)
   })
 
+  // Set default value
+  useEffect(() => {
+    setImageSrc(postDetail?.data ? postDetail?.data?.thumbnail : '')
+    setCheckedTags(postDetail?.data?.postTags.map((tag) => tag.id.toString()) || [])
+    setCheckedCates(postDetail?.data?.postCategories.map((cate) => cate.id.toString()) || [])
+  }, [])
+
+  // Handle mutate edit
+  const handleMutateEdit = (postInput: PostDetailInput) => {
+    addPostMutateAsync(postInput)
+      .then(() => {
+        navigate({ pathname: `${import.meta.env.VITE_ADMIN_ROUTE}/posts` })
+      })
+      .catch((err) => {
+        setErrorMess(err.response.data.message)
+      })
+  }
+
+  // Handle change published
   const handleChangePublish = (event: { target: { value: { toString: () => string } } }) => {
     setValue('published', event.target.value.toString() === 'true' ? true : false, { shouldDirty: true })
   }
 
+  // Handle set tagIds
   const handleSetTagIds = () => {
     const tagIdsArray: number[] = []
     Array.from(document.querySelectorAll('input[name="tagIdsArray[]"]:checked')).map((el) => {
@@ -62,10 +76,16 @@ export const PostEdit = () => {
     setValue('tagIds', tagIdsArray.join(','), { shouldDirty: true })
   }
 
-  useEffect(() => {
-    setImageSrc(postDetail?.data ? postDetail?.data?.thumbnail : '')
-    setCheckedTags(postDetail?.data?.postTags.map((tag) => tag.id.toString()) || [])
-  }, [])
+  // Handle set cateIds
+  const handleSetCateIds = () => {
+    const cateIdsArray: number[] = []
+    Array.from(document.querySelectorAll('input[name="cateIdsArray[]"]:checked')).map((el) => {
+      cateIdsArray.push(parseInt(el.getAttribute('value') || ''))
+    })
+
+    setCheckedCates(cateIdsArray.map((cateId) => cateId.toString()))
+    setValue('cateIds', cateIdsArray.join(','), { shouldDirty: true })
+  }
 
   return (
     <main>
@@ -161,7 +181,6 @@ export const PostEdit = () => {
                             <div className="w-full flex flex-wrap gap-2 mt-1">
                               {tags?.data?.data &&
                                 tags?.data?.data.map((tag: Tag) => (
-
                                   <label
                                     htmlFor={`tagId-${tag.id}`}
                                     key={tag.id}
@@ -177,7 +196,33 @@ export const PostEdit = () => {
                                       onChange={handleSetTagIds}
                                       className="h-4 w-4 text-blue-600 border-gray-300 rounded cursor-pointer mt-2"
                                     />
-                                    <input type="hidden" name='tagIds' />
+                                    <input type="hidden" name="tagIds" />
+                                  </label>
+                                ))}
+                            </div>
+                          </div>
+
+                          <div className="mb-4">
+                            <p className="text-sm font-medium text-gray-700 dark:text-white required">Categories</p>
+                            <div className="w-full flex flex-wrap gap-2 mt-1">
+                              {categories?.data?.data &&
+                                categories?.data?.data.map((cate: Category) => (
+                                  <label
+                                    htmlFor={`cateId-${cate.id}`}
+                                    key={cate.id}
+                                    className="w-28 flex flex-col justify-between items-center border rounded-md cursor-pointer p-2"
+                                  >
+                                    <p className="ml-2 text-sm text-gray-700 dark:text-white">{cate.title}</p>
+                                    <input
+                                      type="checkbox"
+                                      name="cateIdsArray[]"
+                                      id={`cateId-${cate.id}`}
+                                      value={cate.id}
+                                      checked={checkedCates?.includes(cate.id.toString())}
+                                      onChange={handleSetCateIds}
+                                      className="h-4 w-4 text-blue-600 border-gray-300 rounded cursor-pointer mt-2"
+                                    />
+                                    <input type="hidden" name="cateIds" />
                                   </label>
                                 ))}
                             </div>

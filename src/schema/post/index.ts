@@ -8,6 +8,7 @@ export const PostCreateInputSchema = z.object({
   slug: z.string().optional(),
   summary: z.string().optional(),
   tagIds: z.string().optional(),
+  cateIds: z.string().optional(),
   content: z.string().min(1, 'Content is required'),
   thumbnail: z
     .any()
@@ -25,6 +26,7 @@ export const PostDetailInputSchema: any = z.object({
   slug: z.string().optional(),
   summary: z.string().optional(),
   tagIds: z.string().optional(),
+  cateIds: z.string().optional(),
   content: z.string().min(1, 'Content is required'),
   thumbnail: z.any(),
   published: z.boolean()
@@ -40,6 +42,7 @@ export const defaultValuesPostDetail: PostDetailInput = {
   slug: '',
   summary: '',
   tagIds: '',
+  cateIds: '',
   content: '',
   thumbnail: '',
   published: true
@@ -52,6 +55,7 @@ export const defaultValuesPostCreate: PostCreateInput = {
   slug: '',
   summary: '',
   tagIds: '',
+  cateIds: '',
   content: '',
   thumbnail: '',
   published: true
