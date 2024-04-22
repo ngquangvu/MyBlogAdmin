@@ -16,35 +16,19 @@ import { Tiptap } from '@/components/molecules/Tiptap'
 import { SelectWithTitle } from '@/components/molecules/SelectWithTitle'
 import { useQueryAllTags } from '@/components/hooks/useQueryTag'
 import { Tag } from '@/types/tag'
+import { useQueryAllCategories } from '@/components/hooks/useQueryCategory'
+import { Category } from '@/types/category'
 
 export const PostCreate = () => {
   const { tags } = useQueryAllTags()
-
+  const { categories } = useQueryAllCategories()
   const { adminUserDetail } = useQueryAdminUserDetail()
   const { mutateAsync: addPostMutateAsync } = useMutatePostCreate()
-
-  // ========= Notification =========
-  const [showNotification, setShowNotification] = useState<boolean>(false)
-  const [notificationObj, setNotification] = useState<{
-    type: NotificationType
-    title: string
-    message: string
-  } | null>(null)
 
   const navigate = useNavigate()
   const [errorMess, setErrorMess] = useState('')
   const [imageSrc, setImageSrc] = useState()
   const adminMail = localStorage.getItem('admin')
-
-  const handleMutateAdd = (postInput: PostCreateInput) => {
-    addPostMutateAsync(postInput)
-      .then(() => {
-        navigate({ pathname: `${import.meta.env.VITE_ADMIN_ROUTE}/posts` })
-      })
-      .catch((err) => {
-        setErrorMess(err.response.data.message)
-      })
-  }
 
   const {
     register,
@@ -56,10 +40,36 @@ export const PostCreate = () => {
     resolver: zodResolver(PostCreateInputSchema)
   })
 
+  // Set default value
+  useEffect(() => {
+    setValue('authorId', adminUserDetail?.data ? adminUserDetail.data.id : '')
+  }, [adminUserDetail])
+
+  // Notification
+  const [showNotification, setShowNotification] = useState<boolean>(false)
+  const [notificationObj, setNotification] = useState<{
+    type: NotificationType
+    title: string
+    message: string
+  } | null>(null)
+
+  // Handle mutate add post
+  const handleMutateAdd = (postInput: PostCreateInput) => {
+    addPostMutateAsync(postInput)
+      .then(() => {
+        navigate({ pathname: `${import.meta.env.VITE_ADMIN_ROUTE}/posts` })
+      })
+      .catch((err) => {
+        setErrorMess(err.response.data.message)
+      })
+  }
+
+  // Handle change publish
   const handleChangePublish = (event: { target: { value: { toString: () => string } } }) => {
     setValue('published', event.target.value.toString() === 'true' ? true : false, { shouldDirty: true })
   }
 
+  // Handle set tag ids
   const handleSetTagIds = () => {
     const tagIdsArray: number[] = []
     Array.from(document.querySelectorAll('input[name="tagIdsArray[]"]:checked')).map((el) => {
@@ -68,9 +78,14 @@ export const PostCreate = () => {
     setValue('tagIds', tagIdsArray.join(','), { shouldDirty: true })
   }
 
-  useEffect(() => {
-    setValue('authorId', adminUserDetail?.data ? adminUserDetail.data.id : '')
-  }, [adminUserDetail])
+  // Handle set cate ids
+  const handleSetCateIds = () => {
+    const cateIdsArray: number[] = []
+    Array.from(document.querySelectorAll('input[name="cateIdsArray[]"]:checked')).map((el) => {
+      cateIdsArray.push(parseInt(el.getAttribute('value') || ''))
+    })
+    setValue('cateIds', cateIdsArray.join(','), { shouldDirty: true })
+  }
 
   return (
     <main>
@@ -160,6 +175,31 @@ export const PostCreate = () => {
                                       id={`tagId-${tag.id}`}
                                       value={tag.id}
                                       onChange={handleSetTagIds}
+                                      className="h-4 w-4 text-blue-600 border-gray-300 rounded cursor-pointer mt-2"
+                                    />
+                                  </label>
+                                ))}
+                            </div>
+                          </div>
+
+                          <div className="mb-4">
+                            <p className="text-sm font-medium text-gray-700 dark:text-white required">Categories</p>
+                            <div className="w-full flex flex-wrap gap-2 mt-1">
+                              {categories?.data?.data &&
+                                categories?.data?.data.map((cate: Category) => (
+                                  <label
+                                    htmlFor={`cateId-${cate.id}`}
+                                    key={cate.id}
+                                    className="w-28 flex flex-col justify-between items-center border rounded-md cursor-pointer p-2"
+                                  >
+                                    <p className="ml-2 text-sm text-gray-700 dark:text-white">{cate.title}</p>
+
+                                    <input
+                                      type="checkbox"
+                                      name="cateIdsArray[]"
+                                      id={`cateId-${cate.id}`}
+                                      value={cate.id}
+                                      onChange={handleSetCateIds}
                                       className="h-4 w-4 text-blue-600 border-gray-300 rounded cursor-pointer mt-2"
                                     />
                                   </label>
