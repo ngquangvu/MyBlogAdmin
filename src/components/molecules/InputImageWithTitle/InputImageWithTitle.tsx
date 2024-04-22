@@ -1,6 +1,8 @@
 import type { ComponentPropsWithoutRef, ComponentPropsWithRef } from 'react'
 import { Textbox } from '@/components/atoms/Textbox'
 import { useId, useState } from 'react'
+import { ACCEPTED_IMAGE_TYPES } from '@/utils'
+
 
 type Props = {
   className?: string
@@ -21,6 +23,9 @@ export const InputImageWithTitle = ({
   error,
   isRequired = false
 }: Props) => {
+
+  const stringAcceptImageMime = ACCEPTED_IMAGE_TYPES.join(', ')
+
   return (
     <div className={`${className}`}>
       <h3 {...labelProps}>
@@ -40,7 +45,7 @@ export const InputImageWithTitle = ({
           <Textbox
             {...textboxProps}
             type="file"
-            accept="image/png, image/jpeg, image/jpg"
+            accept={stringAcceptImageMime}
             className={`${textboxProps?.className} w-full border-none bg-inherit hover:cursor-pointer p-0.5 m-0`}
           />
         </div>

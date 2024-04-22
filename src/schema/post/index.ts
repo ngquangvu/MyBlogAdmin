@@ -11,7 +11,7 @@ export const PostCreateInputSchema = z.object({
   content: z.string().min(1, 'Content is required'),
   thumbnail: z
     .any()
-    .refine((files) => ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type), 'Please input jpg, jpeg, png or webp format'),
+    .refine((files) => ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type), 'Please input jpg, jpeg, png, webp or svg format'),
   published: z.boolean()
 })
 

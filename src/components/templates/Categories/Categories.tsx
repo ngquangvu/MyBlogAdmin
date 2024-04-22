@@ -225,7 +225,7 @@ export const Categories = () => {
                           <td className="px-3 py-4 text-sm text-gray-500 dark:text-white">{cate_detail.metaTitle}</td>
                           <td className="px-3 py-4 text-sm text-gray-500 dark:text-white">{cate_detail.slug}</td>
                           <td className="px-3 py-4 text-sm text-gray-500 dark:text-white">
-                            <img className="w-10 h-auto" src={cate_detail.image} alt={cate_detail.image} />
+                            <img className="!w-10 h-auto" src={cate_detail.image} alt={cate_detail.image} />
                           </td>
                           <td className="px-3 py-4 text-sm text-gray-500 dark:text-white">{cate_detail.content}</td>
                           <td className="px-3 py-4 text-sm text-gray-500 dark:text-white">

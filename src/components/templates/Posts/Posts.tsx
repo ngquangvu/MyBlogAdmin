@@ -193,12 +193,12 @@ export const Posts = () => {
                               <ClipboardDocumentIcon className="w-5 h-5 text-gray-400" />
                             </button>
                           </td>
-                          <td className="px-3 py-4 text-sm text-gray-500 dark:text-white">{post_detail.authorId}</td>
-                          <td className="px-3 py-4 text-sm text-gray-500 dark:text-white"><p className='line-clamp-4'>{post_detail.title}</p></td>
-                          <td className="px-3 py-4 text-sm text-gray-500 dark:text-white">{post_detail.slug}</td>
-                          <td className="px-3 py-4 text-sm text-gray-500 dark:text-white"><p className='line-clamp-4'>{post_detail.summary}</p></td>
-                          <td className="px-3 py-4 text-sm text-gray-500 dark:text-white"><div className='line-clamp-4' dangerouslySetInnerHTML={{__html: post_detail.content}}></div></td>
-                          <td className="px-3 py-4 text-sm text-gray-500 dark:text-white">
+                          <td className="max-w-[100px] px-3 py-4 text-sm text-gray-500 dark:text-white">{post_detail.authorId}</td>
+                          <td className="max-w-[100px] px-3 py-4 text-sm text-gray-500 dark:text-white"><p className='line-clamp-4'>{post_detail.title}</p></td>
+                          <td className="max-w-[100px] px-3 py-4 text-sm text-gray-500 dark:text-white">{post_detail.slug}</td>
+                          <td className="max-w-[100px] px-3 py-4 text-sm text-gray-500 dark:text-white"><p className='line-clamp-4'>{post_detail.summary}</p></td>
+                          <td className="max-w-[300px] px-3 py-4 text-sm text-gray-500 dark:text-white"><div className='line-clamp-4' dangerouslySetInnerHTML={{__html: post_detail.content}}></div></td>
+                          <td className="max-w-[100px] px-3 py-4 text-sm text-gray-500 dark:text-white">
                             <img className="w-40 h-auto" src={post_detail.thumbnail} alt={post_detail.thumbnail} />
                           </td>
                           <td className="text-center px-3 py-4 text-sm text-gray-500 dark:text-white">

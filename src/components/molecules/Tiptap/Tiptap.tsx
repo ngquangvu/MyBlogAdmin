@@ -6,11 +6,22 @@ import StarterKit from '@tiptap/starter-kit'
 import TextAlign from '@tiptap/extension-text-align'
 import { Image } from '@tiptap/extension-image'
 import ImageResize from 'tiptap-extension-resize-image'
+import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight'
 import Youtube from '@tiptap/extension-youtube'
+import css from 'highlight.js/lib/languages/css'
+import js from 'highlight.js/lib/languages/javascript'
+import ts from 'highlight.js/lib/languages/typescript'
+import html from 'highlight.js/lib/languages/xml'
+import { common, createLowlight } from 'lowlight'
 
 import { Icon } from '@iconify/react'
 import TiptapIframe from './TiptapIframe'
 import { useMutateUploadImage } from '@/components/hooks/useMutatePost'
+const lowlight = createLowlight()
+lowlight.register({ css })
+lowlight.register({ js })
+lowlight.register({ ts })
+lowlight.register({ html })
 
 const extensions = [
   Color.configure({ types: [TextStyle.name, ListItem.name] }),
@@ -22,7 +33,8 @@ const extensions = [
     orderedList: {
       keepMarks: true,
       keepAttributes: false
-    }
+    },
+    codeBlock: false
   }),
   TextAlign.configure({
     types: ['heading', 'paragraph', 'image', 'iframe']
@@ -32,6 +44,9 @@ const extensions = [
   TiptapIframe,
   Youtube.configure({
     controls: false
+  }),
+  CodeBlockLowlight.configure({
+    lowlight: createLowlight(common)
   })
 ]
 
@@ -138,7 +153,7 @@ export const Tiptap = ({ userId, className = '', content, setNewContent }: Props
 
           <BubbleMenu
             editor={editor}
-            className="w-full min-w-[475px] bg-white text-gray-900 dark:bg-black dark:text-white rounded-md border border-gray-300 dark:border-gray-600 p-1"
+            className="w-full min-w-[445px] bg-white text-gray-900 dark:bg-black dark:text-white rounded-md border border-gray-300 dark:border-gray-600 p-1"
           >
             <div className="w-full flex flex-col space-y-1">
               <div className="w-full flex space-x-1">
@@ -277,17 +292,6 @@ export const Tiptap = ({ userId, className = '', content, setNewContent }: Props
                 >
                   <Icon icon="fa6-solid:list-ol" className="h-4 w-4 text-gray-600 dark:text-white" />
                 </button>
-
-                {/* code block */}
-                <button
-                  type="button"
-                  onClick={() => editor.chain().focus().toggleCodeBlock().run()}
-                  className={`px-2 py-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-800 ${
-                    editor.isActive('codeBlock') ? 'is-active bg-gray-300 dark:bg-gray-600' : ''
-                  } `}
-                >
-                  <Icon icon="fa6-solid:code" className="h-5 w-5 -m-0.5 text-gray-600 dark:text-white" />
-                </button>
               </div>
 
               <div className="flex space-x-1">
@@ -344,6 +348,17 @@ export const Tiptap = ({ userId, className = '', content, setNewContent }: Props
                   } `}
                 >
                   <Icon icon="fa6-solid:quote-right" className="h-4 w-4 text-gray-600 dark:text-white" />
+                </button>
+
+                {/* code block */}
+                <button
+                  type="button"
+                  onClick={() => editor.chain().focus().toggleCodeBlock().run()}
+                  className={`px-2 py-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-800 ${
+                    editor.isActive('codeBlock') ? 'is-active bg-gray-300 dark:bg-gray-600' : ''
+                  } `}
+                >
+                  <Icon icon="fa6-solid:code" className="h-5 w-5 -m-0.5 text-gray-600 dark:text-white" />
                 </button>
 
                 {/* image */}
