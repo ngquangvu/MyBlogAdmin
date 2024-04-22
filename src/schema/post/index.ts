@@ -7,10 +7,12 @@ export const PostCreateInputSchema = z.object({
   metaTitle: z.string().optional(),
   slug: z.string().optional(),
   summary: z.string().optional(),
+  tagIds: z.string().optional(),
+  cateIds: z.string().optional(),
   content: z.string().min(1, 'Content is required'),
   thumbnail: z
     .any()
-    .refine((files) => ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type), 'Please input jpg, jpeg, png or webp format'),
+    .refine((files) => ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type), 'Please input jpg, jpeg, png, webp or svg format'),
   published: z.boolean()
 })
 
@@ -23,6 +25,8 @@ export const PostDetailInputSchema: any = z.object({
   metaTitle: z.string().optional(),
   slug: z.string().optional(),
   summary: z.string().optional(),
+  tagIds: z.string().optional(),
+  cateIds: z.string().optional(),
   content: z.string().min(1, 'Content is required'),
   thumbnail: z.any(),
   published: z.boolean()
@@ -37,6 +41,8 @@ export const defaultValuesPostDetail: PostDetailInput = {
   metaTitle: '',
   slug: '',
   summary: '',
+  tagIds: '',
+  cateIds: '',
   content: '',
   thumbnail: '',
   published: true
@@ -48,6 +54,8 @@ export const defaultValuesPostCreate: PostCreateInput = {
   metaTitle: '',
   slug: '',
   summary: '',
+  tagIds: '',
+  cateIds: '',
   content: '',
   thumbnail: '',
   published: true

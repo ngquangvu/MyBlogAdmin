@@ -31,6 +31,26 @@ export const useQueryTags = (params: TagsSearchQuery) => {
   return { tags, refetch }
 }
 
+const getAllTags = async (
+): Promise<ResponseDataType & { data: TagsResponseDataType | null }> => {
+  const { data } = await axiosInstance.get<ResponseDataType & { data: TagsResponseDataType | null }>(`/admin/tags/all`)
+  return data
+}
+
+export const useQueryAllTags = () => {
+  const admin = getAdminFromLocalStorage()
+
+  const { data: tags, refetch } = useQuery(
+    [admin, tagsQueryKey],
+    () => getAllTags(),
+    {
+      keepPreviousData: true
+    }
+  )
+
+  return { tags, refetch }
+}
+
 const getTagDetail = async (id: string): Promise<ResponseDataType & { data: Tag | null }> => {
   const { data } = await axiosInstance.get<ResponseDataType & { data: Tag | null }>(`/admin/tags/${id}`)
 

@@ -1,18 +1,3 @@
-export type Post = {
-  id: string
-  authorId: string
-  title: string
-  metaTitle: string
-  slug: string
-  summary: string
-  content: string
-  thumbnail: string
-  published: boolean
-  createdAt: string
-  updatedAt: string
-  deletedAt: string | null
-}
-
 export type PostImage = {
   id: string
   authorId: string
@@ -29,6 +14,41 @@ export type PostImage = {
   deletedAt: string | null
 }
 
+export type PostTag = {
+  id: string
+  title: string
+  metaTitle: string
+  slug: string
+  content: string
+  image: string
+}
+
+export type PostCate = {
+  id: string
+  parentId: string
+  title: string
+  metaTitle: string
+  slug: string
+  content: string
+  image: string
+}
+
+export type Post = {
+  id: string
+  authorId: string
+  title: string
+  metaTitle: string
+  slug: string
+  summary: string
+  postTags: PostTag[]
+  postCategories: PostCate[]
+  content: string
+  thumbnail: string
+  published: boolean
+  createdAt: string
+  updatedAt: string
+  deletedAt: string | null
+}
 
 export type PostsSearchQuery = {
   page: number
@@ -48,6 +68,8 @@ export type PostMutate = {
   metaTitle?: string
   slug?: string
   summary?: string
+  tagIds?: string
+  cateIds?: string
   content?: string
   thumbnail?: string
   published?: boolean

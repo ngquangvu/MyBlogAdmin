@@ -170,7 +170,7 @@ export const Tags = () => {
             <div className="mt-8 flow-root">
               <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
                 <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
-                  <table className="min-w-full divide-y divide-gray-300 dark:divide-gray-600">
+                  <table className="table-data min-w-full divide-y divide-gray-300 dark:divide-gray-600">
                     <thead>
                       <tr>
                         <th
@@ -218,7 +218,7 @@ export const Tags = () => {
                             {tag_detail.slug}
                           </td>
                           <td className="px-3 py-4 text-sm text-gray-500 dark:text-white">
-                            <img className="w-10 h-auto" src={tag_detail.image} alt={tag_detail.image} />
+                            <img className="!w-10 h-auto" src={tag_detail.image} alt={tag_detail.image} />
                           </td>
                           <td className="px-3 py-4 text-sm text-gray-500 dark:text-white">
                             {tag_detail.content}

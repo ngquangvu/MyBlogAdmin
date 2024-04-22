@@ -59,7 +59,6 @@ export default function EditTagModal({ errorMess, onCancel, initialValues, onVal
                     }}
                     textboxProps={{ ...register('metaTitle'), type: 'text' }}
                     error={errors.metaTitle?.message?.toString()}
-                    isRequired
                   />
 
                   <TextboxWithTitle

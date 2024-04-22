@@ -9,7 +9,7 @@ export const TagCreateInputSchema = z.object({
     .any()
     .refine(
       (files) => ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type),
-      'Please input jpg, jpeg, png or webp format'
+      'Please input jpg, jpeg, png, webp or svg format'
     ),
   content: z.string().optional()
 })

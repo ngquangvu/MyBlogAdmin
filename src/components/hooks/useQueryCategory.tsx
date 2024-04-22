@@ -31,6 +31,26 @@ export const useQueryCategories = (params: CategoriesSearchQuery) => {
   return { categories, refetch }
 }
 
+const getAllCategories = async (
+): Promise<ResponseDataType & { data: CategoriesResponseDataType | null }> => {
+  const { data } = await axiosInstance.get<ResponseDataType & { data: CategoriesResponseDataType | null }>(`/admin/categories/all`)
+  return data
+}
+
+export const useQueryAllCategories = () => {
+  const admin = getAdminFromLocalStorage()
+
+  const { data: categories, refetch } = useQuery(
+    [admin, categoriesQueryKey],
+    () => getAllCategories(),
+    {
+      keepPreviousData: true
+    }
+  )
+
+  return { categories, refetch }
+}
+
 const getCategoryDetail = async (id: string): Promise<ResponseDataType & { data: Category | null }> => {
   const { data } = await axiosInstance.get<ResponseDataType & { data: Category | null }>(`/admin/categories/${id}`)
 

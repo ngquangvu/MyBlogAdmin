@@ -19,8 +19,6 @@ import { postsSearchQueryState, postsSearchState, postsPageState } from '@/state
 import { NotificationType } from '@/types/common'
 import { DeleteModal } from '@/components/organisms/DeleteModal'
 import { NotificationBadge } from '@/components/organisms/NotificationBadge'
-import CreatePostModal from '@/components/organisms/Post/CreatePostModal/CreatePostModal'
-import EditPostModal from '@/components/organisms/Post/EditPostModal/EditPostModal'
 import { RestoreModal } from '@/components/organisms/RestoreModal'
 
 export const Posts = () => {
@@ -132,7 +130,7 @@ export const Posts = () => {
             <div className="mt-8 flow-root">
               <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
                 <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
-                  <table className="min-w-full divide-y divide-gray-300 dark:divide-gray-600">
+                  <table className="table-data min-w-full divide-y divide-gray-300 dark:divide-gray-600">
                     <thead>
                       <tr>
                         <th
@@ -195,12 +193,12 @@ export const Posts = () => {
                               <ClipboardDocumentIcon className="w-5 h-5 text-gray-400" />
                             </button>
                           </td>
-                          <td className="px-3 py-4 text-sm text-gray-500 dark:text-white">{post_detail.authorId}</td>
-                          <td className="px-3 py-4 text-sm text-gray-500 dark:text-white"><p className='line-clamp-4'>{post_detail.title}</p></td>
-                          <td className="px-3 py-4 text-sm text-gray-500 dark:text-white">{post_detail.slug}</td>
-                          <td className="px-3 py-4 text-sm text-gray-500 dark:text-white"><p className='line-clamp-4'>{post_detail.summary}</p></td>
-                          <td className="px-3 py-4 text-sm text-gray-500 dark:text-white"><div className='line-clamp-4' dangerouslySetInnerHTML={{__html: post_detail.content}}></div></td>
-                          <td className="px-3 py-4 text-sm text-gray-500 dark:text-white">
+                          <td className="max-w-[100px] px-3 py-4 text-sm text-gray-500 dark:text-white">{post_detail.authorId}</td>
+                          <td className="max-w-[100px] px-3 py-4 text-sm text-gray-500 dark:text-white"><p className='line-clamp-4'>{post_detail.title}</p></td>
+                          <td className="max-w-[100px] px-3 py-4 text-sm text-gray-500 dark:text-white">{post_detail.slug}</td>
+                          <td className="max-w-[100px] px-3 py-4 text-sm text-gray-500 dark:text-white"><p className='line-clamp-4'>{post_detail.summary}</p></td>
+                          <td className="max-w-[300px] px-3 py-4 text-sm text-gray-500 dark:text-white"><div className='line-clamp-4' dangerouslySetInnerHTML={{__html: post_detail.content}}></div></td>
+                          <td className="max-w-[100px] px-3 py-4 text-sm text-gray-500 dark:text-white">
                             <img className="w-40 h-auto" src={post_detail.thumbnail} alt={post_detail.thumbnail} />
                           </td>
                           <td className="text-center px-3 py-4 text-sm text-gray-500 dark:text-white">

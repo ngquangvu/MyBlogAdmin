@@ -1,4 +1,4 @@
-export const ACCEPTED_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp']
+export const ACCEPTED_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'image/svg']
 
 export const classNames = (...classes: string[]) => {
   return classes.filter(Boolean).join(' ')
