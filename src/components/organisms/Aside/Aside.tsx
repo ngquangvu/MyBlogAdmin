@@ -7,6 +7,7 @@ import {
   ListBulletIcon,
   ChatBubbleLeftIcon,
   TagIcon,
+  HeartIcon,
   ShieldCheckIcon
 } from '@heroicons/react/24/outline'
 
@@ -23,6 +24,7 @@ export const Aside = () => {
     // { name: 'Comment', href: 'comments', icon: ChatBubbleLeftIcon, current: pathname.includes('comments') },
     { name: 'Category', href: 'categories', icon: SwatchIcon, current: pathname.includes('categories') },
     { name: 'Tag', href: 'tags', icon: TagIcon, current: pathname.includes('tags') },
+    { name: 'Subscriber', href: 'subscribers', icon: HeartIcon, current: pathname.includes('subscribers') },
     // { name: 'Admin', href: 'admins', icon: ShieldCheckIcon, current: pathname.includes('admins') }
   ]
 
