@@ -21,6 +21,7 @@ import { DeleteModal } from '@/components/organisms/DeleteModal'
 import { RestoreModal } from '@/components/organisms/RestoreModal'
 import CreateSubscriberModal from '@/components/organisms/Subscribers/CreateSubscriberModal/CreateSubscriberModal'
 import EditSubscriberModal from '@/components/organisms/Subscribers/EditSubscriberModal/EditSubscriberModal'
+import { changeDateFormat } from '@/utils'
 
 export const Subscribers = () => {
   const subscribersQuery = useRecoilValue(subscribersSearchQueryState)
@@ -181,12 +182,6 @@ export const Subscribers = () => {
                           scope="col"
                           className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 dark:text-white sm:pl-0"
                         >
-                          #
-                        </th>
-                        <th
-                          scope="col"
-                          className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-white"
-                        >
                           Email
                         </th>
                         <th
@@ -201,6 +196,12 @@ export const Subscribers = () => {
                         >
                           Is Agree
                         </th>
+                        <th
+                          scope="col"
+                          className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-white"
+                        >
+                          Created At
+                        </th>
                         <th scope="col" className="relative py-3.5 pl-3 pr-4 sm:pr-0">
                           <span className="sr-only">Edit</span>
                         </th>
@@ -210,14 +211,16 @@ export const Subscribers = () => {
                       {subscribers?.data?.data.map((subscriber_detail: Subscriber) => (
                         <tr key={subscriber_detail.id}>
                           <td className="py-4 pl-4 pr-3 text-sm font-semibold text-gray-900 dark:text-white sm:pl-0">
-                            {subscriber_detail.id}
+                            {subscriber_detail.email}
                           </td>
-                          <td className="px-3 py-4 text-sm text-gray-500 dark:text-white">{subscriber_detail.email}</td>
                           <td className="px-3 py-4 text-sm text-gray-500 dark:text-white">
                             {subscriber_detail.isActive ? '⚪︎' : ''}
                           </td>
                           <td className="px-3 py-4 text-sm text-gray-500 dark:text-white">
                             {subscriber_detail.isAgree ? '⚪︎' : ''}
+                          </td>
+                          <td className="px-3 py-4 text-sm text-gray-500 dark:text-white">
+                            {changeDateFormat(subscriber_detail.createdAt)}
                           </td>
                           <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-center text-sm font-medium sm:pr-0">
                             <button
