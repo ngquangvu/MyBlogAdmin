@@ -13,3 +13,9 @@ export const getFileNameAndExtension = (url: string | undefined): string | null 
   }
   return null // return null if no match found
 }
+
+// change date format to yyyy-mm-dd HH:MM:SS
+export const changeDateFormat = (date: string): string => {
+  const dateObj = new Date(date)
+  return dateObj.toISOString().split('T')[0] + ' ' + dateObj.toTimeString().split(' ')[0]
+}
