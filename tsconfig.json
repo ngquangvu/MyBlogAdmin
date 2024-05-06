@@ -7,9 +7,10 @@
     "paths": {
       "@/*": ["./src/*"]
     },
-    "types": ["vitest/globals"],
+    // "types": ["vitest/globals"],
     "skipLibCheck": true
   },
-  "include": ["src", "vitest.setup.ts"],
+  // "include": ["src", "vitest.setup.ts"],
+  "include": ["src"],
   "exclude": ["node_modules"]
 }
