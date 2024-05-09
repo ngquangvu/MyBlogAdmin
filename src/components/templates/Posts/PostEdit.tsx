@@ -233,7 +233,7 @@ export const PostEdit = () => {
                             labelProps={{
                               children: <p>Summary</p>
                             }}
-                            textboxProps={{ ...register('summary'), type: 'text' }}
+                            textboxProps={{ ...register('summary'), type: 'text', maxLength: 256}}
                             error={errors.summary?.message?.toString()}
                             isRequired
                           />
