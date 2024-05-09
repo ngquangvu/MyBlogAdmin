@@ -106,22 +106,35 @@
 .tiptap blockquote {
   width: fit-content;
   position: relative;
-  border-top-right-radius: 0.75rem;
-  border-bottom-right-radius: 0.75rem;
-  background-color: #ebebeb;
-  padding: 12px 24px;
+  /* border-top-right-radius: 0.75rem; */
+  /* border-bottom-right-radius: 0.75rem; */
+  border-radius: 0.5rem;
+  background-color: #f0f0f0;
+  padding: 1.2rem 2rem 1.2rem 2.5rem;
   margin: 0.75rem 0;
   margin-left: 20px;
 }
 
-.tiptap blockquote::after {
-  content: '';
+.tiptap blockquote:before {
+  display: block;
+  font-family: Georgia, serif;
+  content: "\201C";
+  font-size: 60px;
   position: absolute;
-  top: 0;
-  left: -3px;
-  width: 4px;
-  height: 100%;
-  background-color: #777777;
+  left: 0.5rem;
+  top: -0.5rem;
+  color: #bebebe;
+}
+
+.tiptap blockquote cite {
+  color: #999999;
+  font-size: 14px;
+  display: block;
+  margin-top: 5px;
+}
+
+.tiptap blockquote cite:before {
+  content: "\2014 \2009";
 }
 
 .tiptap .iframe-wrapper {
