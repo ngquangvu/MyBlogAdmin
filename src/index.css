@@ -35,46 +35,46 @@
 .tiptap h1 {
   font-size: 2rem;
   line-height: 1.5;
-  color: #36342f;
+  color: #27272A;
   margin: 0.85rem 0;
 }
 
 .tiptap h2 {
   font-size: 1.5rem;
   line-height: 1.5;
-  color: #36342f;
+  color: #27272A;
   margin: 0.85rem 0;
 }
 
 .tiptap h3 {
   font-size: 1.25rem;
   line-height: 1.5;
-  color: #36342f;
+  color: #27272A;
   margin: 0.85rem 0;
 }
 
 .tiptap h4 {
   font-size: 1rem;
   line-height: 1.5;
-  color: #36342f;
+  color: #27272A;
   margin: 0.75rem 0;
 }
 
 .tiptap h5 {
   font-size: 0.75rem;
   line-height: 1.5;
-  color: #36342f;
+  color: #27272A;
   margin: 0.65rem 0;
 }
 
 .tiptap p {
   font-size: 1rem;
   line-height: 1.65;
-  color: #3f3f46;
+  color: #45454c;
 }
 
 .tiptap p strong {
-  color: #36342f;
+  color: #27272A;
 }
 
 .tiptap a {
