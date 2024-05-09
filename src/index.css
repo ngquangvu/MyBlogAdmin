@@ -15,6 +15,10 @@
 }
 
 /* ============= Tiptap WYSIWYG ============= */
+.tiptap > * + * {
+  /* margin-top: 0.75em; */
+}
+
 .tiptap {
   min-height: 400px;
   outline: solid 1px #a1a1a1;
@@ -23,54 +27,66 @@
 }
 
 .tiptap img {
-  object-fit: contain;
+  border-radius: 0.75rem;
+  object-fit: cover;
   margin: 20px 0;
 }
 
 .tiptap h1 {
   font-size: 2rem;
   line-height: 1.5;
+  color: #36342f;
+  margin: 0.85rem 0;
 }
 
 .tiptap h2 {
   font-size: 1.5rem;
   line-height: 1.5;
+  color: #36342f;
+  margin: 0.85rem 0;
 }
 
 .tiptap h3 {
   font-size: 1.25rem;
   line-height: 1.5;
+  color: #36342f;
+  margin: 0.85rem 0;
 }
 
 .tiptap h4 {
   font-size: 1rem;
   line-height: 1.5;
+  color: #36342f;
+  margin: 0.75rem 0;
 }
 
 .tiptap h5 {
   font-size: 0.75rem;
   line-height: 1.5;
+  color: #36342f;
+  margin: 0.65rem 0;
 }
 
 .tiptap p {
-  font-size: 1.125rem;
-  line-height: 1.6;
+  font-size: 1rem;
+  line-height: 1.65;
+  color: #3f3f46;
+}
+
+.tiptap p strong {
+  color: #36342f;
 }
 
 .tiptap a {
-  color: #1e40af;
-}
-
-.tiptap p {
-  font-size: 1.125rem;
-  line-height: 1.6;
+  color: #14b8a6;
 }
 
 .tiptap ol,
 .tiptap ul,
 .tiptap menu {
   margin: 0.625rem 0;
-  padding: 0 1.75rem;
+  padding: 0 0 0 1.75rem;
+  color: #36342f;
 }
 
 .tiptap ol {
@@ -90,6 +106,8 @@
 .tiptap blockquote {
   width: fit-content;
   position: relative;
+  border-top-right-radius: 0.75rem;
+  border-bottom-right-radius: 0.75rem;
   background-color: #ebebeb;
   padding: 12px 24px;
   margin: 0.75rem 0;
@@ -112,26 +130,93 @@
   margin: 20px 0;
 }
 
-.tiptap .iframe-wrapper iframe {
+.tiptap iframe {
   width: 100%;
-  max-width: 900px;
-  height: 600px;
+  max-width: 800px;
+  height: 400px;
+  border-radius: 0.75rem;
 }
 
 .tiptap pre {
+  overflow-x: auto;
   background: #161616;
-  border-radius: 0.5rem;
+  border-radius: 0.75rem;
   color: #fff;
   font-family: 'JetBrainsMono', monospace;
-  padding: 0.75rem 1rem;
+  padding: 1.5rem;
+  margin: 1rem auto;
 }
 
 .tiptap pre code {
   background: none;
   color: inherit;
-  font-size: 0.875rem;
+  font-size: 0.85rem;
+  line-height: 1.65;
   padding: 0;
 }
+
+@media (max-width: 400px) {
+  .tiptap h1 {
+    font-size: 1.5rem;
+    line-height: 1.5;
+  }
+
+  .tiptap h2 {
+    font-size: 1.25rem;
+    line-height: 1.5;
+  }
+
+  .tiptap h3 {
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+
+  .tiptap h4 {
+    font-size: 0.85rem;
+    line-height: 1.5;
+  }
+
+  .tiptap h5 {
+    font-size: 0.6rem;
+    line-height: 1.5;
+  }
+
+  .tiptap p {
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+
+  .tiptap ol,
+  .tiptap ul,
+  .tiptap menu {
+    margin: 0.5rem 0;
+    padding: 0 0 0 1.5rem;
+  }
+
+  .tiptap li {
+    margin: 0.3rem 0;
+  }
+
+  .tiptap pre {
+    padding: 1rem;
+  }
+
+  .tiptap pre code {
+    font-size: 0.85rem;
+    line-height: 1.6;
+    padding: 0;
+  }
+}
+
+pre code.hljs {
+  display: block;
+  overflow-x: auto;
+  padding: 1em;
+}
+code.hljs {
+  padding: 3px 5px;
+}
+
 /*
    * Visual Studio 2015 dark style
    * Author: Nicolas LLOBERA <nllobera@gmail.com>
