@@ -9,10 +9,21 @@ import ImageResize from 'tiptap-extension-resize-image'
 import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight'
 import Youtube from '@tiptap/extension-youtube'
 import Link from '@tiptap/extension-link'
+import xml from 'highlight.js/lib/languages/xml'
+import javascript from 'highlight.js/lib/languages/javascript'
+import typescript from 'highlight.js/lib/languages/typescript'
+import php from 'highlight.js/lib/languages/php'
+import python from 'highlight.js/lib/languages/python'
+import csharp from 'highlight.js/lib/languages/csharp'
+import scss from 'highlight.js/lib/languages/scss'
 import css from 'highlight.js/lib/languages/css'
-import js from 'highlight.js/lib/languages/javascript'
-import ts from 'highlight.js/lib/languages/typescript'
-import html from 'highlight.js/lib/languages/xml'
+import less from 'highlight.js/lib/languages/less'
+import stylus from 'highlight.js/lib/languages/stylus'
+import dust from 'highlight.js/lib/languages/dust'
+import n1ql from 'highlight.js/lib/languages/n1ql'
+import json from 'highlight.js/lib/languages/json'
+import bash from 'highlight.js/lib/languages/bash'
+import ebnf from 'highlight.js/lib/languages/ebnf'
 import { common, createLowlight } from 'lowlight'
 
 import { Icon } from '@iconify/react'
@@ -20,10 +31,21 @@ import TiptapIframe from './TiptapIframe'
 import { useMutateUploadImage } from '@/components/hooks/useMutatePost'
 import { useCallback } from 'react'
 const lowlight = createLowlight()
+lowlight.register({ xml })
+lowlight.register({ javascript })
+lowlight.register({ typescript })
+lowlight.register({ php })
+lowlight.register({ python })
+lowlight.register({ csharp })
+lowlight.register({ scss })
 lowlight.register({ css })
-lowlight.register({ js })
-lowlight.register({ ts })
-lowlight.register({ html })
+lowlight.register({ less })
+lowlight.register({ stylus })
+lowlight.register({ dust })
+lowlight.register({ n1ql })
+lowlight.register({ json })
+lowlight.register({ bash })
+lowlight.register({ ebnf })
 
 const extensions = [
   Color.configure({ types: [TextStyle.name, ListItem.name] }),

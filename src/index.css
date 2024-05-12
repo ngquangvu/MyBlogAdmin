@@ -14,6 +14,13 @@
   max-height: 200px;
 }
 
+.tiptap {
+  min-height: 400px;
+  outline: solid 1px #e5e7eb;
+  border-radius: 5px;
+  padding: 1rem;
+}
+
 /* ============= Tiptap WYSIWYG ============= */
 :root {
   --title-color-light: #27272a;
