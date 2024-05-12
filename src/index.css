@@ -115,6 +115,14 @@
   margin: 0.45rem 0;
 }
 
+.tiptap code {
+  font-size: 0.85rem;
+  line-height: 1.65;
+  background: #f0f0f0;
+  border-radius: 0.25rem;
+  padding: 0.25rem 0.4rem;
+}
+
 .tiptap blockquote {
   width: fit-content;
   position: relative;
@@ -182,6 +190,10 @@
   .tiptap ul,
   .tiptap menu {
     color: var(--text-color-dark);
+  }
+
+  .tiptap code {
+    background-color: #353535;
   }
 
   .tiptap blockquote {
