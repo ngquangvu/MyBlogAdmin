@@ -257,7 +257,7 @@ export const PostEdit = () => {
                                       const codeTags = doc.querySelectorAll('code')
                                       codeTags.forEach((codeTag) => {
                                         if (!codeTag.classList.contains('language-')) {
-                                          codeTag.classList.add('language-typescript')
+                                          codeTag.classList.add('language-n1ql')
                                         }
                                       })
                                       // Get html string

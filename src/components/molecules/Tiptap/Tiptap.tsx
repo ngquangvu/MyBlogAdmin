@@ -170,6 +170,13 @@ export const Tiptap = ({ userId, className = '', content, setNewContent }: Props
           >
             <div className="w-full flex flex-col space-y-1">
               <div className="w-full flex space-x-1">
+                 {/* none */}
+                 <button
+                  type="button"
+                  className=''
+                >
+                </button>
+
                 {/* bold */}
                 <button
                   type="button"
