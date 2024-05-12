@@ -113,6 +113,7 @@
 
 .tiptap li {
   margin: 0.45rem 0;
+  color: var(--text-color-light) !important;
 }
 
 .tiptap code {
@@ -126,8 +127,6 @@
 .tiptap blockquote {
   width: fit-content;
   position: relative;
-  /* border-top-right-radius: 0.75rem; */
-  /* border-bottom-right-radius: 0.75rem; */
   border-radius: 0.5rem;
   background-color: #f0f0f0;
   padding: 1.2rem 2rem 1.2rem 2.5rem;
@@ -192,6 +191,11 @@
     color: var(--text-color-dark);
   }
 
+  .tiptap li {
+    margin: 0.45rem 0;
+    color: var(--text-color-dark) !important;
+  }
+
   .tiptap code {
     background-color: #353535;
   }
@@ -224,12 +228,25 @@
 
 .tiptap pre {
   overflow-x: auto;
-  background: #161616;
+  font-size: large;
+  background-color: #23241f;
+  counter-reset: linecounter;
   border-radius: 0.75rem;
   color: #fff;
   font-family: 'JetBrainsMono', monospace;
   padding: 1.5rem;
   margin: 1rem auto;
+}
+
+.tiptap pre .line-num {
+  min-width: 3.5ch;
+  display: inline-block;
+}
+
+.tiptap pre .line-num::before {
+  color: #515151;
+  counter-increment: linecounter;
+  content: counter(linecounter);
 }
 
 .tiptap pre code {
@@ -296,8 +313,9 @@
 pre code.hljs {
   display: block;
   overflow-x: auto;
-  padding: 1em;
+  /* padding: 1em; */
 }
+
 code.hljs {
   padding: 3px 5px;
 }
