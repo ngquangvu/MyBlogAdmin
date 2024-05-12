@@ -234,7 +234,17 @@ export const PostCreate = () => {
                                     "
                                     className=""
                                     setNewContent={function (html: string): void {
-                                      setValue('content', html)
+                                      const parser = new DOMParser()
+                                      const doc = parser.parseFromString(html, 'text/html')
+                                      const codeTags = doc.querySelectorAll('code')
+                                      codeTags.forEach((codeTag) => {
+                                        if (!codeTag.classList.contains('language-')) {
+                                          codeTag.classList.add('language-n1ql')
+                                        }
+                                      })
+                                      // Get html string
+                                      const htmlModified = doc.body.innerHTML
+                                      setValue('content', htmlModified)
                                     }}
                                   />
                                 </div>
