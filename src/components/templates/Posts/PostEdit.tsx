@@ -252,7 +252,7 @@ export const PostEdit = () => {
                                     content={postDetail?.data?.content || ''}
                                     className=""
                                     setNewContent={(html: string) => {
-                                      const htmlModified = html.replace(/<code>/g, '<code class="language-n1ql">')
+                                      const htmlModified = html.replace(/<code>/g, '<code class="language-bash">')
                                       setValue('content', htmlModified)
                                     }}
                                   />
