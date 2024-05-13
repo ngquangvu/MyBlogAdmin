@@ -234,7 +234,7 @@ export const PostCreate = () => {
                                     "
                                     className=""
                                     setNewContent={function (html: string): void {
-                                      const htmlModified = html.replace(/<code>/g, '<code class="language-n1ql">')
+                                      const htmlModified = html.replace(/<code>/g, '<code class="language-bash">')
                                       setValue('content', htmlModified)
                                     }}
                                   />

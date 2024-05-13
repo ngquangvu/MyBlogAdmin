@@ -156,63 +156,6 @@
   content: '\2014 \2009';
 }
 
-@media (prefers-color-scheme: dark) {
-  .tiptap h1 {
-    color: var(--title-color-dark);
-  }
-
-  .tiptap h2 {
-    color: var(--title-color-dark);
-  }
-
-  .tiptap h3 {
-    color: var(--title-color-dark);
-  }
-
-  .tiptap h4 {
-    color: var(--title-color-dark);
-  }
-
-  .tiptap h5 {
-    color: var(--title-color-dark);
-  }
-
-  .tiptap p {
-    color: var(--text-color-dark);
-  }
-
-  .tiptap p strong {
-    color: var(--title-color-dark);
-  }
-
-  .tiptap ol,
-  .tiptap ul,
-  .tiptap menu {
-    color: var(--text-color-dark);
-  }
-
-  .tiptap li {
-    margin: 0.45rem 0;
-    color: var(--text-color-dark) !important;
-  }
-
-  .tiptap code {
-    background-color: #353535;
-  }
-
-  .tiptap blockquote {
-    background-color: #353535;
-  }
-
-  .tiptap blockquote:before {
-    color: #bebebe;
-  }
-
-  .tiptap blockquote cite {
-    color: #646464;
-  }
-}
-
 .tiptap .iframe-wrapper {
   display: flex;
   justify-content: center;
@@ -255,6 +198,114 @@
   font-size: 0.85rem;
   line-height: 1.65;
   padding: 0;
+}
+
+
+.tiptap ::-webkit-scrollbar {
+  height: 1rem;
+  width: .5rem;
+}
+
+.tiptap ::-webkit-scrollbar:horizontal {
+  height: .5rem;
+  width: 1rem;
+}
+
+.tiptap ::-webkit-scrollbar-track {
+  background-color: transparent;
+  border-radius: 9999px
+}
+
+.tiptap ::-webkit-scrollbar-thumb {
+  background-color: hsla(0, 0%, 41%, 0.35);
+  border-color: rgba(255,255,255, 0.5);
+  border-radius: 9999px;
+  border-width: 1px;
+  transition: all;
+  transition-duration: 0.3s;
+}
+
+.tiptap ::-webkit-scrollbar-thumb:hover {
+  background-color: hsla(0, 0%, 41%, 0.6);
+}
+
+@media (prefers-color-scheme: dark) {
+  .tiptap h1 {
+    color: var(--title-color-dark);
+  }
+
+  .tiptap h2 {
+    color: var(--title-color-dark);
+  }
+
+  .tiptap h3 {
+    color: var(--title-color-dark);
+  }
+
+  .tiptap h4 {
+    color: var(--title-color-dark);
+  }
+
+  .tiptap h5 {
+    color: var(--title-color-dark);
+  }
+
+  .tiptap p {
+    color: var(--text-color-dark);
+  }
+
+  .tiptap p strong {
+    color: var(--title-color-dark);
+  }
+
+  .tiptap ol,
+  .tiptap ul,
+  .tiptap menu {
+    color: var(--text-color-dark);
+  }
+
+  .tiptap li {
+    margin: 0.45rem 0;
+    color: var(--text-color-dark) !important;
+  }
+
+  .tiptap pre {
+    background-color: hsla(240, 6%, 16%, 1);
+  }
+
+  .tiptap code {
+    background-color: #353535;
+  }
+
+  .tiptap blockquote {
+    background-color: #353535;
+  }
+
+  .tiptap blockquote:before {
+    color: #bebebe;
+  }
+
+  .tiptap blockquote cite {
+    color: #646464;
+  }
+
+  .tiptap ::-webkit-scrollbar-thumb {
+    background-color: hsla(0,0%,100%,.1)
+  }
+
+  .tiptap ::-webkit-scrollbar-thumb:hover {
+    background-color: hsla(0,0%,100%,.3)
+  }
+}
+
+@media (min-width: 768px) {
+  .scrollbar-trigger ::-webkit-scrollbar-thumb {
+      visibility:hidden
+  }
+
+  .scrollbar-trigger:hover ::-webkit-scrollbar-thumb {
+      visibility: visible
+  }
 }
 
 @media (max-width: 400px) {
@@ -319,7 +370,6 @@ pre code.hljs {
 code.hljs {
   padding: 3px 5px;
 }
-
 /*
    * Visual Studio 2015 dark style
    * Author: Nicolas LLOBERA <nllobera@gmail.com>
