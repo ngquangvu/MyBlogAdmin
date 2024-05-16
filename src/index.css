@@ -39,9 +39,10 @@
 }
 
 .tiptap img {
+  /* display: flex; */
   border-radius: 0.75rem;
-  object-fit: cover;
-  margin: 20px 0;
+  object-fit: contain;
+  margin: 20px auto;
 }
 
 .tiptap h1 {
@@ -116,7 +117,7 @@
   color: var(--text-color-light) !important;
 }
 
-.tiptap code {
+.tiptap p code {
   font-size: 0.85rem;
   line-height: 1.65;
   background: #f0f0f0;
@@ -200,25 +201,24 @@
   padding: 0;
 }
 
-
 .tiptap ::-webkit-scrollbar {
   height: 1rem;
-  width: .5rem;
+  width: 0.5rem;
 }
 
 .tiptap ::-webkit-scrollbar:horizontal {
-  height: .5rem;
+  height: 0.5rem;
   width: 1rem;
 }
 
 .tiptap ::-webkit-scrollbar-track {
   background-color: transparent;
-  border-radius: 9999px
+  border-radius: 9999px;
 }
 
 .tiptap ::-webkit-scrollbar-thumb {
   background-color: hsla(0, 0%, 41%, 0.35);
-  border-color: rgba(255,255,255, 0.5);
+  border-color: rgba(255, 255, 255, 0.5);
   border-radius: 9999px;
   border-width: 1px;
   transition: all;
@@ -229,82 +229,80 @@
   background-color: hsla(0, 0%, 41%, 0.6);
 }
 
-@media (prefers-color-scheme: dark) {
-  .tiptap h1 {
-    color: var(--title-color-dark);
-  }
+.dark .tiptap h1 {
+  color: var(--title-color-dark);
+}
 
-  .tiptap h2 {
-    color: var(--title-color-dark);
-  }
+.dark .tiptap h2 {
+  color: var(--title-color-dark);
+}
 
-  .tiptap h3 {
-    color: var(--title-color-dark);
-  }
+.dark .tiptap h3 {
+  color: var(--title-color-dark);
+}
 
-  .tiptap h4 {
-    color: var(--title-color-dark);
-  }
+.dark .tiptap h4 {
+  color: var(--title-color-dark);
+}
 
-  .tiptap h5 {
-    color: var(--title-color-dark);
-  }
+.dark .tiptap h5 {
+  color: var(--title-color-dark);
+}
 
-  .tiptap p {
-    color: var(--text-color-dark);
-  }
+.dark .tiptap p {
+  color: var(--text-color-dark);
+}
 
-  .tiptap p strong {
-    color: var(--title-color-dark);
-  }
+.dark .tiptap p strong {
+  color: var(--title-color-dark);
+}
 
-  .tiptap ol,
-  .tiptap ul,
-  .tiptap menu {
-    color: var(--text-color-dark);
-  }
+.dark .tiptap ol,
+.dark .tiptap ul,
+.dark .tiptap menu {
+  color: var(--text-color-dark);
+}
 
-  .tiptap li {
-    margin: 0.45rem 0;
-    color: var(--text-color-dark) !important;
-  }
+.dark .tiptap li {
+  margin: 0.45rem 0;
+  color: var(--text-color-dark) !important;
+}
 
-  .tiptap pre {
-    background-color: hsla(240, 6%, 16%, 1);
-  }
+.dark .tiptap pre {
+  background-color: hsla(240, 6%, 16%, 1);
+}
 
-  .tiptap code {
-    background-color: #353535;
-  }
+.dark .tiptap p code {
+  background-color: #353535;
+}
 
-  .tiptap blockquote {
-    background-color: #353535;
-  }
+.dark .tiptap blockquote {
+  background-color: #353535;
+}
 
-  .tiptap blockquote:before {
-    color: #bebebe;
-  }
+.dark .tiptap blockquote:before {
+  color: #bebebe;
+}
 
-  .tiptap blockquote cite {
-    color: #646464;
-  }
+.dark .tiptap blockquote cite {
+  color: #646464;
+}
 
-  .tiptap ::-webkit-scrollbar-thumb {
-    background-color: hsla(0,0%,100%,.1)
-  }
+.dark .tiptap ::-webkit-scrollbar-thumb {
+  background-color: hsla(0, 0%, 100%, 0.1);
+}
 
-  .tiptap ::-webkit-scrollbar-thumb:hover {
-    background-color: hsla(0,0%,100%,.3)
-  }
+.dark .tiptap ::-webkit-scrollbar-thumb:hover {
+  background-color: hsla(0, 0%, 100%, 0.3);
 }
 
 @media (min-width: 768px) {
   .scrollbar-trigger ::-webkit-scrollbar-thumb {
-      visibility:hidden
+    visibility: hidden;
   }
 
   .scrollbar-trigger:hover ::-webkit-scrollbar-thumb {
-      visibility: visible
+    visibility: visible;
   }
 }
 
@@ -370,6 +368,7 @@ pre code.hljs {
 code.hljs {
   padding: 3px 5px;
 }
+
 /*
    * Visual Studio 2015 dark style
    * Author: Nicolas LLOBERA <nllobera@gmail.com>
