@@ -42,7 +42,7 @@
   height: auto !important;
   border-radius: 0.75rem;
   object-fit: contain;
-  margin: 20px 0;
+  margin: 20px auto;
 }
 
 .tiptap h1 {
