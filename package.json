@@ -33,7 +33,7 @@
     "react-query": "^3.39.3",
     "react-router-dom": "^6.16.0",
     "recoil": "^0.7.7",
-    "tiptap-extension-resize-image": "^1.1.2",
+    "tiptap-extension-resize-image": "^1.1.4",
     "zod": "^3.22.3"
   },
   "devDependencies": {
