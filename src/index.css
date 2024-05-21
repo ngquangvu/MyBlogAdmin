@@ -39,7 +39,7 @@
 }
 
 .tiptap img {
-  /* display: flex; */
+  height: auto !important;
   border-radius: 0.75rem;
   object-fit: contain;
   margin: 20px auto;
@@ -128,11 +128,10 @@
 .tiptap blockquote {
   width: fit-content;
   position: relative;
-  border-radius: 0.5rem;
+  border-radius: 0.75rem;
   background-color: #f0f0f0;
   padding: 1.2rem 2rem 1.2rem 2.5rem;
-  margin: 0.75rem 0;
-  margin-left: 20px;
+  margin: 0.75rem 1.25rem;
 }
 
 .tiptap blockquote:before {
@@ -202,12 +201,12 @@
 }
 
 .tiptap ::-webkit-scrollbar {
-  height: 1rem;
+  height: 1.125rem;
   width: 0.5rem;
 }
 
 .tiptap ::-webkit-scrollbar:horizontal {
-  height: 0.5rem;
+  height: 0.65rem;
   width: 1rem;
 }
 
@@ -308,27 +307,28 @@
 
 @media (max-width: 400px) {
   .tiptap h1 {
-    font-size: 1.5rem;
+    font-size: 1.65rem;
     line-height: 1.5;
   }
 
   .tiptap h2 {
-    font-size: 1.25rem;
+    font-size: 1.5rem;
     line-height: 1.5;
   }
 
   .tiptap h3 {
-    font-size: 1rem;
+    font-size: 1.125rem;
     line-height: 1.5;
   }
 
   .tiptap h4 {
-    font-size: 0.85rem;
+    font-size: 1rem;
     line-height: 1.5;
+    margin: 1.5rem 0 0.25rem
   }
 
   .tiptap h5 {
-    font-size: 0.6rem;
+    font-size: 0.8rem;
     line-height: 1.5;
   }
 
@@ -348,12 +348,23 @@
     margin: 0.3rem 0;
   }
 
+  .tiptap p code {
+    font-size: 0.85rem;
+    line-height: 1.65;
+    padding: 0.19rem 0.35rem;
+  }
+
+  .tiptap blockquote {
+    padding: 1rem 1.25rem 1rem 2.5rem;
+    margin: 0.75rem 1.25rem;
+  }
+
   .tiptap pre {
     padding: 1rem;
   }
 
   .tiptap pre code {
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     line-height: 1.6;
     padding: 0;
   }
